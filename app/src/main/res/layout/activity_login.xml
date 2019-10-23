@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context=".Activity.LoginActivity"
+    >
+    <RelativeLayout
+        android:id="@+id/nameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:background="@drawable/custom_bg"
+        >
+        <!--<ImageView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:src="@drawable/textbox"-->
+
+
+            <!--/>-->
+        <EditText
+            android:id="@+id/edName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:hint="Name"
+            android:inputType="text"
+            android:paddingLeft="15dp"
+            android:textColorHint="@color/white"
+
+            />
+
+    </RelativeLayout>
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:background="@drawable/custom_bg"-->
+        <!--android:layout_marginLeft="35dp"-->
+        <!--android:layout_marginRight="35dp"-->
+
+        <!--android:layout_marginBottom="15dp"-->
+        <!--android:layout_below="@+id/nameLayout"-->
+        <!--android:id="@+id/emailLayout"-->
+
+        <!--&gt;-->
+        <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="50dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:src="@drawable/textbox"&ndash;&gt;-->
+
+
+        <!--&lt;!&ndash;/>&ndash;&gt;-->
+        <!--<EditText-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:id="@+id/edEmail"-->
+            <!--android:hint="Email"-->
+            <!--android:inputType="textEmailAddress"-->
+            <!--android:background="@null"-->
+            <!--android:textColorHint="@color/white"-->
+            <!--android:paddingLeft="15dp"-->
+
+            <!--/>-->
+
+    <!--</RelativeLayout>-->
+    <RelativeLayout
+        android:id="@+id/numberLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/nameLayout"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:background="@drawable/custom_bg"
+        >
+        <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:src="@drawable/textbox"-->
+
+
+        <!--/>-->
+        <EditText
+            android:id="@+id/edNumber"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:hint="Phone Number"
+            android:inputType="number"
+            android:paddingLeft="15dp"
+            android:textColorHint="@color/white"
+
+            />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/verifyButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/numberLayout"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/loginbuttton"
+        >
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:text="Verify my Number!"
+            android:textColor="@color/colorPrimary"
+
+
+
+            />
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
