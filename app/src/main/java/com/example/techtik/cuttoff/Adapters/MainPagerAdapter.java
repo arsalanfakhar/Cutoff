@@ -1,8 +1,8 @@
 package com.example.techtik.cuttoff.Adapters;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.techtik.cuttoff.Fragments.ComfortFragment;
 import com.example.techtik.cuttoff.Fragments.ContactListFragment;
