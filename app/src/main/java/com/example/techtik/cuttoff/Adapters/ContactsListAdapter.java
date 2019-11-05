@@ -49,6 +49,9 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
     public class ContactViewHolder extends RecyclerView.ViewHolder{
 
         TextView contactName,contactPhone;
+
+        //TODO apply two way data binding
+
         public ContactViewHolder(View itemView) {
             super(itemView);
             contactName=itemView.findViewById(R.id.contact_name);

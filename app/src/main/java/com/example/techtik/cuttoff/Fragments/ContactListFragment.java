@@ -42,22 +42,16 @@ public class ContactListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         contactListBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_contact_list,container,false);
-
         View view=contactListBinding.getRoot();
         contactsFragmentViewModel= ViewModelProviders.of(this).get(ContactsFragmentViewModel.class);
 
         init();
 
-
-//        new LoadContactAsync().execute();
-
         contactsFragmentViewModel.contactList.observe(this, new Observer<List<Contact>>() {
             @Override
             public void onChanged(List<Contact> contacts) {
                 if(contacts!=null){
-
                     contactListBinding.contactRv.setAdapter(new ContactsListAdapter(getContext(), (ArrayList<Contact>) contacts));
-
                 }
 
             }
@@ -68,6 +62,8 @@ public class ContactListFragment extends Fragment {
     }
 
     private void init(){
+
+        //initialize recycler view
         contactList =new ArrayList<>();
         contactsListAdapter=new ContactsListAdapter(getContext(), (ArrayList<Contact>) contactsFragmentViewModel.contactList.getValue());
         contactListBinding.contactRv.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -75,57 +71,5 @@ public class ContactListFragment extends Fragment {
         contactListBinding.contactRv.setItemAnimator(new DefaultItemAnimator());
     }
 
-
-    public class LoadContactAsync extends AsyncTask<Void,Void,Void>{
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            LoadContacts();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            contactsListAdapter.notifyDataSetChanged();
-
-        }
-    }
-
-
-    public void LoadContacts(){
-
-        StringBuilder builder=new StringBuilder();
-
-        Cursor cursor= getActivity().getContentResolver().query(ContactsContract.Contacts.CONTENT_URI,null,null,null,ContactsContract.Data.DISPLAY_NAME);
-
-
-        if(cursor.getCount()>0) {
-            while (cursor.moveToNext()) {
-                String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-
-                String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-
-                int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)));
-
-                if (hasPhoneNumber > 0) {
-                    Cursor cursor1 = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                            null,
-                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID+ "= ?",
-                            new String[]{id}, null);
-
-                    while (cursor1.moveToNext()){
-                        String phoneNum=cursor1.getString(cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        //contactList.add("Contact:"+name+"\nPhoneNum:"+phoneNum+"\n");
-
-                    }
-                    cursor1.close();
-                }
-            }
-
-        }
-        cursor.close();
-
-        }
 
 }

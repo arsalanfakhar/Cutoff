@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<!--    Light Call Screen Theme-->
+    <style name="AppTheme.Light" parent="Theme.MaterialComponents.Light">
+        <item name="colorPrimary">@color/color_primary_light</item>
+        <item name="colorPrimaryDark">?attr/colorPrimary</item>
+
+
+        <item name="colorAccent">@color/color_accent_pink</item>
+
+        <item name="android:windowBackground">?attr/colorPrimary</item>
+        <item name="android:navigationBarColor">?attr/colorPrimary</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <item name="iconColor">@color/icon_active_light</item>
+<!--        <item name="secondaryAccentColor">?attr/colorAccent</item>-->
+<!--        <item name="overlayColor">@color/semi_white</item>-->
+<!--        -->
+
+    </style>
+
+
+    <!--No action bar-->
+    <style name="AppTheme.Light.NoActionBar" parent="AppTheme.Light">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!--Transparent status bar-->
+    <style name="AppTheme.Light.TransparentStatusBar" parent="AppTheme.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+</resources>

@@ -29,7 +29,8 @@ public class ContactsRepository {
                     ContactsContract.Contacts._ID,
                     ContactsContract.Contacts.DISPLAY_NAME,
                     ContactsContract.Contacts.HAS_PHONE_NUMBER,
-                    ContactsContract.Contacts.LOOKUP_KEY
+                    ContactsContract.Contacts.LOOKUP_KEY,
+                    ContactsContract.PhoneLookup.PHOTO_URI
             };
 
             Cursor cursor = application.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, projection, ContactsContract.Contacts.HAS_PHONE_NUMBER + " = ? AND in_default_directory = ? ", new String[]{"1", "1"}, ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + " COLLATE NOCASE");
@@ -41,6 +42,8 @@ public class ContactsRepository {
                     //String label = cursor.getString(cursor.getColumnIndex("phonebook_label"));
                     String lookup = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY));
 
+                    String photoUri=cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.PHOTO_URI));
+
                     ArrayList<String> phoneNumbers=getNumbers(contactId);
                     if(phoneNumbers.size()>0){
                         Contact contact=new Contact();
@@ -49,6 +52,7 @@ public class ContactsRepository {
                         contact.setEmail(getEmail(contactId));
 //                        contact.setImageLetter(label);
                         contact.setLookUp(lookup);
+                        contact.setPhotoUri(photoUri);
                         contactList.add(contact);
                     }
 

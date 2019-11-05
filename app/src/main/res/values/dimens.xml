@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Button -->
+    <dimen name="flat_button_size">64dp</dimen>
+    <dimen name="flat_button_padding">16dp</dimen>
+</resources>

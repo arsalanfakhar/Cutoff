@@ -9,6 +9,15 @@ public class Contact {
     private String imageLetter = "";
     private String lookUp = "";
     private String key = "";
+    private String photoUri;
+
+    public String getPhotoUri() {
+        return photoUri;
+    }
+
+    public void setPhotoUri(String photoUri) {
+        this.photoUri = photoUri;
+    }
 
     public String getName() {
         return name;
@@ -57,5 +66,15 @@ public class Contact {
     public void setKey(String key) {
         this.key = key;
     }
+
+    public Contact(){
+
+    }
+    public Contact(String name,String phoneNum,String photoUri){
+        this.name=name;
+        this.phones.add(phoneNum);
+        this.photoUri=photoUri;
+    }
+
 
 }
