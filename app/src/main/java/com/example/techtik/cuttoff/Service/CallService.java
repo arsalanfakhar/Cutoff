@@ -17,12 +17,13 @@ public class CallService extends InCallService {
     public void onCallAdded(Call call) {
         super.onCallAdded(call);
 
+
+        CallManager.mCall=call;
+
         //launch intent to show call screen
         Intent intent=new Intent(this, CallScreenActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-
-        CallManager.mCall=call;
 
         //set the call variable
     }
