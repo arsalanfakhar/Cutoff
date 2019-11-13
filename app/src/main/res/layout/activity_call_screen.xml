@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-
-    </data>
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,5 +11,16 @@
         <!--OngoingCall Layout-->
         <include layout="@layout/on_going_call" />
 
+        <!-- Dialer Fragment -->
+        <FrameLayout
+            android:id="@+id/dialer_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="0dp"
+            app:layout_anchorGravity="bottom"
+            app:layout_behavior="@string/bottom_sheet_behavior"
+            tools:layout="@layout/dialpad_fragment" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</layout>

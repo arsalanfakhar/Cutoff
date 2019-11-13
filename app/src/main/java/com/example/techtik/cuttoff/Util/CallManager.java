@@ -1,6 +1,7 @@
 package com.example.techtik.cuttoff.Util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.telecom.Call;
 import android.telecom.VideoProfile;
@@ -8,11 +9,59 @@ import android.widget.Toast;
 
 import com.example.techtik.cuttoff.Activity.CallScreenActivity;
 import com.example.techtik.cuttoff.Models.Contact;
+import com.example.techtik.cuttoff.R;
+
+import org.jetbrains.annotations.NotNull;
 
 public class CallManager {
     public static Call mCall;
     private static boolean sIsAutoCalling = false;
     private static int sAutoCallPosition = 0;
+
+
+    /**
+     * Call a given number
+     *
+     * @param context
+     * @param number
+     */
+    public static void call(@NotNull Context context, @NotNull String number) {
+
+        String uri;
+        try {
+            // Set the data for the call
+            if (number.contains("#")) uri = "tel: " + Uri.encode(number);
+            else uri = "tel: " + number;
+            Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(uri));
+            int simCard = getSimSelection(context);
+            if (simCard != -1) {
+                callIntent.putExtra("simSlot", simCard);
+
+            }
+            context.startActivity(callIntent); // Start the call
+        } catch (SecurityException e) {
+
+        }
+    }
+
+    public static int getSimSelection(Context context) {
+        PreferenceUtils.getInstance(context);
+        try {
+            int simCard = PreferenceUtils.getInstance().getInt(R.string.pref_sim_select_key);
+
+            return simCard;
+        } catch (NullPointerException e) {
+            return -1;
+        }
+    }
+
+
+
+
+
+
+
+
 
     // -- Call Actions -- //
 

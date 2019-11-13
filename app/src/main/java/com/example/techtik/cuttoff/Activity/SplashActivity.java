@@ -68,10 +68,23 @@ public class SplashActivity extends AppCompatActivity {
         startActivityForResult(intent, DIALER_RC);
     }
 
+
+
     public void startApp(){
+        requestPermission();
         Intent loginIntent = new Intent(SplashActivity.this,LoginActivity.class);
         startActivity(loginIntent);
         finish();
+    }
+
+    public void requestPermission(){
+        if(ContextCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.READ_CONTACTS)== PackageManager.PERMISSION_GRANTED){
+
+        }
+        else {
+            ActivityCompat.requestPermissions(SplashActivity.this,new String[]{Manifest.permission.READ_CONTACTS},
+                    0);
+        }
     }
 
     @Override

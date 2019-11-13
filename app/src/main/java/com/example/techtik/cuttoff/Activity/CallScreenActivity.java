@@ -5,6 +5,8 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.transition.ChangeBounds;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
@@ -21,19 +23,26 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.telecom.Call;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Toast;
 
+import com.example.techtik.cuttoff.Fragments.DialpadFragment;
 import com.example.techtik.cuttoff.Models.Contact;
 import com.example.techtik.cuttoff.R;
 import com.example.techtik.cuttoff.Util.CallManager;
 import com.example.techtik.cuttoff.Util.Stopwatch;
 import com.example.techtik.cuttoff.databinding.OnGoingCallBinding;
+import com.example.techtik.cuttoff.viewmodel.SharedDialViewModel;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-public class CallScreenActivity extends AppCompatActivity implements View.OnClickListener {
+import butterknife.BindView;
+import butterknife.OnClick;
+
+public class CallScreenActivity extends AppCompatActivity implements View.OnClickListener, DialpadFragment.OnKeyDownListener {
 
     private static final long END_CALL_MILLIS = 1500;
 
@@ -43,6 +52,16 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
     private static final int TIME_UPDATE = 2;
     private static final int REFRESH_RATE = 100;
     private static int mState;
+
+
+    // Fragments
+    private DialpadFragment mDialpadFragment;
+
+    // ViewModels
+    private SharedDialViewModel mSharedDialViewModel;
+
+    // BottomSheet
+    BottomSheetBehavior mBottomSheetBehavior;
 
 
     // Current states
@@ -66,11 +85,12 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
 
     OnGoingCallBinding onGoingCallBinding;
 
+    View mDialerFrame;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_call_screen);
-        DataBindingUtil.setContentView(this,R.layout.activity_call_screen);
+        setContentView(R.layout.activity_call_screen);
+        //DataBindingUtil.setContentView(this,R.layout.activity_call_screen);
         //call binding
         onGoingCallBinding=DataBindingUtil.setContentView(this,R.layout.on_going_call);
 
@@ -117,12 +137,45 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
         // Audio Manager
         mAudioManager = (AudioManager) getApplicationContext().getSystemService(AUDIO_SERVICE);
 
+        // Fragments
+        mDialpadFragment = DialpadFragment.newInstance(false);
+//        getSupportFragmentManager().beginTransaction()
+//                .add(R.id.dialer_fragment, mDialpadFragment)
+//                .commit();
+        mDialpadFragment.setDigitsCanBeEdited(false);
+        mDialpadFragment.setShowVoicemailButton(false);
+        mDialpadFragment.setOnKeyDownListener(this);
+
+
+
         //Click listeners
         onGoingCallBinding.answerBtn.setOnClickListener(this);
         onGoingCallBinding.rejectBtn.setOnClickListener(this);
         onGoingCallBinding.buttonMute.setOnClickListener(this);
         onGoingCallBinding.buttonSpeaker.setOnClickListener(this);
         onGoingCallBinding.buttonHold.setOnClickListener(this);
+
+
+//        // Instantiate ViewModels
+//        mSharedDialViewModel = ViewModelProviders.of(this).get(SharedDialViewModel.class);
+//        mSharedDialViewModel.getNumber().observe(this, new Observer<String>() {
+//            @Override
+//            public void onChanged(String s) {
+//                if (s != null && !s.isEmpty()) {
+//                    char c = s.charAt(s.length() - 1);
+//                    CallManager.keypad(c);
+//                }
+//            }
+//        });
+
+//
+//        mDialerFrame=findViewById(R.id.dialer_fragment);
+//        Log.v("shit",mDialerFrame.toString());
+//        // Bottom Sheet Behaviour
+//        mBottomSheetBehavior = BottomSheetBehavior.from(mDialerFrame); // Set the bottom sheet behaviour
+//        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN); // Hide the bottom sheet
+
+
     }
 
 
@@ -302,6 +355,13 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
         CallManager.hold(view.isActivated());
     }
 
+
+    @Override
+    public void onKeyPressed(int keyCode, KeyEvent event) {
+        CallManager.keypad((char) event.getUnicodeChar());
+    }
+
+
     // -- Wake Lock -- //
 
     /**
@@ -395,6 +455,9 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.button_hold:
                 toggleHold(v);
+                break;
+            case R.id.button_keypad:
+                Toast.makeText(CallScreenActivity.this,"dialpad clicked",Toast.LENGTH_SHORT).show();
                 break;
         }
     }
