@@ -1,152 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Fragments.ComfortFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
 
-    <RelativeLayout
-        android:id="@+id/toplayout"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginBottom="3dp"
-        android:background="@color/colorPrimary">
-
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Comfort"
-            android:textColor="@color/white"
-            android:textSize="21sp" />
-
-    </RelativeLayout>
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="2">
+        tools:context=".Fragments.ComfortFragment">
+
+
+        <RelativeLayout
+            android:id="@+id/toplayout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginBottom="3dp"
+            android:background="@color/colorPrimary">
+
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Comfort"
+                android:textColor="@color/white"
+                android:textSize="21sp" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="20dp"
-            android:padding="4dp"
-            android:background="#fff"
-            android:orientation="vertical">
-
-            <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:layout_marginBottom="3dp"-->
-            <!--android:layout_marginLeft="4dp"-->
-            <!--android:layout_marginRight="4dp"-->
-            <!--android:layout_marginTop="2dp"-->
-            <!--android:background="@color/white"-->
-            <!--android:orientation="vertical" />-->
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="2">
 
             <LinearLayout
-                android:id="@+id/custom_recordings"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:background="@drawable/comfort_recordings_background"
-                android:orientation="horizontal">
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="20dp"
+                android:padding="4dp"
+                android:background="#fff"
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginBottom="3dp"-->
+                <!--android:layout_marginLeft="4dp"-->
+                <!--android:layout_marginRight="4dp"-->
+                <!--android:layout_marginTop="2dp"-->
+                <!--android:background="@color/white"-->
+                <!--android:orientation="vertical" />-->
+
+                <LinearLayout
+                    android:id="@+id/custom_recordings"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="15"
-                    android:background="#5aa49a"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:background="@drawable/comfort_recordings_background"
+                    android:orientation="horizontal">
 
-                    android:gravity="center"
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="15"
+                        android:background="#5aa49a"
 
-                    android:text="Custom Recordings"
-                    android:textColor="#fff"
-                    android:textSize="20sp" />
+                        android:gravity="center"
+
+                        android:text="Custom Recordings"
+                        android:textColor="#fff"
+                        android:textSize="20sp" />
 
 
+                </LinearLayout>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:id="@+id/custom_recordings_rv">
+
+                </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
 
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="200dp">
 
-            </ListView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="5dp"
+                android:padding="4dp"
+                android:background="#fff"
+                android:orientation="vertical">
+
+                <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginBottom="3dp"-->
+                <!--android:layout_marginLeft="4dp"-->
+                <!--android:layout_marginRight="4dp"-->
+                <!--android:layout_marginTop="2dp"-->
+                <!--android:background="@color/white"-->
+                <!--android:orientation="vertical" />-->
+
+                <LinearLayout
+                    android:id="@+id/default_recordings"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:background="@drawable/comfort_recordings_background"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="15"
+                        android:background="#5aa49a"
+
+                        android:gravity="center"
+
+                        android:text="Default Recordings"
+                        android:textColor="#fff"
+                        android:textSize="20sp" />
+
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:id="@+id/default_recordings_rv">
+
+                </androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
+
+
         </LinearLayout>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="5dp"
-            android:padding="4dp"
-            android:background="#fff"
-            android:orientation="vertical">
-
-            <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:layout_marginBottom="3dp"-->
-            <!--android:layout_marginLeft="4dp"-->
-            <!--android:layout_marginRight="4dp"-->
-            <!--android:layout_marginTop="2dp"-->
-            <!--android:background="@color/white"-->
-            <!--android:orientation="vertical" />-->
-
-            <LinearLayout
-                android:id="@+id/default_recordings"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:background="@drawable/comfort_recordings_background"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="15"
-                    android:background="#5aa49a"
-
-                    android:gravity="center"
-
-                    android:text="Default Recordings"
-                    android:textColor="#fff"
-                    android:textSize="20sp" />
-
-
-
-
-
-            </LinearLayout>
-
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="200dp">
-
-            </ListView>
-        </LinearLayout>
+        <!-- TODO: Update blank fragment layout -->
 
 
     </LinearLayout>
-
-
-
-    <!-- TODO: Update blank fragment layout -->
-
-
-</LinearLayout>
+</layout>

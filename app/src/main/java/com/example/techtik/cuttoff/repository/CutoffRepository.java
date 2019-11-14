@@ -5,20 +5,65 @@ import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.techtik.cuttoff.Models.Contact;
+import com.example.techtik.cuttoff.Util.database.CustomRecDAO;
+import com.example.techtik.cuttoff.Util.database.CutoffDatabase;
+import com.example.techtik.cuttoff.Util.database.DefaultRecDAO;
+import com.example.techtik.cuttoff.Util.database.entity.CustomRecordings;
+import com.example.techtik.cuttoff.Util.database.entity.DefaultRecordings;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
-public class ContactsRepository {
+import androidx.lifecycle.LiveData;
+
+public class CutoffRepository {
 
     private Application application;
+    private DefaultRecDAO defaultRecDAO;
+    private CustomRecDAO customRecDAO;
 
-
-    public ContactsRepository(Application application) {
+    //Initialize here
+    public CutoffRepository(Application application) {
         this.application = application;
+
+        CutoffDatabase cutoffDatabase=CutoffDatabase.getInstance(application);
+        defaultRecDAO=cutoffDatabase.getDefaultRecDAO();
+        customRecDAO=cutoffDatabase.getCustomRecDAO();
+    }
+
+    public LiveData<List<DefaultRecordings>> getAllDefaultRecordings(){
+        return defaultRecDAO.getAllRecordings();
+    }
+
+    public LiveData<List<CustomRecordings>> getAllCustomRecordings(){
+        return customRecDAO.getAllRecordings();
+    }
+
+    public void addRecording(CustomRecordings customRecordings){
+        //We can use executors instead of asyn task if we do not want to use its complex methods
+        Executor executor= Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            customRecDAO.addCustomRec(customRecordings);
+        });
+    }
+
+    public void updateRecording(CustomRecordings customRecordings){
+        Executor executor= Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            customRecDAO.updateRec(customRecordings);
+        });
+    }
+
+    public void deleteRecording(CustomRecordings customRecordings){
+        Executor executor= Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            customRecDAO.deleteRec(customRecordings);
+        });
+
     }
 
 
@@ -126,4 +171,6 @@ public class ContactsRepository {
         return emailStr;
 
     }
+
+
 }

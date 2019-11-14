@@ -2,9 +2,8 @@ package com.example.techtik.cuttoff.viewmodel;
 
 import android.app.Application;
 import com.example.techtik.cuttoff.Models.Contact;
-import com.example.techtik.cuttoff.repository.ContactsRepository;
+import com.example.techtik.cuttoff.repository.CutoffRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -15,12 +14,12 @@ import androidx.lifecycle.MutableLiveData;
 
 public class ContactsFragmentViewModel extends AndroidViewModel {
 
-    private ContactsRepository repository;
+    private CutoffRepository repository;
     public MutableLiveData<List<Contact>> contactList=new MutableLiveData<>();
 
     public ContactsFragmentViewModel(@NonNull Application application) {
         super(application);
-        repository=new ContactsRepository(application);
+        repository=new CutoffRepository(application);
         getContacts();
 
 

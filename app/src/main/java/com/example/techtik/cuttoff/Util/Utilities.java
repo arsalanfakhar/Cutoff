@@ -7,7 +7,7 @@ import android.os.Vibrator;
 
 import androidx.annotation.NonNull;
 
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.Locale;
 
@@ -30,7 +30,7 @@ public class Utilities {
     /**
      * Vibrate the phone for {@code DEFAULT_VIBRATE_LENGTH} milliseconds
      */
-    public static void vibrate(@NotNull Context context) {
+    public static void vibrate(Context context) {
         vibrate(context, DEFAULT_VIBRATE_LENGTH);
     }
 
@@ -39,7 +39,7 @@ public class Utilities {
      *
      * @param millis the amount of milliseconds to vibrate the phone for.
      */
-    public static void vibrate(@NotNull Context context, long millis) {
+    public static void vibrate(Context context, long millis) {
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         if (vibrator == null) return;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

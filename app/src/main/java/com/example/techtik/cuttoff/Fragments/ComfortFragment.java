@@ -1,101 +1,131 @@
 package com.example.techtik.cuttoff.Fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.techtik.cuttoff.Adapters.CustomRecordingAdapter;
+import com.example.techtik.cuttoff.Adapters.DefaultRecordingAdapter;
 import com.example.techtik.cuttoff.R;
+import com.example.techtik.cuttoff.Util.database.entity.CustomRecordings;
+import com.example.techtik.cuttoff.databinding.FragmentComfortBinding;
+import com.example.techtik.cuttoff.viewmodel.ComfortFragmentViewModel;
 
+import java.util.ArrayList;
 
 
 public class ComfortFragment extends Fragment {
-//    // TODO: Rename parameter arguments, choose names that match
-//    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
-//
-//    // TODO: Rename and change types of parameters
-//    private String mParam1;
-//    private String mParam2;
-//
-//    private OnFragmentInteractionListener mListener;
-//
-//    public ComfortFragment() {
-//        // Required empty public constructor
-//    }
-//
-//    /**
-//     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-//     * @return A new instance of fragment ComfortFragment.
-//     */
-//    // TODO: Rename and change types and number of parameters
-//    public static ComfortFragment newInstance(String param1, String param2) {
-//        ComfortFragment fragment = new ComfortFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-//
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
-//    }
+
+    private FragmentComfortBinding fragmentComfortBinding;
+
+    //Adapters
+    private CustomRecordingAdapter customRecordingAdapter;
+    private DefaultRecordingAdapter defaultRecordingAdapter;
+
+    //Viewmodel
+    private ComfortFragmentViewModel comfortFragmentViewModel;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_comfort, container, false);
+
+        fragmentComfortBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_comfort,container,false);
+        View view=fragmentComfortBinding.getRoot();
+
+        //Intialize viewmodel
+        comfortFragmentViewModel= ViewModelProviders.of(this).get(ComfortFragmentViewModel.class);
+
+        init();
+        comfortFragmentViewModel.getListdefaultRecording().observe(this, defaultRecordings -> {
+            if(defaultRecordings!=null)
+                defaultRecordingAdapter.setDefaultRecordingsList(defaultRecordings);
+        });
+
+        comfortFragmentViewModel.getListcustomRecording().observe(this,customRecordings -> {
+            if(customRecordings!=null)
+                customRecordingAdapter.setCustomRecordingsList(customRecordings);
+        });
+
+        //Swipe left to delete recording
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                //Write here
+                CustomRecordings customRecordings=customRecordingAdapter.getCustomRecordingsList().get(viewHolder.getAdapterPosition());
+                comfortFragmentViewModel.removeRecording(customRecordings);
+            }
+        }).attachToRecyclerView(fragmentComfortBinding.customRecordingsRv);
+
+
+
+
+
+        return view;
     }
 
-//    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-//
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
-//
-//    /**
-//     * This interface must be implemented by activities that contain this
-//     * fragment to allow an interaction in this fragment to be communicated
-//     * to the activity and potentially other fragments contained in that
-//     * activity.
-//     * <p>
-//     * See the Android Training lesson <a href=
-//     * "http://developer.android.com/training/basics/fragments/communicating.html"
-//     * >Communicating with Other Fragments</a> for more information.
-//     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
-//    }
+    private void init(){
+        //Default recording rv
+        defaultRecordingAdapter=new DefaultRecordingAdapter(getContext(),new ArrayList<>());
+        fragmentComfortBinding.defaultRecordingsRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        fragmentComfortBinding.defaultRecordingsRv.setItemAnimator(new DefaultItemAnimator());
+        fragmentComfortBinding.defaultRecordingsRv.setAdapter(defaultRecordingAdapter);
+
+        //Custom recording rv
+        customRecordingAdapter=new CustomRecordingAdapter(getContext(),new ArrayList<>());
+        fragmentComfortBinding.customRecordingsRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        fragmentComfortBinding.customRecordingsRv.setItemAnimator(new DefaultItemAnimator());
+        fragmentComfortBinding.customRecordingsRv.setAdapter(customRecordingAdapter);
+    }
+
+    private void makePopupDialog(){
+        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
+        View view = layoutInflaterAndroid.inflate(R.layout.popup_edit_recording, null);
+
+        AlertDialog.Builder alertBuilder=new AlertDialog.Builder(getContext());
+        alertBuilder.setView(view);
+
+        EditText updateMessage=view.findViewById(R.id.update_txt);
+
+        alertBuilder.setCancelable(true)
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel())
+                .setPositiveButton("Update", (dialog, which) -> {
+                    if(TextUtils.isEmpty(updateMessage.getText())){
+
+                        Toast.makeText(getContext(),"Enter message ",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else {
+                        //update message
+
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog dialog=alertBuilder.create();
+        dialog.show();
+
+    }
 }

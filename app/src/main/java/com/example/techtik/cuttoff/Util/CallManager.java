@@ -11,7 +11,7 @@ import com.example.techtik.cuttoff.Activity.CallScreenActivity;
 import com.example.techtik.cuttoff.Models.Contact;
 import com.example.techtik.cuttoff.R;
 
-import org.jetbrains.annotations.NotNull;
+
 
 public class CallManager {
     public static Call mCall;
@@ -25,7 +25,7 @@ public class CallManager {
      * @param context
      * @param number
      */
-    public static void call(@NotNull Context context, @NotNull String number) {
+    public static void call(Context context,String number) {
 
         String uri;
         try {
