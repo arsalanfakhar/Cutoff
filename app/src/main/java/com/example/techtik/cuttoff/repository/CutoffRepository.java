@@ -7,11 +7,11 @@ import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 
 import com.example.techtik.cuttoff.Models.Contact;
-import com.example.techtik.cuttoff.Util.database.CustomRecDAO;
-import com.example.techtik.cuttoff.Util.database.CutoffDatabase;
-import com.example.techtik.cuttoff.Util.database.DefaultRecDAO;
-import com.example.techtik.cuttoff.Util.database.entity.CustomRecordings;
-import com.example.techtik.cuttoff.Util.database.entity.DefaultRecordings;
+import com.example.techtik.cuttoff.database.CustomRecDAO;
+import com.example.techtik.cuttoff.database.CutoffDatabase;
+import com.example.techtik.cuttoff.database.DefaultRecDAO;
+import com.example.techtik.cuttoff.database.entity.CustomRecordings;
+import com.example.techtik.cuttoff.database.entity.DefaultRecordings;
 
 import java.util.ArrayList;
 import java.util.List;

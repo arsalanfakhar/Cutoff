@@ -1,6 +1,6 @@
-package com.example.techtik.cuttoff.Util.database;
+package com.example.techtik.cuttoff.database;
 
-import com.example.techtik.cuttoff.Util.database.entity.CustomRecordings;
+import com.example.techtik.cuttoff.database.entity.CustomRecordings;
 
 import java.util.List;
 

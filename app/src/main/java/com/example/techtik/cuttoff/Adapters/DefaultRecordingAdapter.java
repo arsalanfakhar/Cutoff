@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.techtik.cuttoff.R;
-import com.example.techtik.cuttoff.Util.database.entity.DefaultRecordings;
+import com.example.techtik.cuttoff.database.entity.DefaultRecordings;
 
 import java.util.List;
 

@@ -1,19 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/mainbackground"
-    tools:context=".Fragments.HomeFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
+    <data>
+
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:id="@+id/record"
-        android:src="@drawable/triangle"/>
+        android:layout_height="match_parent"
+        android:background="@drawable/mainbackground"
+        tools:context=".Fragments.HomeFragment">
 
-    <!--<ImageView-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:id="@+id/record"
+            android:src="@drawable/triangle" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="App Status"
+                android:layout_marginTop="1dp"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <com.github.angads25.toggle.widget.LabeledSwitch
+                android:id="@+id/app_status_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textSize="14sp"
+                app:on="false" />
+        </LinearLayout>
+        <!--<ImageView-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:layout_marginLeft="-210dp"-->
@@ -21,66 +53,66 @@
         <!--android:src="@drawable/triangle2"/>-->
 
 
+        <!--     TODO: Update blank fragment layout -->
+        <!--    <LinearLayout-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="42dp"-->
+        <!--        android:layout_gravity="bottom"-->
+        <!--        android:background="@color/white"-->
+        <!--        android:orientation="horizontal"-->
+        <!--        android:padding="1dp"-->
+        <!--        android:weightSum="1.5">-->
 
-    <!-- TODO: Update blank fragment layout -->
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="42dp"-->
-        <!--android:layout_gravity="bottom"-->
-        <!--android:background="@color/white"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:padding="1dp"-->
-        <!--android:weightSum="1.5">-->
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/linear_tab_one"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_weight=".5"-->
+        <!--            android:background="@color/white"-->
+        <!--            android:gravity="center">-->
 
-        <!--<LinearLayout-->
-            <!--android:id="@+id/linear_tab_one"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_weight=".5"-->
-            <!--android:background="@color/white"-->
-            <!--android:gravity="center">-->
+        <!--            <ImageView-->
+        <!--                android:id="@+id/imageView_tab_one"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:padding="6dp"-->
+        <!--                android:src="@drawable/home_fill"/>-->
 
-            <!--<ImageView-->
-                <!--android:id="@+id/imageView_tab_one"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:padding="6dp"-->
-                <!--android:src="@drawable/home_fill"/>-->
+        <!--        </LinearLayout>-->
 
-        <!--</LinearLayout>-->
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/linear_tab_two"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_weight=".5"-->
+        <!--            android:background="@color/white"-->
+        <!--            android:gravity="center">-->
 
-        <!--<LinearLayout-->
-            <!--android:id="@+id/linear_tab_two"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_weight=".5"-->
-            <!--android:background="@color/white"-->
-            <!--android:gravity="center">-->
+        <!--            <ImageView-->
+        <!--                android:id="@+id/imageView_tab_two"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:padding="6dp"-->
+        <!--                android:src="@drawable/features"/>-->
+        <!--        </LinearLayout>-->
 
-            <!--<ImageView-->
-                <!--android:id="@+id/imageView_tab_two"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:padding="6dp"-->
-                <!--android:src="@drawable/features"/>-->
-        <!--</LinearLayout>-->
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/linear_tab_three"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_weight=".5"-->
+        <!--            android:background="@color/white"-->
+        <!--            android:gravity="center">-->
 
-        <!--<LinearLayout-->
-            <!--android:id="@+id/linear_tab_three"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_weight=".5"-->
-            <!--android:background="@color/white"-->
-            <!--android:gravity="center">-->
-
-            <!--<ImageView-->
-                <!--android:id="@+id/imageView_tab_three"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:padding="6dp"-->
-                <!--android:src="@drawable/contacts"/>-->
-        <!--</LinearLayout>-->
-    <!--</LinearLayout>-->
+        <!--            <ImageView-->
+        <!--                android:id="@+id/imageView_tab_three"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:padding="6dp"-->
+        <!--                android:src="@drawable/contacts"/>-->
+        <!--        </LinearLayout>-->
+        <!--    </LinearLayout>-->
 
 
-</FrameLayout>
+    </FrameLayout>
+</layout>

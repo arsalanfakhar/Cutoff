@@ -1,7 +1,6 @@
 package com.example.techtik.cuttoff.Fragments;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,7 +22,7 @@ import android.widget.Toast;
 import com.example.techtik.cuttoff.Adapters.CustomRecordingAdapter;
 import com.example.techtik.cuttoff.Adapters.DefaultRecordingAdapter;
 import com.example.techtik.cuttoff.R;
-import com.example.techtik.cuttoff.Util.database.entity.CustomRecordings;
+import com.example.techtik.cuttoff.database.entity.CustomRecordings;
 import com.example.techtik.cuttoff.databinding.FragmentComfortBinding;
 import com.example.techtik.cuttoff.viewmodel.ComfortFragmentViewModel;
 
@@ -52,6 +51,7 @@ public class ComfortFragment extends Fragment {
 
         //Intialize viewmodel
         comfortFragmentViewModel= ViewModelProviders.of(this).get(ComfortFragmentViewModel.class);
+        fragmentComfortBinding.setLifecycleOwner(this);
 
         init();
         comfortFragmentViewModel.getListdefaultRecording().observe(this, defaultRecordings -> {
@@ -109,11 +109,8 @@ public class ComfortFragment extends Fragment {
 
         alertBuilder.setCancelable(true)
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel())
-                .setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setPositiveButton("Update", (dialog, which) -> {
 
-                    }
                 });
 
         AlertDialog dialog=alertBuilder.create();

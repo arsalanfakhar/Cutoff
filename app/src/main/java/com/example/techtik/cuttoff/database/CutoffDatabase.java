@@ -1,10 +1,10 @@
-package com.example.techtik.cuttoff.Util.database;
+package com.example.techtik.cuttoff.database;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.example.techtik.cuttoff.Util.database.entity.CustomRecordings;
-import com.example.techtik.cuttoff.Util.database.entity.DefaultRecordings;
+import com.example.techtik.cuttoff.database.entity.CustomRecordings;
+import com.example.techtik.cuttoff.database.entity.DefaultRecordings;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -74,7 +74,12 @@ public abstract class CutoffDatabase extends RoomDatabase {
 
             CustomRecordings customRecordings=new CustomRecordings();
             customRecordings.setmCustomMessage("Hello testing 123");
+
+            CustomRecordings customRecordings1=new CustomRecordings();
+            customRecordings1.setmCustomMessage("Hello testing 123");
+
             customRecDAO.addCustomRec(customRecordings);
+            customRecDAO.addCustomRec(customRecordings1);
 
             return null;
         }

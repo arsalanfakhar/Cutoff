@@ -1,27 +1,26 @@
-package com.example.techtik.cuttoff.Util.database.entity;
+package com.example.techtik.cuttoff.database.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "tbl_customRecordings")
-public class CustomRecordings {
+@Entity(tableName = "tbl_defaultRecordings")
+public class DefaultRecordings {
 
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
     public long id;
 
-    @ColumnInfo(name = "customMessage")
+    @ColumnInfo(name = "defaultMessage")
     public String mCustomMessage;
 
-
     @Ignore()
-    public CustomRecordings(){
+    public DefaultRecordings(){
 
     }
 
-    public CustomRecordings(long id, String mCustomMessage) {
+    public DefaultRecordings(long id, String mCustomMessage) {
         this.id = id;
         this.mCustomMessage = mCustomMessage;
     }
@@ -39,7 +38,6 @@ public class CustomRecordings {
     }
 
     public void setmCustomMessage(String mCustomMessage) {
-
         this.mCustomMessage = mCustomMessage;
     }
 

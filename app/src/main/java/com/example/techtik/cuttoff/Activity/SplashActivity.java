@@ -3,6 +3,7 @@ package com.example.techtik.cuttoff.Activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
@@ -30,11 +31,13 @@ public class SplashActivity extends AppCompatActivity {
     public static final int PERMISSION_RC = 10;
     public static final int DIALER_RC = 10;
     public static final String[] MUST_HAVE_PERMISSIONS = {CALL_PHONE, READ_CONTACTS, READ_CALL_LOG};
-
+    public static SharedPreferences pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        pref= getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
 
         checkDefaultDialer();
 //        new Handler().postDelayed(new Runnable() {

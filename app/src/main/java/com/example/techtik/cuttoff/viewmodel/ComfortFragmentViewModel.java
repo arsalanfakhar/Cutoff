@@ -2,8 +2,8 @@ package com.example.techtik.cuttoff.viewmodel;
 
 import android.app.Application;
 
-import com.example.techtik.cuttoff.Util.database.entity.CustomRecordings;
-import com.example.techtik.cuttoff.Util.database.entity.DefaultRecordings;
+import com.example.techtik.cuttoff.database.entity.CustomRecordings;
+import com.example.techtik.cuttoff.database.entity.DefaultRecordings;
 import com.example.techtik.cuttoff.repository.CutoffRepository;
 
 import java.util.List;
