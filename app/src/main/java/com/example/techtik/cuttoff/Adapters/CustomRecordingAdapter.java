@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.techtik.cuttoff.Fragments.ComfortFragment;
 import com.example.techtik.cuttoff.R;
 import com.example.techtik.cuttoff.Util.database.entity.CustomRecordings;
 
@@ -18,11 +19,12 @@ public class CustomRecordingAdapter extends RecyclerView.Adapter<CustomRecording
 
     private Context mContext;
     private List<CustomRecordings> customRecordingsList;
+    private ComfortFragment fragment;
 
-
-    public CustomRecordingAdapter(Context mContext, List<CustomRecordings> customRecordingsList) {
+    public CustomRecordingAdapter(Context mContext, List<CustomRecordings> customRecordingsList,ComfortFragment fragment) {
         this.mContext = mContext;
         this.customRecordingsList = customRecordingsList;
+        this.fragment=fragment;
     }
 
 
@@ -37,6 +39,10 @@ public class CustomRecordingAdapter extends RecyclerView.Adapter<CustomRecording
     @Override
     public void onBindViewHolder(@NonNull RecordingsHolder holder, int position) {
         holder.message.setText(customRecordingsList.get(position).getmCustomMessage());
+
+        holder.itemView.setOnClickListener(v -> {
+            fragment.makePopupDialog(customRecordingsList.get(position),position);
+        });
     }
 
     @Override

@@ -81,8 +81,6 @@ public class ComfortFragment extends Fragment {
 
 
 
-
-
         return view;
     }
 
@@ -94,13 +92,13 @@ public class ComfortFragment extends Fragment {
         fragmentComfortBinding.defaultRecordingsRv.setAdapter(defaultRecordingAdapter);
 
         //Custom recording rv
-        customRecordingAdapter=new CustomRecordingAdapter(getContext(),new ArrayList<>());
+        customRecordingAdapter=new CustomRecordingAdapter(getContext(),new ArrayList<>(),this);
         fragmentComfortBinding.customRecordingsRv.setLayoutManager(new LinearLayoutManager(getContext()));
         fragmentComfortBinding.customRecordingsRv.setItemAnimator(new DefaultItemAnimator());
         fragmentComfortBinding.customRecordingsRv.setAdapter(customRecordingAdapter);
     }
 
-    private void makePopupDialog(){
+    public void makePopupDialog(CustomRecordings recording,int position){
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
         View view = layoutInflaterAndroid.inflate(R.layout.popup_edit_recording, null);
 
@@ -111,21 +109,28 @@ public class ComfortFragment extends Fragment {
 
         alertBuilder.setCancelable(true)
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel())
-                .setPositiveButton("Update", (dialog, which) -> {
-                    if(TextUtils.isEmpty(updateMessage.getText())){
+                .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                        Toast.makeText(getContext(),"Enter message ",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    else {
-                        //update message
-
-                        dialog.dismiss();
                     }
                 });
 
         AlertDialog dialog=alertBuilder.create();
         dialog.show();
+
+        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            if(TextUtils.isEmpty(updateMessage.getText())){
+                Toast.makeText(getContext(),"Enter message",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else {
+                //update here
+                recording.setmCustomMessage(updateMessage.getText().toString());
+                comfortFragmentViewModel.updateRecording(recording);
+                dialog.dismiss();
+            }
+        });
 
     }
 }
