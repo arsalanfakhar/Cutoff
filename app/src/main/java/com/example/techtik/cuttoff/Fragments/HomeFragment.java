@@ -61,4 +61,5 @@ public class HomeFragment extends Fragment {
         editor.putBoolean("app_state",state);
         editor.commit();
     }
+
 }

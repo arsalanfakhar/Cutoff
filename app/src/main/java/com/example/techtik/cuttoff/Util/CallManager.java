@@ -93,6 +93,21 @@ public class CallManager {
        }
     }
 
+    public static void rejectWithMessage(){
+        if(mCall!=null){
+            if(mCall.getState()==Call.STATE_RINGING){
+                //TODO Check whether you can send a message here
+                mCall.reject(true,"I am busy asshole");
+            }
+            else {
+                mCall.disconnect();
+            }
+            if(sIsAutoCalling)
+                sAutoCallPosition++;
+
+        }
+    }
+
     /**
      * Put call on hold
      *

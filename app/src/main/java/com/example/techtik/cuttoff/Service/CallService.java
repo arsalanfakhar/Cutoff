@@ -6,6 +6,7 @@ import android.telecom.Call;
 import android.telecom.InCallService;
 
 import com.example.techtik.cuttoff.Activity.CallScreenActivity;
+import com.example.techtik.cuttoff.Activity.SplashActivity;
 import com.example.techtik.cuttoff.Util.CallManager;
 
 import androidx.annotation.RequiresApi;
@@ -19,11 +20,20 @@ public class CallService extends InCallService {
 
 
         CallManager.mCall=call;
+        //check the state of the app
 
-        //launch intent to show call screen
-        Intent intent=new Intent(this, CallScreenActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        boolean state=SplashActivity.pref.getBoolean("app_state",false);
+        if(state){
+            //disconnect the call and send message
+            CallManager.rejectWithMessage();
+        }
+        else {
+            //launch intent to show call screen
+            Intent intent=new Intent(this, CallScreenActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+
 
         //set the call variable
     }
