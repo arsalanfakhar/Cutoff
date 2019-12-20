@@ -42,7 +42,7 @@
             android:tint="?attr/colorAccent" />
 
         <!-- Edit Text -->
-        <com.chooloo.www.callmanager.ui.widgets.DigitsEditText
+        <com.example.techtik.cuttoff.Activity.widgets.DigitsEditText
             android:id="@+id/digits_edit_text"
             android:layout_width="0dp"
             android:layout_height="match_parent"

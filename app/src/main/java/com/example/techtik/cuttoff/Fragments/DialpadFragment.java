@@ -72,7 +72,7 @@ public class DialpadFragment extends AbsBaseFragment {
     DigitsEditText mDigits;
 
     // Buttons
-    ImageView mCallButton,mDelButton;
+//    ImageView mCallButton,mDelButton;
 
     // Layouts
     TableLayout mNumbersTable;
@@ -89,8 +89,8 @@ public class DialpadFragment extends AbsBaseFragment {
 
     private void init(View view){
         mDigits=view.findViewById(R.id.digits_edit_text);
-        mCallButton=view.findViewById(R.id.button_call);
-        mDelButton=view.findViewById(R.id.button_delete);
+//        mCallButton=view.findViewById(R.id.button_call);
+//        mDelButton=view.findViewById(R.id.button_delete);
         mNumbersTable=view.findViewById(R.id.dialpad);
         mDialpadView=view.findViewById(R.id.dialpad_view);
     }
@@ -98,8 +98,6 @@ public class DialpadFragment extends AbsBaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         PreferenceUtils.getInstance(getContext());
         Utilities.setUpLocale(getContext());
     }
@@ -116,30 +114,30 @@ public class DialpadFragment extends AbsBaseFragment {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onFragmentReady() {
-        Bundle args = getArguments();
-        if (args == null)
-            throw new IllegalArgumentException("You must create this fragment with newInstance()");
-        mIsDialer = args.getBoolean(ARG_DIALER);
-
-        if (!mIsDialer) {
-            mCallButton.setVisibility(View.GONE);
-            mDelButton.setVisibility(View.GONE);
-        } else {
-            AllPurposeTouchListener swipeToDelListener = new AllPurposeTouchListener(getContext()) {
-                @Override
-                public void onSwipeLeft() {
-                    delNum(mDelButton);
-                }
-
-                @Override
-                public boolean onSingleTapUp(View v) {
-//                    ((MainActivity) DialpadFragment.this.getActivity()).expandDialer(true);
-                    return true;
-                }
-            };
-            // TODO wtf should we do with all the swipes shit
-//            mDigits.setOnTouchListener(swipeToDelListener);
-        }
+//        Bundle args = getArguments();
+//        if (args == null)
+//            throw new IllegalArgumentException("You must create this fragment with newInstance()");
+//        mIsDialer = args.getBoolean(ARG_DIALER);
+//
+//        if (!mIsDialer) {
+////            mCallButton.setVisibility(View.GONE);
+////            mDelButton.setVisibility(View.GONE);
+//        } else {
+//            AllPurposeTouchListener swipeToDelListener = new AllPurposeTouchListener(getContext()) {
+//                @Override
+//                public void onSwipeLeft() {
+////                    delNum(mDelButton);
+//                }
+//
+//                @Override
+//                public boolean onSingleTapUp(View v) {
+////                    ((MainActivity) DialpadFragment.this.getActivity()).expandDialer(true);
+//                    return true;
+//                }
+//            };
+//            // TODO wtf should we do with all the swipes shit
+////            mDigits.setOnTouchListener(swipeToDelListener);
+//        }
     }
 
 
@@ -275,18 +273,18 @@ public class DialpadFragment extends AbsBaseFragment {
     /**
      * Deletes a number from the keypad's input when the delete button is clicked
      */
-    @OnClick(R.id.button_delete)
-    public void delNum(View view) {
-        keyPressed(KeyEvent.KEYCODE_DEL);
-    }
+//    @OnClick(R.id.button_delete)
+//    public void delNum(View view) {
+//        keyPressed(KeyEvent.KEYCODE_DEL);
+//    }
 
     /**
      * Calls the number in the keypad's input
      */
-    @OnClick(R.id.button_call)
-    public void call(View view) {
-        CallManager.call(this.getContext(), mNumberText);
-    }
+//    @OnClick(R.id.button_call)
+//    public void call(View view) {
+//        CallManager.call(this.getContext(), mNumberText);
+//    }
 
     @OnClick(R.id.digits_edit_text)
     public void onDigitsClick(View view) {
@@ -298,11 +296,11 @@ public class DialpadFragment extends AbsBaseFragment {
     /**
      * Deletes the whole keypad's input when the delete button is long clicked
      */
-    @OnLongClick(R.id.button_delete)
-    public boolean delAllNum(View view) {
-        setNumber("");
-        return true;
-    }
+//    @OnLongClick(R.id.button_delete)
+//    public boolean delAllNum(View view) {
+//        setNumber("");
+//        return true;
+//    }
 
 //    /**
 //     * Starts a call to voice mail when the 1 button is long clicked

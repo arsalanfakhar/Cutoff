@@ -9,18 +9,30 @@
         tools:context=".Activity.CallScreenActivity">
 
         <!--OngoingCall Layout-->
-        <include layout="@layout/on_going_call" />
+        <include
+            android:id="@+id/call_screen_on_going_call"
+            layout="@layout/on_going_call" />
 
         <!-- Dialer Fragment -->
-        <FrameLayout
-            android:id="@+id/dialer_fragment"
+<!--        <FrameLayout-->
+<!--            android:id="@+id/dialer_fragment"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="?attr/colorPrimary"-->
+<!--            app:layout_anchorGravity="bottom"-->
+<!--            app:layout_behavior="@string/bottom_sheet_behavior" />-->
+
+    <androidx.core.widget.NestedScrollView
+            android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            app:behavior_hideable="true"
-            app:behavior_peekHeight="0dp"
-            app:layout_anchorGravity="bottom"
+            android:layout_height="800dp"
+            android:background="@android:color/background_light"
             app:layout_behavior="@string/bottom_sheet_behavior"
-            tools:layout="@layout/dialpad_fragment" />
+            android:fillViewport="true"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="300dp">
+
+            <include layout="@layout/dialpad_fragment"/>
+    </androidx.core.widget.NestedScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -3,8 +3,11 @@ package com.example.techtik.cuttoff.Activity;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.transition.ChangeBounds;
@@ -28,9 +31,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.techtik.cuttoff.Fragments.DialpadFragment;
+import com.example.techtik.cuttoff.Fragments.TestFragment;
 import com.example.techtik.cuttoff.Models.Contact;
 import com.example.techtik.cuttoff.R;
 import com.example.techtik.cuttoff.Util.CallManager;
@@ -38,8 +45,10 @@ import com.example.techtik.cuttoff.Util.Stopwatch;
 import com.example.techtik.cuttoff.databinding.OnGoingCallBinding;
 import com.example.techtik.cuttoff.viewmodel.SharedDialViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class CallScreenActivity extends AppCompatActivity implements View.OnClickListener, DialpadFragment.OnKeyDownListener {
@@ -61,7 +70,7 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
     private SharedDialViewModel mSharedDialViewModel;
 
     // BottomSheet
-    BottomSheetBehavior mBottomSheetBehavior;
+    private BottomSheetBehavior mBottomSheetBehavior;
 
 
     // Current states
@@ -83,16 +92,39 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
     // Handlers
     Handler mCallTimeHandler = new CallTimeHandler();
 
+    // Action buttons
+    @BindView(R.id.answer_btn) FloatingActionButton mAnswerButton;
+    @BindView(R.id.reject_btn) FloatingActionButton mRejectButton;
+
+    @BindView(R.id.call_screen_on_going_call) ConstraintLayout mOngoingCallLayout;
     OnGoingCallBinding onGoingCallBinding;
 
-    View mDialerFrame;
+    // Image Views
+    @BindView(R.id.image_placeholder) ImageView mPlaceholderImage;
+    @BindView(R.id.image_photo) ImageView mPhotoImage;
+    @BindView(R.id.button_hold) ImageView mHoldButton;
+    @BindView(R.id.button_mute) ImageView mMuteButton;
+    @BindView(R.id.button_keypad) ImageView mKeypadButton;
+    @BindView(R.id.button_speaker) ImageView mSpeakerButton;
+    @BindView(R.id.button_add_call) ImageView mAddCallButton;
+
+    // Text views
+    @BindView(R.id.text_status) TextView mStatusText;
+    @BindView(R.id.text_caller) TextView mCallerText;
+    @BindView(R.id.text_stopwatch) TextView mTimeText;
+
+    LinearLayout mDialerFrame;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_screen);
         //DataBindingUtil.setContentView(this,R.layout.activity_call_screen);
+
+        ButterKnife.bind(this);
+
+
         //call binding
-        onGoingCallBinding=DataBindingUtil.setContentView(this,R.layout.on_going_call);
+      //  onGoingCallBinding=DataBindingUtil.setContentView(this,R.layout.on_going_call);
 
         //onGoingCallBinding.textStopwatch.setText("Billy here");
 
@@ -138,22 +170,27 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
         mAudioManager = (AudioManager) getApplicationContext().getSystemService(AUDIO_SERVICE);
 
         // Fragments
-        mDialpadFragment = DialpadFragment.newInstance(false);
+//        mDialpadFragment = DialpadFragment.newInstance(false);
 //        getSupportFragmentManager().beginTransaction()
-//                .add(R.id.dialer_fragment, mDialpadFragment)
+//                .add(R.id.dialer_fragment, new TestFragment())
+//                .replace(R.id.dialer_fragment, new TestFragment())
 //                .commit();
-        mDialpadFragment.setDigitsCanBeEdited(false);
-        mDialpadFragment.setShowVoicemailButton(false);
-        mDialpadFragment.setOnKeyDownListener(this);
+////        mDialpadFragment.setDigitsCanBeEdited(false);
+////        mDialpadFragment.setShowVoicemailButton(false);
+//        mDialpadFragment.setOnKeyDownListener(this);
 
+//        FragmentManager fragmentManager=getSupportFragmentManager();
+//        FragmentTransaction transaction= fragmentManager.beginTransaction();
+//        transaction.add(R.id.dialer_frag,new TestFragment());
+//        transaction.commitAllowingStateLoss();
 
 
         //Click listeners
-        onGoingCallBinding.answerBtn.setOnClickListener(this);
-        onGoingCallBinding.rejectBtn.setOnClickListener(this);
-        onGoingCallBinding.buttonMute.setOnClickListener(this);
-        onGoingCallBinding.buttonSpeaker.setOnClickListener(this);
-        onGoingCallBinding.buttonHold.setOnClickListener(this);
+        mAnswerButton.setOnClickListener(this);
+        mRejectButton.setOnClickListener(this);
+        mMuteButton.setOnClickListener(this);
+        mSpeakerButton.setOnClickListener(this);
+        mHoldButton.setOnClickListener(this);
 
 
 //        // Instantiate ViewModels
@@ -169,12 +206,16 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
 //        });
 
 //
-//        mDialerFrame=findViewById(R.id.dialer_fragment);
+        //mDialerFrame=findViewById(R.id.hello_frag);
+
 //        Log.v("shit",mDialerFrame.toString());
 //        // Bottom Sheet Behaviour
-//        mBottomSheetBehavior = BottomSheetBehavior.from(mDialerFrame); // Set the bottom sheet behaviour
-//        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN); // Hide the bottom sheet
+        //mBottomSheetBehavior = BottomSheetBehavior.from(mDialerFrame); // Set the bottom sheet behaviour
+       // mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN); // Hide the bottom sheet
 
+        //declare sheet
+        View bottomsheet=findViewById(R.id.bottom_sheet);
+        mBottomSheetBehavior=BottomSheetBehavior.from(bottomsheet);
 
     }
 
@@ -236,7 +277,7 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
                 statusTextRes = R.string.status_call_active;
                 break;
         }
-        onGoingCallBinding.textStatus.setText(statusTextRes);
+        mStatusText.setText(statusTextRes);
         if (state != Call.STATE_RINGING && state != Call.STATE_DISCONNECTED)
             switchToCallingUI();
         if (state == Call.STATE_DISCONNECTED)
@@ -259,12 +300,12 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
         mCallTimeHandler.sendEmptyMessage(TIME_START); // Starts the call timer
 
         // Change the buttons layout
-        onGoingCallBinding.answerBtn.hide();
-        onGoingCallBinding.buttonHold.setVisibility(View.VISIBLE);
-        onGoingCallBinding.buttonMute.setVisibility(View.VISIBLE);
-        onGoingCallBinding.buttonKeypad.setVisibility(View.VISIBLE);
-        onGoingCallBinding.buttonSpeaker.setVisibility(View.VISIBLE);
-        onGoingCallBinding.buttonAddCall.setVisibility(View.VISIBLE);
+        mAnswerButton.hide();
+        mHoldButton.setVisibility(View.VISIBLE);
+        mMuteButton.setVisibility(View.VISIBLE);
+        mKeypadButton.setVisibility(View.VISIBLE);
+        mSpeakerButton.setVisibility(View.VISIBLE);
+        mAddCallButton.setVisibility(View.VISIBLE);
         moveRejectButtonToMiddle();
 
     }
@@ -274,7 +315,7 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
      */
     private void moveRejectButtonToMiddle(){
         ConstraintSet ongoingSet = new ConstraintSet();
-        ongoingSet.clone(onGoingCallBinding.ongoingCallLayout);
+        ongoingSet.clone(mOngoingCallLayout);
         ongoingSet.connect(R.id.reject_btn,ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.END);
         ongoingSet.connect(R.id.reject_btn, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.START);
         ongoingSet.setHorizontalBias(R.id.reject_btn, 0.5f);
@@ -284,11 +325,11 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
         if (!mIsCreatingUI) { //Don't animate if the activity is just being created
             Transition transition = new ChangeBounds();
             transition.setInterpolator(new AccelerateDecelerateInterpolator());
-            transition.addTarget(onGoingCallBinding.rejectBtn);
-            TransitionManager.beginDelayedTransition(onGoingCallBinding.ongoingCallLayout, transition);
+            transition.addTarget(mRejectButton);
+            TransitionManager.beginDelayedTransition(mOngoingCallLayout, transition);
         }
 
-        ongoingSet.applyTo(onGoingCallBinding.ongoingCallLayout);
+        ongoingSet.applyTo(mOngoingCallLayout);
         //TODO complete this function implementation
 
     }
@@ -328,10 +369,10 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
          */
         v.setActivated(!v.isActivated());
         if(v.isActivated()){
-            onGoingCallBinding.buttonMute.setImageResource(R.drawable.ic_mic_off_black_24dp);
+            mMuteButton.setImageResource(R.drawable.ic_mic_off_black_24dp);
         }
         else {
-            onGoingCallBinding.buttonMute.setImageResource(R.drawable.ic_mic_black_24dp);
+            mMuteButton.setImageResource(R.drawable.ic_mic_black_24dp);
         }
         mAudioManager.setMicrophoneMute(v.isActivated());
     }
@@ -398,11 +439,11 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
          Contact callerContact=CallManager.getDisplayContact(this);
          if(!callerContact.getName().isEmpty()){
             if(callerContact.getName()!=null)
-                onGoingCallBinding.textCaller.setText(callerContact.getName());
+                mCallerText.setText(callerContact.getName());
             if(callerContact.getPhotoUri()!=null){
-                onGoingCallBinding.imagePlaceholder.setVisibility(View.INVISIBLE);
-                onGoingCallBinding.imagePhoto.setVisibility(View.VISIBLE);
-                onGoingCallBinding.imagePhoto.setImageURI(Uri.parse(callerContact.getPhotoUri()));
+                mPlaceholderImage.setVisibility(View.INVISIBLE);
+                mPhotoImage.setVisibility(View.VISIBLE);
+                mPhotoImage.setImageURI(Uri.parse(callerContact.getPhotoUri()));
 
             }
          }
@@ -466,7 +507,7 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
      * Update the current call time ui
      */
     private void updateTimeUI(){
-        onGoingCallBinding.textStopwatch.setText(mCallTimer.getStringTime());
+        mTimeText.setText(mCallTimer.getStringTime());
     }
 
 

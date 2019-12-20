@@ -1,5 +1,6 @@
 package com.example.techtik.cuttoff.Fragments;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.techtik.cuttoff.Activity.CallScreenActivity;
 import com.example.techtik.cuttoff.Activity.SplashActivity;
 import com.example.techtik.cuttoff.R;
 import com.example.techtik.cuttoff.Util.DBhelper;
@@ -51,7 +53,12 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
+        homeBinding.testBtn.setOnClickListener(v -> {
+            //launch intent to show call screen
+            Intent intent=new Intent(getActivity(), CallScreenActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        });
 
         return view;
     }
