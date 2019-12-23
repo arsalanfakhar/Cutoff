@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ import com.example.techtik.cuttoff.viewmodel.SharedDialViewModel;
 
 import java.util.HashSet;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 
@@ -68,15 +70,17 @@ public class DialpadFragment extends AbsBaseFragment {
 
     private final HashSet<View> mPressedDialpadKeys = new HashSet<View>(12);
 
+
+    // Layouts
+     TableLayout mNumbersTable;
+     DialpadView mDialpadView;
+
     // Edit Texts
     DigitsEditText mDigits;
 
     // Buttons
-//    ImageView mCallButton,mDelButton;
-
-    // Layouts
-    TableLayout mNumbersTable;
-    DialpadView mDialpadView;
+    ImageView mCallButton;
+    ImageView mDelButton;
 
 
     public static DialpadFragment newInstance(boolean isDialer) {
@@ -85,14 +89,6 @@ public class DialpadFragment extends AbsBaseFragment {
         DialpadFragment fragment = new DialpadFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    private void init(View view){
-        mDigits=view.findViewById(R.id.digits_edit_text);
-//        mCallButton=view.findViewById(R.id.button_call);
-//        mDelButton=view.findViewById(R.id.button_delete);
-        mNumbersTable=view.findViewById(R.id.dialpad);
-        mDialpadView=view.findViewById(R.id.dialpad_view);
     }
 
     @Override
@@ -111,33 +107,42 @@ public class DialpadFragment extends AbsBaseFragment {
         return fragmentView;
     }
 
+
+    private void init(View view){
+        mDigits=view.findViewById(R.id.digits_edit_text);
+        mCallButton=view.findViewById(R.id.button_call);
+        mDelButton=view.findViewById(R.id.button_delete);
+        mNumbersTable=view.findViewById(R.id.dialpad);
+        mDialpadView=view.findViewById(R.id.dialpad_view);
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onFragmentReady() {
-//        Bundle args = getArguments();
-//        if (args == null)
-//            throw new IllegalArgumentException("You must create this fragment with newInstance()");
-//        mIsDialer = args.getBoolean(ARG_DIALER);
-//
-//        if (!mIsDialer) {
-////            mCallButton.setVisibility(View.GONE);
-////            mDelButton.setVisibility(View.GONE);
-//        } else {
-//            AllPurposeTouchListener swipeToDelListener = new AllPurposeTouchListener(getContext()) {
-//                @Override
-//                public void onSwipeLeft() {
-////                    delNum(mDelButton);
-//                }
-//
-//                @Override
-//                public boolean onSingleTapUp(View v) {
-////                    ((MainActivity) DialpadFragment.this.getActivity()).expandDialer(true);
-//                    return true;
-//                }
-//            };
-//            // TODO wtf should we do with all the swipes shit
-////            mDigits.setOnTouchListener(swipeToDelListener);
-//        }
+        Bundle args = getArguments();
+        if (args == null)
+            throw new IllegalArgumentException("You must create this fragment with newInstance()");
+        mIsDialer = args.getBoolean(ARG_DIALER);
+
+        if (!mIsDialer) {
+            mCallButton.setVisibility(View.GONE);
+            mDelButton.setVisibility(View.GONE);
+        } else {
+            AllPurposeTouchListener swipeToDelListener = new AllPurposeTouchListener(getContext()) {
+                @Override
+                public void onSwipeLeft() {
+                    delNum(mDelButton);
+                }
+
+                @Override
+                public boolean onSingleTapUp(View v) {
+//                    ((MainActivity) DialpadFragment.this.getActivity()).expandDialer(true);
+                    return true;
+                }
+            };
+            // TODO wtf should we do with all the swipes shit
+//            mDigits.setOnTouchListener(swipeToDelListener);
+        }
     }
 
 
@@ -273,18 +278,18 @@ public class DialpadFragment extends AbsBaseFragment {
     /**
      * Deletes a number from the keypad's input when the delete button is clicked
      */
-//    @OnClick(R.id.button_delete)
-//    public void delNum(View view) {
-//        keyPressed(KeyEvent.KEYCODE_DEL);
-//    }
+    @OnClick(R.id.button_delete)
+    public void delNum(View view) {
+        keyPressed(KeyEvent.KEYCODE_DEL);
+    }
 
     /**
      * Calls the number in the keypad's input
      */
-//    @OnClick(R.id.button_call)
-//    public void call(View view) {
-//        CallManager.call(this.getContext(), mNumberText);
-//    }
+    @OnClick(R.id.button_call)
+    public void call(View view) {
+        CallManager.call(this.getContext(), mNumberText);
+    }
 
     @OnClick(R.id.digits_edit_text)
     public void onDigitsClick(View view) {
@@ -296,15 +301,15 @@ public class DialpadFragment extends AbsBaseFragment {
     /**
      * Deletes the whole keypad's input when the delete button is long clicked
      */
-//    @OnLongClick(R.id.button_delete)
-//    public boolean delAllNum(View view) {
-//        setNumber("");
-//        return true;
-//    }
+    @OnLongClick(R.id.button_delete)
+    public boolean delAllNum(View view) {
+        setNumber("");
+        return true;
+    }
 
-//    /**
-//     * Starts a call to voice mail when the 1 button is long clicked
-//     */
+    /**
+     * Starts a call to voice mail when the 1 button is long clicked
+     */
 //    @OnLongClick(R.id.key_1)
 //    public boolean startVoiceMail(View view) {
 //        if (!mIsDialer) return false;
@@ -491,6 +496,7 @@ public class DialpadFragment extends AbsBaseFragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                Log.v("cd","bala");
                 mDialpadView.setDigitsCanBeEdited(canBeEdited);
             }
         }, 2000);

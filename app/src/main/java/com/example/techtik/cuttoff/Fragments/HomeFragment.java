@@ -53,12 +53,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        homeBinding.testBtn.setOnClickListener(v -> {
-            //launch intent to show call screen
-            Intent intent=new Intent(getActivity(), CallScreenActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        });
 
         return view;
     }

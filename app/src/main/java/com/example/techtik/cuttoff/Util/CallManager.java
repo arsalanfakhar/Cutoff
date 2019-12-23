@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.telecom.Call;
 import android.telecom.VideoProfile;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.example.techtik.cuttoff.Activity.CallScreenActivity;
@@ -97,7 +98,7 @@ public class CallManager {
         if(mCall!=null){
             if(mCall.getState()==Call.STATE_RINGING){
                 //TODO Check whether you can send a message here
-                mCall.reject(true,"I am busy asshole");
+                mCall.reject(true,"I am busy bro. Call me later");
             }
             else {
                 mCall.disconnect();
@@ -204,7 +205,7 @@ public class CallManager {
 
         Contact contact = ContactUtils.getContactByPhoneNumber(context, telephoneNumber); // Get the contacts with the number
 
-        if (contact == null || contact.getName().isEmpty())
+        if (contact == null || TextUtils.isEmpty(contact.getName()))
             return new Contact(telephoneNumber, telephoneNumber, null); // No known contacts for the number, return the number
 
         return contact;

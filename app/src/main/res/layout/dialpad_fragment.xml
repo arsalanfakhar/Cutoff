@@ -57,7 +57,7 @@
             android:singleLine="true"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-            android:textColor="?attr/colorAccent"
+            android:textColor="@color/black"
             android:textSize="20sp" />
 
         <!-- Delete Button -->

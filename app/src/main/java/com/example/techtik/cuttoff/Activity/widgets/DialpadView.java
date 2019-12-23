@@ -20,10 +20,8 @@ import butterknife.BindView;
 public class DialpadView extends LinearLayout {
     private static final String TAG = DialpadView.class.getSimpleName();
 
-    @BindView(R.id.digits_edit_text)
-    EditText mDigits;
-    @BindView(R.id.button_delete)
-    ImageButton mDelete;
+    @BindView(R.id.digits_edit_text) EditText mDigits;
+    @BindView(R.id.button_delete) ImageButton mDelete;
 
     public DialpadView(Context context) {
         this(context, null);

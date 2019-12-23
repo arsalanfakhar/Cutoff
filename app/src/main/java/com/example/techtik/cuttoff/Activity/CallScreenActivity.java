@@ -113,7 +113,7 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
     @BindView(R.id.text_caller) TextView mCallerText;
     @BindView(R.id.text_stopwatch) TextView mTimeText;
 
-    LinearLayout mDialerFrame;
+    View mDialerFrame;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,14 +170,14 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
         mAudioManager = (AudioManager) getApplicationContext().getSystemService(AUDIO_SERVICE);
 
         // Fragments
-//        mDialpadFragment = DialpadFragment.newInstance(false);
-//        getSupportFragmentManager().beginTransaction()
-//                .add(R.id.dialer_fragment, new TestFragment())
-//                .replace(R.id.dialer_fragment, new TestFragment())
-//                .commit();
-////        mDialpadFragment.setDigitsCanBeEdited(false);
-////        mDialpadFragment.setShowVoicemailButton(false);
-//        mDialpadFragment.setOnKeyDownListener(this);
+        mDialpadFragment = DialpadFragment.newInstance(false);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.dialer_fragment, mDialpadFragment)
+                .replace(R.id.dialer_fragment, mDialpadFragment)
+                .commit();
+        mDialpadFragment.setDigitsCanBeEdited(false);
+        //mDialpadFragment.setShowVoicemailButton(false);
+        mDialpadFragment.setOnKeyDownListener(this);
 
 //        FragmentManager fragmentManager=getSupportFragmentManager();
 //        FragmentTransaction transaction= fragmentManager.beginTransaction();
@@ -191,32 +191,33 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
         mMuteButton.setOnClickListener(this);
         mSpeakerButton.setOnClickListener(this);
         mHoldButton.setOnClickListener(this);
+        mKeypadButton.setOnClickListener(this);
 
 
-//        // Instantiate ViewModels
-//        mSharedDialViewModel = ViewModelProviders.of(this).get(SharedDialViewModel.class);
-//        mSharedDialViewModel.getNumber().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(String s) {
-//                if (s != null && !s.isEmpty()) {
-//                    char c = s.charAt(s.length() - 1);
-//                    CallManager.keypad(c);
-//                }
-//            }
-//        });
+        // Instantiate ViewModels
+        mSharedDialViewModel = ViewModelProviders.of(this).get(SharedDialViewModel.class);
+        mSharedDialViewModel.getNumber().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (s != null && !s.isEmpty()) {
+                    char c = s.charAt(s.length() - 1);
+                    CallManager.keypad(c);
+                }
+            }
+        });
 
 //
-        //mDialerFrame=findViewById(R.id.hello_frag);
+        //mDialerFrame=findViewById(R.id.dialer_fragment);
 
 //        Log.v("shit",mDialerFrame.toString());
 //        // Bottom Sheet Behaviour
-        //mBottomSheetBehavior = BottomSheetBehavior.from(mDialerFrame); // Set the bottom sheet behaviour
-       // mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN); // Hide the bottom sheet
+//        mBottomSheetBehavior = BottomSheetBehavior.from(mDialerFrame); // Set the bottom sheet behaviour
+//        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN); // Hide the bottom sheet
 
-        //declare sheet
+//        //declare sheet
         View bottomsheet=findViewById(R.id.bottom_sheet);
         mBottomSheetBehavior=BottomSheetBehavior.from(bottomsheet);
-
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
 
@@ -339,7 +340,11 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
      */
     @Override
     public void onBackPressed() {
+        // In case the dialpad is opened, pressing the back button will close it
+        if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
+        // You cant press the back button in order to get out of the call
     }
 
     @Override
@@ -498,7 +503,7 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
                 toggleHold(v);
                 break;
             case R.id.button_keypad:
-                Toast.makeText(CallScreenActivity.this,"dialpad clicked",Toast.LENGTH_SHORT).show();
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 break;
         }
     }

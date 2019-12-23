@@ -22,17 +22,24 @@
 <!--            app:layout_anchorGravity="bottom"-->
 <!--            app:layout_behavior="@string/bottom_sheet_behavior" />-->
 
+
     <androidx.core.widget.NestedScrollView
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
-            android:layout_height="800dp"
+            android:layout_height="320dp"
             android:background="@android:color/background_light"
             app:layout_behavior="@string/bottom_sheet_behavior"
             android:fillViewport="true"
             app:behavior_hideable="true"
-            app:behavior_peekHeight="300dp">
+            app:behavior_peekHeight="0dp">
 
-            <include layout="@layout/dialpad_fragment"/>
+        <FrameLayout
+            android:id="@+id/dialer_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/colorPrimary"
+            android:fillViewport="true"
+            tools:layout="@layout/dialpad_fragment" />
     </androidx.core.widget.NestedScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
