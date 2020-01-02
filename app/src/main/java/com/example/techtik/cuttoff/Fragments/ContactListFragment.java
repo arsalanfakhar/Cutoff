@@ -53,10 +53,15 @@ public class ContactListFragment extends Fragment {
                 if(contacts!=null){
                     contactListBinding.contactRv.setAdapter(new ContactsListAdapter(getContext(), (ArrayList<Contact>) contacts));
                 }
-
             }
         });
 
+        contactListBinding.searchContactTxt.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //implement the seaching contact
+            }
+        });
 
         return view;
     }
