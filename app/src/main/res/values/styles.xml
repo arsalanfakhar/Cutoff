@@ -8,7 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-
     <!--    Splash Screen-->
     <style name="SplashTheme" parent="AppTheme">
         <item name="colorPrimaryDark">@color/colorAccent</item>
@@ -18,9 +17,8 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">48sp</item>
     </style>
+
     <!-- Dialer Button -->
-
-
     <style name="DialpadKey">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">@dimen/dialpad_key_height</item>
@@ -52,4 +50,5 @@
         <item name="android:textSize">@dimen/dialpad_key_letters_text_size</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
+
 </resources>
