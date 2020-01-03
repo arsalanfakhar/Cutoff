@@ -56,12 +56,12 @@ public class ContactListFragment extends Fragment {
             }
         });
 
-        contactListBinding.searchContactTxt.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //implement the seaching contact
-            }
-        });
+//        contactListBinding.searchContactTxt.setOnSearchClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //implement the seaching contact
+//            }
+//        });
 
         return view;
     }
