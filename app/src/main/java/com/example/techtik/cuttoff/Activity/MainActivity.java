@@ -4,6 +4,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,14 +26,14 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.contacts,
     };
     MenuItem prevMenuItem;
-
+    private DrawerLayout drawer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bottomNavigationView=findViewById(R.id.bottom_navigation);
         viewPager = (ViewPager)findViewById(R.id.pager);
-
+        drawer=findViewById(R.id.drawer_layout);
         mainPagerAdapter =  new MainPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mainPagerAdapter);
         viewPager.setOffscreenPageLimit(2);
@@ -88,10 +90,12 @@ public class MainActivity extends AppCompatActivity {
 //        viewPager.setOffscreenPageLimit(2);
     }
 
-
-    private void setupTabIcons(){
-        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+    @Override
+    public void onBackPressed() {
+        if(drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else
+            super.onBackPressed();
     }
 }
