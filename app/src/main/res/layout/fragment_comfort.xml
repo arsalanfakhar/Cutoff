@@ -12,26 +12,6 @@
         android:orientation="vertical"
         tools:context=".Fragments.ComfortFragment">
 
-
-        <RelativeLayout
-            android:id="@+id/toplayout"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginBottom="3dp"
-            android:background="@color/colorPrimary">
-
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Comfort"
-                android:textColor="@color/white"
-                android:textSize="21sp" />
-
-        </RelativeLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -64,7 +44,6 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="2dp"
-                    android:background="@drawable/comfort_recordings_background"
                     android:orientation="horizontal">
 
                     <TextView
@@ -72,13 +51,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="15"
-                        android:background="#5aa49a"
-
                         android:gravity="center"
-
                         android:text="Custom Recordings"
-                        android:textColor="#fff"
-                        android:textSize="20sp" />
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
 
 
                 </LinearLayout>
@@ -95,11 +71,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginTop="0dp"
                 android:layout_weight="1"
-                android:layout_marginTop="5dp"
-                android:padding="4dp"
                 android:background="#fff"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="4dp">
 
                 <!--<View-->
                 <!--android:layout_width="match_parent"-->
@@ -118,7 +94,6 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="2dp"
-                    android:background="@drawable/comfort_recordings_background"
                     android:orientation="horizontal">
 
                     <TextView
@@ -126,21 +101,19 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="15"
-                        android:background="#5aa49a"
-
                         android:gravity="center"
 
                         android:text="Default Recordings"
-                        android:textColor="#fff"
-                        android:textSize="20sp" />
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
 
 
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/default_recordings_rv"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:id="@+id/default_recordings_rv">
+                    android:layout_height="200dp">
 
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>

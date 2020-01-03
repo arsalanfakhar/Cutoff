@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.techtik.cuttoff.Adapters.MainPagerAdapter;
@@ -147,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         MenuItem menuItem=menu.findItem(R.id.action_search);
         SearchView searchView= (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Type here to search");
+        searchView.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
 
         return super.onCreateOptionsMenu(menu);
     }

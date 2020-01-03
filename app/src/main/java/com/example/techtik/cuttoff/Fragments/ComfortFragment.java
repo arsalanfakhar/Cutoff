@@ -40,7 +40,6 @@ public class ComfortFragment extends Fragment {
     //Viewmodel
     private ComfortFragmentViewModel comfortFragmentViewModel;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

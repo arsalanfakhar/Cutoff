@@ -31,7 +31,7 @@ public class CustomRecordingAdapter extends RecyclerView.Adapter<CustomRecording
     @NonNull
     @Override
     public RecordingsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view=LayoutInflater.from(mContext).inflate(R.layout.row_item_recordings,parent,false);
+        View view=LayoutInflater.from(mContext).inflate(R.layout.row_item_recordings_custom,parent,false);
 
         return new RecordingsHolder(view);
     }
