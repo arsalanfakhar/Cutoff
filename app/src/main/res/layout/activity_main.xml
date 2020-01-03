@@ -12,7 +12,6 @@
 <!--        android:layout_height="wrap_content"-->
 <!--        android:layout_alignParentBottom="true"-->
 <!--        android:id="@+id/tabs">-->
-
 <!--    </com.google.android.material.tabs.TabLayout>-->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
