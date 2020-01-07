@@ -46,4 +46,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!--    Contacts fragment-->
+    <string name="contact_frag_title">Latest Activity</string>
 </resources>

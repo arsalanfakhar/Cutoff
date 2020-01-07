@@ -1,9 +1,6 @@
 package com.example.techtik.cuttoff.Adapters;
 
-
 import android.content.Context;
-import android.graphics.Color;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,39 +19,45 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapter.ContactViewHolder> {
+public class HorizontalScrollContactsAdapter extends RecyclerView.Adapter<HorizontalScrollContactsAdapter.ContactViewHolder> {
 
-    private final String phoneNumberRegex = "^[\\d*#+]+$";
+    final static String phoneNumberRegex = "^[\\d*#+]+$";
     private Context mContext;
     private ArrayList<Contact> arrayList;
 
-    public ContactsListAdapter(Context mContext, ArrayList<Contact> arrayList) {
+
+    public HorizontalScrollContactsAdapter(Context mContext, ArrayList<Contact> arrayList) {
         this.mContext = mContext;
+        this.arrayList = arrayList;
+    }
+
+    public ArrayList<Contact> getArrayList() {
+        return arrayList;
+    }
+
+    public void setArrayList(ArrayList<Contact> arrayList) {
         this.arrayList = arrayList;
     }
 
     @NonNull
     @Override
     public ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        View view= LayoutInflater.from(mContext).inflate(R.layout.contact_item_rv,parent,false);
+        View view= LayoutInflater.from(mContext).inflate(R.layout.contact_scroll_rv,parent,false);
         return new ContactViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
         String contactName=arrayList.get(position).getName();
-        holder.contactName.setText(contactName);
-        holder.contactPhone.setText(arrayList.get(position).getPhones().get(0));
+
 
         //For custom image
         String contact_image=arrayList.get(position).getPhotoUri();
         if(TextUtils.isEmpty(contact_image)){
             //For default image
             //fist remove whitespaces and then match with regex
-            if(!contactName.replaceAll("\\s+","").matches(HorizontalScrollContactsAdapter.phoneNumberRegex)) {
+            if(!contactName.replaceAll("\\s+","").matches(phoneNumberRegex)) {
 
                 //to generate random colors
                 ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
@@ -71,13 +74,10 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
                 Glide.with(mContext).load(R.drawable.ic_user).skipMemoryCache(true)
                         .apply(RequestOptions.circleCropTransform()).into(holder.contact_circle_img);
             }
-//            TextDrawable drawable = TextDrawable.builder()
-//                        .buildRect("AA", Color.RED);
-//            holder.contact_circle_img.setImageDrawable(drawable);
         }
         else {
             //For custom image
-            Glide.with(mContext).load(contact_image).skipMemoryCache(true)
+            Glide.with(mContext).load(R.drawable.avatar).skipMemoryCache(true)
                     .apply(RequestOptions.circleCropTransform()).into(holder.contact_circle_img);
         }
     }
@@ -91,15 +91,14 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
 
     public class ContactViewHolder extends RecyclerView.ViewHolder{
 
-        TextView contactName,contactPhone;
+        //TextView contactName;
         ImageView contact_circle_img;
         //TODO apply two way data binding
 
         public ContactViewHolder(View itemView) {
             super(itemView);
-            contactName=itemView.findViewById(R.id.contact_name);
-            contactPhone=itemView.findViewById(R.id.contact_number);
-            contact_circle_img=itemView.findViewById(R.id.contact_img);
+            //contactName=itemView.findViewById(R.id.contact_name);
+            contact_circle_img=itemView.findViewById(R.id.scroll_contact_img);
         }
     }
 }
