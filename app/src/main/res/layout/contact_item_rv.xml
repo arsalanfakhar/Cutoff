@@ -9,12 +9,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="16dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="wrap_content"
+        <ImageView
+            android:layout_width="70dp"
             android:id="@+id/contact_img"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_user" />
 
@@ -22,13 +24,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/contact_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 tools:text="Name" />
@@ -37,7 +39,6 @@
                 android:id="@+id/contact_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
                 android:layout_marginTop="8dp"
                 android:textSize="18sp"
                 tools:text="Phone number" />

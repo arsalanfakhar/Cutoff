@@ -2,14 +2,19 @@ package com.example.techtik.cuttoff.Adapters;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.techtik.cuttoff.Models.Contact;
 import com.example.techtik.cuttoff.R;
 
@@ -21,6 +26,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapter.ContactViewHolder> {
 
+    private final String phoneNumberRegex = "^[\\d*#+]+$";
     private Context mContext;
     private ArrayList<Contact> arrayList;
 
@@ -39,13 +45,43 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
-        holder.contactName.setText(arrayList.get(position).getName());
+        String contactName=arrayList.get(position).getName();
+        holder.contactName.setText(contactName);
         holder.contactPhone.setText(arrayList.get(position).getPhones().get(0));
 
+        //For custom image
         String contact_image=arrayList.get(position).getPhotoUri();
-        if(!TextUtils.isEmpty(contact_image))
-//            holder.contact_circle_img.setImageURI(Uri.parse(contact_image));
-            Glide.with(mContext).load(contact_image).into(holder.contact_circle_img);
+        if(TextUtils.isEmpty(contact_image)){
+            //For default image
+            //fist remove whitespaces and then match with regex
+            if(!contactName.replaceAll("\\s+","").matches(phoneNumberRegex)) {
+
+                //to generate random colors
+                ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
+
+
+                //not a number in contact name
+                TextDrawable drawable = TextDrawable.builder()
+                        .buildRound(contactName.substring(0,2), generator.getRandomColor());
+
+//                Glide.with(mContext).load(drawable).skipMemoryCache(true)
+//                        .into(holder.contact_circle_img);
+                holder.contact_circle_img.setImageDrawable(drawable);
+            }
+            else {
+                //a number in contact name
+                Glide.with(mContext).load(R.drawable.ic_user).skipMemoryCache(true)
+                        .apply(RequestOptions.circleCropTransform()).into(holder.contact_circle_img);
+            }
+//            TextDrawable drawable = TextDrawable.builder()
+//                        .buildRect("AA", Color.RED);
+//            holder.contact_circle_img.setImageDrawable(drawable);
+        }
+        else {
+            //For custom image
+            Glide.with(mContext).load(contact_image).skipMemoryCache(true)
+                    .apply(RequestOptions.circleCropTransform()).into(holder.contact_circle_img);
+        }
     }
 
     @Override
@@ -58,7 +94,7 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
     public class ContactViewHolder extends RecyclerView.ViewHolder{
 
         TextView contactName,contactPhone;
-        CircleImageView contact_circle_img;
+        ImageView contact_circle_img;
         //TODO apply two way data binding
 
         public ContactViewHolder(View itemView) {

@@ -73,7 +73,7 @@ public class ContactListFragment extends Fragment {
         contactsListAdapter=new ContactsListAdapter(getContext(), (ArrayList<Contact>) contactsFragmentViewModel.contactList.getValue());
         contactListBinding.contactRv.setLayoutManager(new LinearLayoutManager(getContext()));
         contactListBinding.contactRv.setAdapter(contactsListAdapter);
-        contactListBinding.contactRv.setItemAnimator(new DefaultItemAnimator());
+        contactListBinding.contactRv.setHasFixedSize(true);
     }
 
 
