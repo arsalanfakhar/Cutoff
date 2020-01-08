@@ -1,8 +1,11 @@
 package com.example.techtik.cuttoff.database;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 
+import com.example.techtik.cuttoff.Models.Contact;
+import com.example.techtik.cuttoff.Util.DataConverter;
 import com.example.techtik.cuttoff.database.entity.CustomRecordings;
 import com.example.techtik.cuttoff.database.entity.DefaultRecordings;
 
@@ -10,9 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {CustomRecordings.class, DefaultRecordings.class},version = 1)
+@TypeConverters(DataConverter.class)
 public abstract class CutoffDatabase extends RoomDatabase {
 
     public abstract CustomRecDAO getCustomRecDAO();
@@ -74,9 +79,11 @@ public abstract class CutoffDatabase extends RoomDatabase {
 
             CustomRecordings customRecordings=new CustomRecordings();
             customRecordings.setmCustomMessage("Hello testing 123");
+            customRecordings.setmContact(new Contact("wasif","454535",Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar1").toString()));
 
             CustomRecordings customRecordings1=new CustomRecordings();
             customRecordings1.setmCustomMessage("Hello testing 123");
+            customRecordings1.setmContact(new Contact("saif","454535",Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar2").toString()));
 
             customRecDAO.addCustomRec(customRecordings);
             customRecDAO.addCustomRec(customRecordings1);

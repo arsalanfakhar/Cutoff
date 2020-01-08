@@ -82,4 +82,6 @@ dependencies {
     //Horizontal contact scroll
     implementation 'com.yarolegovich:discrete-scrollview:1.4.9'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
+
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
 }

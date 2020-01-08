@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a2bb570a86f42aac39313d5bdb88f783",
+    "identityHash": "127deafefc4c03c7f099aefd55e5cc5e",
     "entities": [
       {
         "tableName": "tbl_customRecordings",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `customMessage` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `customMessage` TEXT, `contact` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -17,6 +17,12 @@
           {
             "fieldPath": "mCustomMessage",
             "columnName": "customMessage",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mContact",
+            "columnName": "contact",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -60,7 +66,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a2bb570a86f42aac39313d5bdb88f783')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '127deafefc4c03c7f099aefd55e5cc5e')"
     ]
   }
 }

@@ -4,8 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.techtik.cuttoff.Fragments.ComfortFragment;
 import com.example.techtik.cuttoff.R;
 import com.example.techtik.cuttoff.database.entity.CustomRecordings;
@@ -39,6 +42,10 @@ public class CustomRecordingAdapter extends RecyclerView.Adapter<CustomRecording
     @Override
     public void onBindViewHolder(@NonNull RecordingsHolder holder, int position) {
         holder.message.setText(customRecordingsList.get(position).getmCustomMessage());
+        String imageUri= customRecordingsList.get(position).getmContact().getPhotoUri();
+
+        Glide.with(mContext).load(imageUri).skipMemoryCache(true)
+                .apply(RequestOptions.circleCropTransform()).into(holder.contactImage);
 
         holder.itemView.setOnClickListener(v -> {
             fragment.makePopupDialog(customRecordingsList.get(position),position);
@@ -56,9 +63,11 @@ public class CustomRecordingAdapter extends RecyclerView.Adapter<CustomRecording
     public class RecordingsHolder extends RecyclerView.ViewHolder{
 
         TextView message;
+        ImageView contactImage;
         public RecordingsHolder(@NonNull View itemView) {
             super(itemView);
             message=itemView.findViewById(R.id.recording_txt);
+            contactImage=itemView.findViewById(R.id.recording_img);
         }
     }
 

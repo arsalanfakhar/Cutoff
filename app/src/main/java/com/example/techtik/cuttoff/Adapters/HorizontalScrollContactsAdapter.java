@@ -77,7 +77,7 @@ public class HorizontalScrollContactsAdapter extends RecyclerView.Adapter<Horizo
         }
         else {
             //For custom image
-            Glide.with(mContext).load(R.drawable.avatar).skipMemoryCache(true)
+            Glide.with(mContext).load(contact_image).skipMemoryCache(true)
                     .apply(RequestOptions.circleCropTransform()).into(holder.contact_circle_img);
         }
     }
