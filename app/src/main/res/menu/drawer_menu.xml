@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/nav_about"
         android:iconTint="@color/white"
         android:icon="@drawable/drawer_about"
         android:title="About Peaceout" />
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_btn_switch"
+                android:title="App status"
+                app:actionLayout="@layout/layout_swtich_btn"
+                app:showAsAction="ifRoom"/>
+        </menu>
+    </item>
+
+
+
 </menu>

@@ -43,16 +43,16 @@ public class HomeFragment extends Fragment {
         homeBinding.setLifecycleOwner(this);
 
         //Get value from preferences
-        homeBinding.appStatusSwitch.setOn(SplashActivity.pref.getBoolean("app_state",false));
-
-
-        homeBinding.appStatusSwitch.setOnToggledListener(new OnToggledListener() {
-            @Override
-            public void onSwitched(ToggleableView toggleableView, boolean isOn) {
-                addCurrentState(isOn);
-            }
-        });
-
+//        homeBinding.appStatusSwitch.setOn(SplashActivity.pref.getBoolean("app_state",false));
+//
+//
+//        homeBinding.appStatusSwitch.setOnToggledListener(new OnToggledListener() {
+//            @Override
+//            public void onSwitched(ToggleableView toggleableView, boolean isOn) {
+//                addCurrentState(isOn);
+//            }
+//        });
+//
 
         return view;
     }

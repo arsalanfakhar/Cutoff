@@ -1,6 +1,10 @@
 package com.example.techtik.cuttoff.Activity;
 
+import com.github.angads25.toggle.interfaces.OnToggledListener;
+import com.github.angads25.toggle.model.ToggleableView;
+import com.github.angads25.toggle.widget.LabeledSwitch;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
@@ -12,17 +16,21 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.techtik.cuttoff.Adapters.MainPagerAdapter;
 import com.example.techtik.cuttoff.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -36,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     MenuItem prevMenuItem;
     private DrawerLayout drawer;
     private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +130,34 @@ public class MainActivity extends AppCompatActivity {
         mainPagerAdapter =  new MainPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mainPagerAdapter);
         viewPager.setOffscreenPageLimit(2);
+
+        NavigationView navigationView=findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        //Get value from preferences
+//        homeBinding.appStatusSwitch.setOn(SplashActivity.pref.getBoolean("app_state",false));
+
+        LabeledSwitch userStatusSwitch=navigationView.getMenu().findItem(R.id.nav_btn_switch).getActionView().findViewById(R.id.app_status_switch);
+
+        boolean app_state =getApplicationContext().getSharedPreferences("MyPref", 0).getBoolean("app_state",false);
+        //Get value from preferences and set it
+        userStatusSwitch.setOn(app_state);
+
+
+        userStatusSwitch.setOnToggledListener(new OnToggledListener() {
+            @Override
+            public void onSwitched(ToggleableView toggleableView, boolean isOn) {
+                //Toast.makeText(getApplicationContext(),"Switch dabaya",Toast.LENGTH_SHORT).show();
+                addCurrentStateToPref(isOn);
+            }
+        });
+
+    }
+
+    public void addCurrentStateToPref(boolean state){
+        SharedPreferences.Editor editor=getApplicationContext().getSharedPreferences("MyPref", 0).edit();
+        editor.putBoolean("app_state",state);
+        editor.apply(); //apply writes the data in background process
     }
 
     public void setActionBarTitle(String title){
@@ -131,6 +168,17 @@ public class MainActivity extends AppCompatActivity {
         layoutParams.gravity= Gravity.CENTER;
         getSupportActionBar().setCustomView(textView,layoutParams);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+//        switch (menuItem.getItemId()){
+//            case R.id.nav_btn_switch:
+//                Toast.makeText(this,"Mera dabaya",Toast.LENGTH_SHORT).show();
+//                break;
+//        }
+        //TODO implement fragment for drawerclick
+        return true;
     }
 
     @Override

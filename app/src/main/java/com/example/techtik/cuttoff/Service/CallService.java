@@ -22,7 +22,8 @@ public class CallService extends InCallService {
         CallManager.mCall=call;
         //check the state of the app
 
-        boolean app_state=SplashActivity.pref.getBoolean("app_state",false);
+//        boolean app_state=SplashActivity.pref.getBoolean("app_state",false);
+        boolean app_state =getApplicationContext().getSharedPreferences("MyPref", 0).getBoolean("app_state",false);
         int call_state=CallManager.getState();
         if(app_state && call_state==Call.STATE_RINGING){
             //disconnect the call and send message
