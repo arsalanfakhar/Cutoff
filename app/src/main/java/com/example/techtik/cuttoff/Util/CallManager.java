@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.telecom.Call;
 import android.telecom.VideoProfile;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.techtik.cuttoff.Activity.CallScreenActivity;
@@ -41,7 +42,7 @@ public class CallManager {
             }
             context.startActivity(callIntent); // Start the call
         } catch (SecurityException e) {
-
+            Log.v("exception",e.getMessage());
         }
     }
 

@@ -25,6 +25,9 @@ public class RecentsAdapter extends AbsFastScrollerAdapter<RecentsAdapter.Recent
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
 
+    //counter for call times
+    private static int called_counter;
+
     /**
      * Constructor
      *
@@ -87,6 +90,8 @@ public class RecentsAdapter extends AbsFastScrollerAdapter<RecentsAdapter.Recent
         }
 
         //TODO set the call type for image and also the click listeners
+
+
 
     }
 

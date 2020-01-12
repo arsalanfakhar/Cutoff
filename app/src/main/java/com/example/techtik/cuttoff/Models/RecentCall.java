@@ -59,6 +59,7 @@ public class RecentCall {
         mCallDate = new Date(cursor.getLong(cursor.getColumnIndex(CallLog.Calls.DATE)));
         mCallType = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE));
         mCallPhotoUri=cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_PHOTO_URI));
+
     }
 
     public String getCallerName() {

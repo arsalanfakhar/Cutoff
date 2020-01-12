@@ -1,6 +1,11 @@
 package com.example.techtik.cuttoff.Models;
 
+import android.database.Cursor;
+import android.provider.ContactsContract;
+
 import java.util.ArrayList;
+
+import androidx.room.Ignore;
 
 public class Contact {
     private String name = "";
@@ -74,6 +79,14 @@ public class Contact {
         this.name=name;
         this.phones.add(phoneNum);
         this.photoUri=photoUri;
+    }
+
+    @Ignore
+    public Contact(Cursor cursor) {
+        this.name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME_PRIMARY));
+        this.photoUri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI));
+        this.phones = new ArrayList<>();
+        this.phones.add(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
     }
 
 

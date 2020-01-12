@@ -1,8 +1,9 @@
 package com.example.techtik.cuttoff.Fragments;
 
+import android.Manifest;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,21 +12,23 @@ import androidx.databinding.DataBindingUtil;
 
 import androidx.fragment.app.Fragment;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.techtik.cuttoff.Adapters.ContactsListAdapter;
 import com.example.techtik.cuttoff.Adapters.HorizontalScrollContactsAdapter;
 import com.example.techtik.cuttoff.Models.Contact;
 import com.example.techtik.cuttoff.R;
+import com.example.techtik.cuttoff.Util.CallManager;
+import com.example.techtik.cuttoff.Util.ContactsCursorLoader;
+import com.example.techtik.cuttoff.Util.Utilities;
 import com.example.techtik.cuttoff.databinding.FragmentContactListBinding;
 import com.example.techtik.cuttoff.viewmodel.ContactsFragmentViewModel;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
@@ -36,11 +39,12 @@ import java.util.List;
 
 
 public class ContactListFragment extends Fragment implements
-        DiscreteScrollView.OnItemChangedListener<HorizontalScrollContactsAdapter.ContactViewHolder>{
+        DiscreteScrollView.OnItemChangedListener<HorizontalScrollContactsAdapter.ContactViewHolder>,
+        LoaderManager.LoaderCallbacks<Cursor>{
 
     private FragmentContactListBinding contactListBinding;
 
-    private ContactsListAdapter contactsListAdapter;
+    private ContactsListAdapter mContactsListAdapter;
     private ContactsFragmentViewModel contactsFragmentViewModel;
 
     private HorizontalScrollContactsAdapter scrollContactsAdapter;
@@ -48,25 +52,20 @@ public class ContactListFragment extends Fragment implements
     private List<Contact> tempLatestList=new ArrayList<>();
 
     private final static String phoneNumberRegex = "^[\\d*#+]+$";
+
+    private static final int LOADER_ID = 1;
+    private static final String ARG_SEARCH_PHONE_NUMBER = "phone_number";
+    private static final String ARG_SEARCH_CONTACT_NAME = "contact_name";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         contactListBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_contact_list,container,false);
         View view=contactListBinding.getRoot();
-        contactsFragmentViewModel= ViewModelProviders.of(this).get(ContactsFragmentViewModel.class);
 
         init();
 
-        contactsFragmentViewModel.contactList.observe(this, new Observer<List<Contact>>() {
-            @Override
-            public void onChanged(List<Contact> contacts) {
-                if(contacts!=null){
-                    contactListBinding.contactRv.setAdapter(new ContactsListAdapter(getContext(), (ArrayList<Contact>) contacts));
-                    //contactListBinding.contactPicker.setAdapter(new HorizontalScrollContactsAdapter(getContext(), (ArrayList<Contact>) contacts));
-                }
-            }
-        });
 
 //        contactListBinding.searchContactTxt.setOnSearchClickListener(new View.OnClickListener() {
 //            @Override
@@ -79,13 +78,6 @@ public class ContactListFragment extends Fragment implements
     }
 
     private void init(){
-
-        //initialize recycler view
-        contactsListAdapter=new ContactsListAdapter(getContext(), (ArrayList<Contact>) contactsFragmentViewModel.contactList.getValue());
-        contactListBinding.contactRv.setLayoutManager(new LinearLayoutManager(getContext()));
-        contactListBinding.contactRv.setAdapter(contactsListAdapter);
-        contactListBinding.contactRv.setHasFixedSize(true);
-
         //initialize horizontal scroll view
 //        scrollContactsAdapter=new HorizontalScrollContactsAdapter(getContext(), (ArrayList<Contact>) contactsFragmentViewModel.contactList.getValue());
 //        contactListBinding.contactPicker.setAdapter(scrollContactsAdapter);
@@ -111,6 +103,60 @@ public class ContactListFragment extends Fragment implements
                 .setMinScale(0.8f)
                 .build());
         contactListBinding.contactPicker.addOnItemChangedListener(this);
+
+
+        contactListBinding.callBtn.setOnClickListener(v -> {
+            int pos=contactListBinding.contactPicker.getCurrentItem();
+            String phone=scrollContactsAdapter.getArrayList().get(pos).getPhones().get(0);
+            makeCall(phone);
+        });
+        contactListBinding.callBtn.setClickable(true);
+
+        contactListBinding.messageBtn.setOnClickListener(v -> {
+            int pos=contactListBinding.contactPicker.getCurrentItem();
+            String phone=scrollContactsAdapter.getArrayList().get(pos).getPhones().get(0);
+            startActivity(new Intent(Intent.ACTION_VIEW,Uri.fromParts("sms",phone,null)));
+        });
+    }
+
+    //Methods
+    public void makeCall(String normPhoneNumber) {
+        if (normPhoneNumber == null) return;
+        CallManager.call(this.getContext(), normPhoneNumber);
+    }
+
+
+
+
+    // -- Overrides -- //
+
+    protected void onFragmentReady() {
+        // The list adapter
+        mContactsListAdapter =new ContactsListAdapter(getContext(), null);
+        contactListBinding.contactRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        contactListBinding.contactRv.setAdapter(mContactsListAdapter);
+
+        // Refresh Layout
+        contactListBinding.refreshLayout.setOnRefreshListener(() -> {
+            LoaderManager.getInstance(ContactListFragment.this).restartLoader(LOADER_ID, null, ContactListFragment.this);
+            tryRunningLoader();
+        });
+
+    }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        onFragmentReady();
+
+        init();
+
+        tryRunningLoader();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        tryRunningLoader();
     }
 
     @Override
@@ -126,6 +172,80 @@ public class ContactListFragment extends Fragment implements
             }
 
         }
+    }
+
+    // -- Loader -- //
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+
+        String searchContactName = null;
+        String searchPhoneNumber = null;
+        if (args != null && args.containsKey(ARG_SEARCH_PHONE_NUMBER)) {
+            searchPhoneNumber = args.getString(ARG_SEARCH_PHONE_NUMBER);
+        }
+        if (args != null && args.containsKey(ARG_SEARCH_CONTACT_NAME)) {
+            searchContactName = args.getString(ARG_SEARCH_CONTACT_NAME);
+        }
+
+        boolean isSearchContactNameEmpty = searchContactName == null || searchContactName.isEmpty();
+        boolean isSearchPhoneNumberEmpty = searchPhoneNumber == null || searchPhoneNumber.isEmpty();
+
+        ContactsCursorLoader cursorLoader=new ContactsCursorLoader(getContext(), searchPhoneNumber, searchContactName);
+
+        return cursorLoader;
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        setData(data);
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        mContactsListAdapter.changeCursor(null);
+    }
+
+    private void setData(Cursor data) {
+        mContactsListAdapter.changeCursor(data);
+
+        if (contactListBinding.refreshLayout.isRefreshing()) contactListBinding.refreshLayout.setRefreshing(false);
+        if (data != null && data.getCount() > 0) {
+            contactListBinding.contactRv.setVisibility(View.VISIBLE);
+
+        } else {
+            contactListBinding.contactRv.setVisibility(View.GONE);
+
+        }
+
+    }
+
+    /**
+     * Checks for the required permission in order to run the loader
+     */
+    private void tryRunningLoader() {
+        if (!isLoaderRunning() && Utilities.checkPermissionsGranted(getContext(), Manifest.permission.READ_CONTACTS)) {
+            runLoader();
+        }
+    }
+
+    /**
+     * Runs the loader
+     */
+    private void runLoader() {
+        LoaderManager.getInstance(this).initLoader(LOADER_ID, null, this);
+    }
+
+    /**
+     * Checks whither the loader is currently running
+     * (meaning the page is refreshing)
+     *
+     * @return boolean
+     */
+    private boolean isLoaderRunning() {
+        Loader loader = LoaderManager.getInstance(this).getLoader(LOADER_ID);
+        return loader != null;
     }
 
 }

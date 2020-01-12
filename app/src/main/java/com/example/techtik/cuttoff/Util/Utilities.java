@@ -6,6 +6,10 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
@@ -94,5 +98,41 @@ public class Utilities {
         }
     }
 
+    /**
+     * Format a given phone number to a readable string for the user
+     *
+     * @param phoneNumber the number to format
+     * @return the formatted number
+     */
+    public static String formatPhoneNumber(String phoneNumber) {
+
+        if (phoneNumber == null) return null;
+        phoneNumber = normalizePhoneNumber(phoneNumber);
+
+        Phonenumber.PhoneNumber formattedNumber = null;
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+
+        try {
+            formattedNumber = phoneUtil.parse(phoneNumber, sLocale.getCountry());
+        } catch (NumberParseException e) {
+
+        }
+
+        // return the number
+        if (formattedNumber == null) return phoneNumber;
+        else {
+            PhoneNumberUtil.PhoneNumberFormat format;
+            if (phoneUtil.getRegionCodeForCountryCode(formattedNumber.getCountryCode()).equals(sLocale.getCountry()))
+                format = PhoneNumberUtil.PhoneNumberFormat.NATIONAL;
+            else
+                format = PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL;
+
+            return phoneUtil.format(formattedNumber, format);
+        }
+    }
+
+    public static String normalizePhoneNumber(String phoneNumber) {
+        return PhoneNumberUtil.normalizeDiallableCharsOnly(phoneNumber);
+    }
 
 }
