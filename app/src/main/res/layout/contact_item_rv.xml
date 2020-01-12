@@ -29,19 +29,14 @@
 
             <TextView
                 android:id="@+id/contact_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="20sp"
+                style="@style/contact_name"
                 tools:text="Name" />
 
             <TextView
                 android:id="@+id/contact_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textSize="18sp"
+                style="@style/contact_number"
                 tools:text="Phone number" />
+
         </LinearLayout>
     </LinearLayout>
 

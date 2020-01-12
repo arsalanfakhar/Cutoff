@@ -7,106 +7,52 @@
 
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/mainbackground"
         tools:context=".Fragments.HomeFragment">
 
-        <ImageView
-            android:layout_width="match_parent"
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:id="@+id/record"
-            android:src="@drawable/triangle" />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/contact_frag_title"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="100dp"-->
-<!--            android:layout_marginLeft="20dp"-->
-<!--            android:layout_marginRight="20dp"-->
-<!--            android:layout_marginBottom="20dp"-->
-<!--            android:orientation="horizontal">-->
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/recents_refresh_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5">
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="App Status"-->
-<!--                android:layout_marginTop="1dp"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="20sp" />-->
-<!--            -->
-<!--        </LinearLayout>-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recent_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/transparent"
+                android:padding="16dp"
+                android:paddingStart="16dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
+                android:scrollbars="none"
+                tools:listitem="@layout/call_logs_rv">
 
-        <!--<ImageView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="-210dp"-->
-        <!--android:layout_gravity="bottom"-->
-        <!--android:src="@drawable/triangle2"/>-->
+            </androidx.recyclerview.widget.RecyclerView>
 
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <!--     TODO: Update blank fragment layout -->
-        <!--    <LinearLayout-->
-        <!--        android:layout_width="match_parent"-->
-        <!--        android:layout_height="42dp"-->
-        <!--        android:layout_gravity="bottom"-->
-        <!--        android:background="@color/white"-->
-        <!--        android:orientation="horizontal"-->
-        <!--        android:padding="1dp"-->
-        <!--        android:weightSum="1.5">-->
-
-        <!--        <LinearLayout-->
-        <!--            android:id="@+id/linear_tab_one"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:layout_weight=".5"-->
-        <!--            android:background="@color/white"-->
-        <!--            android:gravity="center">-->
-
-        <!--            <ImageView-->
-        <!--                android:id="@+id/imageView_tab_one"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="match_parent"-->
-        <!--                android:padding="6dp"-->
-        <!--                android:src="@drawable/home_fill"/>-->
-
-        <!--        </LinearLayout>-->
-
-        <!--        <LinearLayout-->
-        <!--            android:id="@+id/linear_tab_two"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:layout_weight=".5"-->
-        <!--            android:background="@color/white"-->
-        <!--            android:gravity="center">-->
-
-        <!--            <ImageView-->
-        <!--                android:id="@+id/imageView_tab_two"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="match_parent"-->
-        <!--                android:padding="6dp"-->
-        <!--                android:src="@drawable/features"/>-->
-        <!--        </LinearLayout>-->
-
-        <!--        <LinearLayout-->
-        <!--            android:id="@+id/linear_tab_three"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:layout_weight=".5"-->
-        <!--            android:background="@color/white"-->
-        <!--            android:gravity="center">-->
-
-        <!--            <ImageView-->
-        <!--                android:id="@+id/imageView_tab_three"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="match_parent"-->
-        <!--                android:padding="6dp"-->
-        <!--                android:src="@drawable/contacts"/>-->
-        <!--        </LinearLayout>-->
-        <!--    </LinearLayout>-->
-
-
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

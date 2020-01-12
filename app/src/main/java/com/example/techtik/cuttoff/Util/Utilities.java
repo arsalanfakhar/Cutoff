@@ -1,12 +1,13 @@
 package com.example.techtik.cuttoff.Util;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 
 import androidx.annotation.NonNull;
-
+import androidx.core.content.ContextCompat;
 
 
 import java.util.Locale;
@@ -18,6 +19,50 @@ public class Utilities {
     public static final long LONG_VIBRATE_LENGTH = 500;
     public static final long SHORT_VIBRATE_LENGTH = 20;
     public static final long DEFAULT_VIBRATE_LENGTH = 100;
+
+    /**
+     * Checks for granted permission but by a single string (single permission)
+     *
+     * @param permission
+     * @return boolean
+     */
+    public static boolean checkPermissionsGranted(Context context, String permission) {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && ContextCompat.checkSelfPermission(
+                context, permission)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * Check for permissions by a given list
+     *
+     * @param permissions
+     * @return boolean
+     */
+    public static boolean checkPermissionsGranted(Context context, String[] permissions) {
+        for (String permission : permissions) {
+            if (!checkPermissionsGranted(context, permission)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Check for permissions by a given list
+     *
+     * @param grantResults
+     * @return boolean
+     */
+    public static boolean checkPermissionsGranted(int[] grantResults) {
+        for (int result : grantResults) {
+            if (result == PackageManager.PERMISSION_DENIED)
+                return false;
+        }
+        return true;
+    }
+
+
 
     public static void setUpLocale(@NonNull Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
