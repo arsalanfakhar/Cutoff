@@ -16,6 +16,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.techtik.cuttoff.Adapters.listeners.OnItemClickListener;
 import com.example.techtik.cuttoff.Models.Contact;
 import com.example.techtik.cuttoff.R;
 import com.example.techtik.cuttoff.Util.Utilities;
@@ -29,6 +30,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ContactsListAdapter extends AbsFastScrollerAdapter<ContactsListAdapter.ContactViewHolder> {
 
     private final String phoneNumberRegex = "^[\\d*#+]+$";
+    // Click listeners
+    private OnItemClickListener mOnItemClickListener;
 
     /**
      * Constructor
@@ -36,8 +39,10 @@ public class ContactsListAdapter extends AbsFastScrollerAdapter<ContactsListAdap
      * @param context
      * @param cursor
      */
-    public ContactsListAdapter(Context context, Cursor cursor) {
+    public ContactsListAdapter(Context context, Cursor cursor,
+                               OnItemClickListener onItemClickListener) {
         super(context, cursor);
+        mOnItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -93,6 +98,10 @@ public class ContactsListAdapter extends AbsFastScrollerAdapter<ContactsListAdap
                     .apply(RequestOptions.circleCropTransform()).into(holder.contact_circle_img);
         }
 
+        // Set click listeners
+        if(mOnItemClickListener!=null){
+            holder.itemView.setOnClickListener(v -> mOnItemClickListener.onItemClick(holder,contact));
+        }
 
     }
 
@@ -112,7 +121,7 @@ public class ContactsListAdapter extends AbsFastScrollerAdapter<ContactsListAdap
     public class ContactViewHolder extends RecyclerView.ViewHolder{
 
         TextView contactName,contactPhone;
-        ImageView contact_circle_img;
+        ImageView contact_circle_img,contactStatusBtn;
         //TODO apply two way data binding
 
         public ContactViewHolder(View itemView) {
@@ -120,6 +129,12 @@ public class ContactsListAdapter extends AbsFastScrollerAdapter<ContactsListAdap
             contactName=itemView.findViewById(R.id.contact_name);
             contactPhone=itemView.findViewById(R.id.contact_number);
             contact_circle_img=itemView.findViewById(R.id.contact_img);
+            contactStatusBtn=itemView.findViewById(R.id.status_btn);
+
+//            contactStatusBtn.setOnClickListener(v -> {
+//
+//            });
         }
+
     }
 }

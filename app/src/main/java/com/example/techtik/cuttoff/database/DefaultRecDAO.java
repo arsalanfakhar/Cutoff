@@ -20,4 +20,8 @@ public interface DefaultRecDAO {
     @Query("Select * from tbl_defaultRecordings")
     public LiveData<List<DefaultRecordings>> getAllRecordings();
 
+    @Query("Select defaultMessage from tbl_defaultRecordings where id in (:rId)")
+    public String getRecordingMessage(long rId);
+
+
 }

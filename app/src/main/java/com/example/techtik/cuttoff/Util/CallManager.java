@@ -12,7 +12,9 @@ import android.widget.Toast;
 import com.example.techtik.cuttoff.Activity.CallScreenActivity;
 import com.example.techtik.cuttoff.Models.Contact;
 import com.example.techtik.cuttoff.R;
+import com.example.techtik.cuttoff.viewmodel.ComfortFragmentViewModel;
 
+import androidx.lifecycle.ViewModelProviders;
 
 
 public class CallManager {
@@ -81,7 +83,9 @@ public class CallManager {
      * @return true whether there's no more calls awaiting
      */
     public static void reject(){
-       if(mCall!=null){
+
+
+        if(mCall!=null){
            if(mCall.getState()==Call.STATE_RINGING){
                //TODO Check whether you can send a message here
                mCall.reject(false,null);
@@ -95,11 +99,11 @@ public class CallManager {
        }
     }
 
-    public static void rejectWithMessage(){
+    public static void rejectWithMessage(String message){
         if(mCall!=null){
             if(mCall.getState()==Call.STATE_RINGING){
                 //TODO Check whether you can send a message here
-                mCall.reject(true,"I am busy bro. Call me later");
+                mCall.reject(true,message);
             }
             else {
                 mCall.disconnect();

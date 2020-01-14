@@ -15,8 +15,13 @@ import com.example.techtik.cuttoff.database.entity.DefaultRecordings;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicReference;
 
 import androidx.lifecycle.LiveData;
 
@@ -34,6 +39,7 @@ public class CutoffRepository {
         defaultRecDAO=cutoffDatabase.getDefaultRecDAO();
         customRecDAO=cutoffDatabase.getCustomRecDAO();
     }
+
 
     public LiveData<List<DefaultRecordings>> getAllDefaultRecordings(){
         return defaultRecDAO.getAllRecordings();
@@ -172,5 +178,30 @@ public class CutoffRepository {
 
     }
 
+    public String getDefaultMessage(long id) throws ExecutionException,InterruptedException {
+        Callable<String> stringCallable=new Callable<String>(){
+            @Override
+            public String call() throws Exception {
+
+                return defaultRecDAO.getRecordingMessage(id);
+            }
+        };
+
+        Future<String> future=Executors.newSingleThreadExecutor().submit(stringCallable);
+        return future.get();
+    }
+
+    public String getCustomMessage(Contact contact)throws ExecutionException,InterruptedException{
+        Callable<String> stringCallable=new Callable<String>(){
+            @Override
+            public String call() throws Exception {
+
+                return customRecDAO.getRecordingMessage(contact);
+            }
+        };
+
+        Future<String> future=Executors.newSingleThreadExecutor().submit(stringCallable);
+        return future.get();
+    }
 
 }

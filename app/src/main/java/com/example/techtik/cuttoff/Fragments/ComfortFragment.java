@@ -1,6 +1,7 @@
 package com.example.techtik.cuttoff.Fragments;
 
 import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,17 +20,22 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.techtik.cuttoff.Activity.MainActivity;
 import com.example.techtik.cuttoff.Adapters.CustomRecordingAdapter;
 import com.example.techtik.cuttoff.Adapters.DefaultRecordingAdapter;
+import com.example.techtik.cuttoff.Adapters.listeners.OnItemLongClickListener;
 import com.example.techtik.cuttoff.R;
 import com.example.techtik.cuttoff.database.entity.CustomRecordings;
+import com.example.techtik.cuttoff.database.entity.DefaultRecordings;
 import com.example.techtik.cuttoff.databinding.FragmentComfortBinding;
 import com.example.techtik.cuttoff.viewmodel.ComfortFragmentViewModel;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Objects;
 
 
-public class ComfortFragment extends Fragment {
+public class ComfortFragment extends Fragment implements OnItemLongClickListener {
 
     private FragmentComfortBinding fragmentComfortBinding;
 
@@ -85,7 +91,7 @@ public class ComfortFragment extends Fragment {
 
     private void init(){
         //Default recording rv
-        defaultRecordingAdapter=new DefaultRecordingAdapter(getContext(),new ArrayList<>());
+        defaultRecordingAdapter=new DefaultRecordingAdapter(getContext(),new ArrayList<>(),this);
         fragmentComfortBinding.defaultRecordingsRv.setLayoutManager(new LinearLayoutManager(getContext()));
         fragmentComfortBinding.defaultRecordingsRv.setItemAnimator(new DefaultItemAnimator());
         fragmentComfortBinding.defaultRecordingsRv.setAdapter(defaultRecordingAdapter);
@@ -97,6 +103,7 @@ public class ComfortFragment extends Fragment {
         fragmentComfortBinding.customRecordingsRv.setAdapter(customRecordingAdapter);
     }
 
+//    Methods
     public void makePopupDialog(CustomRecordings recording,int position){
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
         View view = layoutInflaterAndroid.inflate(R.layout.popup_edit_recording, null);
@@ -128,5 +135,22 @@ public class ComfortFragment extends Fragment {
             }
         });
 
+    }
+
+    public void addCurrentStateToPref(long id){
+        SharedPreferences.Editor editor= Objects.requireNonNull(getActivity()).getApplicationContext().getSharedPreferences("MyPref", 0).edit();
+        editor.putLong("active_recording_id",id);
+        editor.apply(); //apply writes the data in background process
+    }
+
+//    Click Listener
+    @Override
+    public void onItemLongClick(RecyclerView.ViewHolder holder, Object data) {
+        //add id to preferences
+        DefaultRecordings defaultRecordings= (DefaultRecordings) data;
+        addCurrentStateToPref(defaultRecordings.getId());
+
+        //reload the adapter
+        defaultRecordingAdapter.notifyDataSetChanged();
     }
 }

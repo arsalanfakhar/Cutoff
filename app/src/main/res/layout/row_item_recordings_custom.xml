@@ -26,9 +26,18 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/recording_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/recording_img"
+            app:layout_constraintTop_toTopOf="@+id/recording_img" />
+
+        <TextView
             android:id="@+id/recording_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/recording_img"

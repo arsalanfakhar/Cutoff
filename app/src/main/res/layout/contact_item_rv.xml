@@ -21,7 +21,8 @@
             android:src="@drawable/ic_user" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
@@ -38,6 +39,15 @@
                 tools:text="Phone number" />
 
         </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/status_btn"
+            android:layout_gravity="center"
+            android:layout_weight="0.5"
+            android:src="@drawable/stroke"
+            android:tint="@color/cardview_dark_background"/>
+
     </LinearLayout>
 
 

@@ -1,6 +1,7 @@
 package com.example.techtik.cuttoff.Adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,11 +42,30 @@ public class CustomRecordingAdapter extends RecyclerView.Adapter<CustomRecording
 
     @Override
     public void onBindViewHolder(@NonNull RecordingsHolder holder, int position) {
+        //Set message
         holder.message.setText(customRecordingsList.get(position).getmCustomMessage());
+
+        //Set name
+        String name= customRecordingsList.get(position).getmContact().getName();
+        if(!TextUtils.isEmpty(name)){
+            holder.contactName.setText(name);
+        }
+
+
+        //Set image
         String imageUri= customRecordingsList.get(position).getmContact().getPhotoUri();
 
-        Glide.with(mContext).load(imageUri).skipMemoryCache(true)
-                .apply(RequestOptions.circleCropTransform()).into(holder.contactImage);
+        if(TextUtils.isEmpty(imageUri)){
+            Glide.with(mContext).load(R.drawable.ic_user).skipMemoryCache(true)
+                    .apply(RequestOptions.circleCropTransform()).into(holder.contactImage);
+
+        }
+        else {
+            Glide.with(mContext).load(imageUri).skipMemoryCache(true)
+                    .apply(RequestOptions.circleCropTransform()).into(holder.contactImage);
+        }
+
+
 
         holder.itemView.setOnClickListener(v -> {
             fragment.makePopupDialog(customRecordingsList.get(position),position);
@@ -62,12 +82,13 @@ public class CustomRecordingAdapter extends RecyclerView.Adapter<CustomRecording
 
     public class RecordingsHolder extends RecyclerView.ViewHolder{
 
-        TextView message;
+        TextView message,contactName;
         ImageView contactImage;
         public RecordingsHolder(@NonNull View itemView) {
             super(itemView);
             message=itemView.findViewById(R.id.recording_txt);
             contactImage=itemView.findViewById(R.id.recording_img);
+            contactName=itemView.findViewById(R.id.recording_name);
         }
     }
 
