@@ -43,7 +43,7 @@ public class CallService extends InCallService {
         if(app_state && call_state==Call.STATE_RINGING){
 
             //Check custom status for contact
-            String custom_message=comfortFragmentViewModel.getCustomMessageByContact(callingContact);
+            String custom_message=comfortFragmentViewModel.getCustomMessageByContact(callingContact.getName(),callingContact.getPhones(),callingContact.getPhotoUri());
             if(custom_message!=null) {
                 //send the message
                 CallManager.rejectWithMessage(custom_message);

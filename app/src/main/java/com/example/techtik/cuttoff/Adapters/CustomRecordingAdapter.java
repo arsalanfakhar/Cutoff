@@ -46,14 +46,14 @@ public class CustomRecordingAdapter extends RecyclerView.Adapter<CustomRecording
         holder.message.setText(customRecordingsList.get(position).getmCustomMessage());
 
         //Set name
-        String name= customRecordingsList.get(position).getmContact().getName();
+        String name= customRecordingsList.get(position).getName();
         if(!TextUtils.isEmpty(name)){
             holder.contactName.setText(name);
         }
 
 
         //Set image
-        String imageUri= customRecordingsList.get(position).getmContact().getPhotoUri();
+        String imageUri= customRecordingsList.get(position).getPhotoUri();
 
         if(TextUtils.isEmpty(imageUri)){
             Glide.with(mContext).load(R.drawable.ic_user).skipMemoryCache(true)

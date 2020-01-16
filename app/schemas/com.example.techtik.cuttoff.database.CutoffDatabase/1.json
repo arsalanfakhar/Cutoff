@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "127deafefc4c03c7f099aefd55e5cc5e",
+    "identityHash": "a943d8233adf4fd17627443e5767cb98",
     "entities": [
       {
         "tableName": "tbl_customRecordings",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `customMessage` TEXT, `contact` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `customMessage` TEXT, `contact_name` TEXT, `contact_phone` TEXT, `contact_img` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -21,8 +21,20 @@
             "notNull": false
           },
           {
-            "fieldPath": "mContact",
-            "columnName": "contact",
+            "fieldPath": "name",
+            "columnName": "contact_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "phones",
+            "columnName": "contact_phone",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "photoUri",
+            "columnName": "contact_img",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -66,7 +78,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '127deafefc4c03c7f099aefd55e5cc5e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a943d8233adf4fd17627443e5767cb98')"
     ]
   }
 }

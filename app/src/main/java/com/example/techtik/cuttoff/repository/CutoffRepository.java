@@ -191,12 +191,12 @@ public class CutoffRepository {
         return future.get();
     }
 
-    public String getCustomMessage(Contact contact)throws ExecutionException,InterruptedException{
+    public String getCustomMessage(String name, ArrayList<String> phonearr,String photo)throws ExecutionException,InterruptedException{
         Callable<String> stringCallable=new Callable<String>(){
             @Override
             public String call() throws Exception {
 
-                return customRecDAO.getRecordingMessage(contact);
+                return customRecDAO.getRecordingMessage(name);
             }
         };
 

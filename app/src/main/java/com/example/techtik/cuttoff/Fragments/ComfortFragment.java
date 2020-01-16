@@ -125,7 +125,6 @@ public class ComfortFragment extends Fragment implements OnItemLongClickListener
         dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             if(TextUtils.isEmpty(updateMessage.getText())){
                 Toast.makeText(getContext(),"Enter message",Toast.LENGTH_SHORT).show();
-                return;
             }
             else {
                 //update here
@@ -137,7 +136,7 @@ public class ComfortFragment extends Fragment implements OnItemLongClickListener
 
     }
 
-    public void addCurrentStateToPref(long id){
+    private void addCurrentStateToPref(long id){
         SharedPreferences.Editor editor= Objects.requireNonNull(getActivity()).getApplicationContext().getSharedPreferences("MyPref", 0).edit();
         editor.putLong("active_recording_id",id);
         editor.apply(); //apply writes the data in background process

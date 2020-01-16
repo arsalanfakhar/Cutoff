@@ -3,6 +3,7 @@ package com.example.techtik.cuttoff.database;
 import com.example.techtik.cuttoff.Models.Contact;
 import com.example.techtik.cuttoff.database.entity.CustomRecordings;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
@@ -27,7 +28,7 @@ public interface CustomRecDAO {
     @Query("Select * from tbl_customRecordings")
     public LiveData<List<CustomRecordings>> getAllRecordings();
 
-    @Query("Select customMessage from tbl_customRecordings where contact=:mycontact")
-    public String getRecordingMessage(Contact mycontact);
+    @Query("Select customMessage from tbl_customRecordings where contact_name=:name")
+    public String getRecordingMessage(String name);
 
 }

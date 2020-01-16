@@ -308,7 +308,9 @@ public class ContactListFragment extends Fragment implements
                 //update here
                 CustomRecordings customRecordings=new CustomRecordings();
                 customRecordings.setmCustomMessage(newMessage.getText().toString());
-                customRecordings.setmContact(mContact);
+                customRecordings.setName(mContact.getName());
+                customRecordings.setPhones(mContact.getPhones());
+                customRecordings.setPhotoUri(mContact.getPhotoUri());
 
                 comfortFragmentViewModel.addRecording(customRecordings);
                 dialog.dismiss();

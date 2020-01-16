@@ -9,6 +9,8 @@ import com.example.techtik.cuttoff.Util.DataConverter;
 import com.example.techtik.cuttoff.database.entity.CustomRecordings;
 import com.example.techtik.cuttoff.database.entity.DefaultRecordings;
 
+import java.util.ArrayList;
+
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -77,13 +79,21 @@ public abstract class CutoffDatabase extends RoomDatabase {
             defaultRecDAO.addCustomRec(defaultRecordings3);
             defaultRecDAO.addCustomRec(defaultRecordings4);
 
+            ArrayList<String> strings=new ArrayList<>();
+            strings.add("343434");
+
             CustomRecordings customRecordings=new CustomRecordings();
             customRecordings.setmCustomMessage("Hello testing 123");
-            customRecordings.setmContact(new Contact("wasif","454535",Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar1").toString()));
+            customRecordings.setName("wasif");
+            customRecordings.setPhones(strings);
+            customRecordings.setPhotoUri(Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar1").toString());
+
 
             CustomRecordings customRecordings1=new CustomRecordings();
             customRecordings1.setmCustomMessage("Hello testing 123");
-            customRecordings1.setmContact(new Contact("saif","454535",Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar2").toString()));
+            customRecordings.setName("saif");
+            customRecordings.setPhones(strings);
+            customRecordings.setPhotoUri(Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar2").toString());
 
             customRecDAO.addCustomRec(customRecordings);
             customRecDAO.addCustomRec(customRecordings1);

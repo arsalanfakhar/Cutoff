@@ -7,6 +7,7 @@ import com.example.techtik.cuttoff.database.entity.CustomRecordings;
 import com.example.techtik.cuttoff.database.entity.DefaultRecordings;
 import com.example.techtik.cuttoff.repository.CutoffRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -55,9 +56,9 @@ public class ComfortFragmentViewModel extends AndroidViewModel {
         return null;
     }
 
-    public String getCustomMessageByContact(Contact contact){
+    public String getCustomMessageByContact(String name, ArrayList<String> phonearr,String photo){
         try {
-            return cutoffRepository.getCustomMessage(contact);
+            return cutoffRepository.getCustomMessage(name,phonearr,photo);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
