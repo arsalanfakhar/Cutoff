@@ -55,19 +55,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Utilities.setUpLocale(this);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case R.id.home:
-                        viewPager.setCurrentItem(0);
-                    case R.id.comforts:
-                        viewPager.setCurrentItem(1);
-                    case R.id.contacts:
-                        viewPager.setCurrentItem(2);
-                }
-                return false;
+        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
+            switch (menuItem.getItemId()){
+                case R.id.home:
+                    viewPager.setCurrentItem(0);
+                case R.id.comforts:
+                    viewPager.setCurrentItem(1);
+                case R.id.contacts:
+                    viewPager.setCurrentItem(2);
             }
+            return false;
         });
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -112,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void init(){
         bottomNavigationView=findViewById(R.id.bottom_navigation);
-        viewPager = (ViewPager)findViewById(R.id.pager);
+        viewPager = findViewById(R.id.pager);
 
 
         drawer=findViewById(R.id.drawer_layout);

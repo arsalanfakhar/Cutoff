@@ -50,5 +50,6 @@
         app:itemTextColor="@color/white"
         android:background="@drawable/sidemenu_abstract"
         app:headerLayout="@layout/nav_header"
+        app:itemIconTint="@color/white"
         app:menu="@menu/drawer_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

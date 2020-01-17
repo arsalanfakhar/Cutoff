@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="176dp"
+    android:layout_marginTop="10dp"
     android:background="@drawable/splash_main">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -14,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="30dp"
-        tools:src="@tools:sample/avatars"
+        android:src="@drawable/avatar2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
