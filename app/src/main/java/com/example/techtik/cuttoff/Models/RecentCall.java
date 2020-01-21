@@ -19,6 +19,7 @@ public class RecentCall {
     private String mCallDuration;
     private Date mCallDate;
     private String mCallPhotoUri;
+    private Date lastcalled;
 
     // Call Types
     public static final int mOutgoingCall = CallLog.Calls.OUTGOING_TYPE;
@@ -59,6 +60,8 @@ public class RecentCall {
         mCallDate = new Date(cursor.getLong(cursor.getColumnIndex(CallLog.Calls.DATE)));
         mCallType = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE));
         mCallPhotoUri=cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_PHOTO_URI));
+
+        lastcalled=new Date(cursor.getLong(cursor.getColumnIndex(CallLog.Calls.LAST_MODIFIED)));
 
     }
 
@@ -101,9 +104,30 @@ public class RecentCall {
         return time;
     }
 
+
+
     public String getCallerPhoto(){
         return this.mCallPhotoUri;
     }
 
+
+    public String getLastcalled() {
+
+        String time=DateFormat.getTimeInstance(DateFormat.SHORT).format(this.lastcalled);
+
+        //if time is 5:55pm it is formatted to 05:55pm
+        String str=time.substring(0,2);
+        if(!str.equals("10") && !str.equals("11") && !str.equals("12")){
+            String str2="0"+str.substring(0,1);
+            return str2+time.substring(1);
+        }
+
+        //else time is ok to return
+        return time;
+    }
+
+    public void setmCallerName(String mCallerName) {
+        this.mCallerName = mCallerName;
+    }
 }
 

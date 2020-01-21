@@ -24,7 +24,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,9 +32,11 @@ import com.example.techtik.cuttoff.Adapters.ContactsListAdapter;
 import com.example.techtik.cuttoff.Adapters.HorizontalScrollContactsAdapter;
 import com.example.techtik.cuttoff.Adapters.listeners.OnItemClickListener;
 import com.example.techtik.cuttoff.Models.Contact;
+import com.example.techtik.cuttoff.Models.RecentCall;
 import com.example.techtik.cuttoff.R;
 import com.example.techtik.cuttoff.Util.CallManager;
 import com.example.techtik.cuttoff.Util.ContactsCursorLoader;
+import com.example.techtik.cuttoff.Util.RecentsCursorLoader;
 import com.example.techtik.cuttoff.Util.Utilities;
 import com.example.techtik.cuttoff.database.entity.CustomRecordings;
 import com.example.techtik.cuttoff.databinding.FragmentContactListBinding;
@@ -44,8 +45,13 @@ import com.example.techtik.cuttoff.viewmodel.ContactsFragmentViewModel;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 public class ContactListFragment extends Fragment implements
@@ -63,13 +69,18 @@ public class ContactListFragment extends Fragment implements
 
     private final static String phoneNumberRegex = "^[\\d*#+]+$";
 
-    private static final int LOADER_ID = 1;
+    private static final int LOADER_CONTACTS_ID = 1;
+    private static final int LOADER_RECENT_CONTACTS_ID = 2;
+
+
     private static final String ARG_SEARCH_PHONE_NUMBER = "phone_number";
     private static final String ARG_SEARCH_CONTACT_NAME = "contact_name";
 
 
     //Viewmodel
     private ComfortFragmentViewModel comfortFragmentViewModel;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,7 +119,7 @@ public class ContactListFragment extends Fragment implements
         tempLatestList.add(new Contact("wasf","454535",Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar1").toString()));
 
 
-        scrollContactsAdapter=new HorizontalScrollContactsAdapter(getContext(), (ArrayList<Contact>) tempLatestList);
+        scrollContactsAdapter=new HorizontalScrollContactsAdapter(getContext(), new ArrayList<>());
         contactListBinding.contactPicker.setSlideOnFling(true);
 //        contactListBinding.contactPicker.setOffscreenItems(2);
         contactListBinding.contactPicker.setItemTransitionTimeMillis(500);
@@ -124,7 +135,7 @@ public class ContactListFragment extends Fragment implements
 
         contactListBinding.messageBtn.setOnClickListener(v -> {
             int pos=contactListBinding.contactPicker.getCurrentItem();
-            String phone=scrollContactsAdapter.getArrayList().get(pos).getPhones().get(0);
+            String phone=scrollContactsAdapter.getArrayList().get(pos).getCallerNumber();
             startActivity(new Intent(Intent.ACTION_VIEW,Uri.fromParts("sms",phone,null)));
         });
 
@@ -133,7 +144,7 @@ public class ContactListFragment extends Fragment implements
 
         contactListBinding.callBtn.setOnClickListener(v -> {
             int pos=contactListBinding.contactPicker.getCurrentItem();
-            String phone=scrollContactsAdapter.getArrayList().get(pos).getPhones().get(0);
+            String phone=scrollContactsAdapter.getArrayList().get(pos).getCallerNumber();
             makeCall(phone);
         });
     }
@@ -156,8 +167,9 @@ public class ContactListFragment extends Fragment implements
 
         // Refresh Layout
         contactListBinding.refreshLayout.setOnRefreshListener(() -> {
-            LoaderManager.getInstance(ContactListFragment.this).restartLoader(LOADER_ID, null, ContactListFragment.this);
+            LoaderManager.getInstance(ContactListFragment.this).restartLoader(LOADER_CONTACTS_ID, null, ContactListFragment.this);
             tryRunningLoader();
+
         });
 
     }
@@ -172,27 +184,30 @@ public class ContactListFragment extends Fragment implements
         init();
 
         tryRunningLoader();
+        tryRunningRecentLoader();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.v("resume","true");
         tryRunningLoader();
+        tryRunningRecentLoader();
     }
 
     @Override
     public void onCurrentItemChanged(@Nullable HorizontalScrollContactsAdapter.ContactViewHolder viewHolder, int position) {
         //setting the current selected contact name
-        ArrayList<Contact> contactArrayList= scrollContactsAdapter.getArrayList();
-        if(contactArrayList!=null && contactArrayList.size()>0) {
-            String currentContactName = contactArrayList.get(position).getName();
+        ArrayList<RecentCall> recentCalls= scrollContactsAdapter.getArrayList();
+        if(recentCalls!=null && recentCalls.size()>0) {
+            String currentContactName = recentCalls.get(position).getCallerName();
+            contactListBinding.scrollContactName.setText(currentContactName);
 
-            if(!currentContactName.replaceAll("\\s+","").matches(phoneNumberRegex)){
-                //not a number
-                contactListBinding.scrollContactName.setText(currentContactName);
-            }
-
+            String lastcall=recentCalls.get(position).getLastcalled();
+            lastcall="last call: "+lastcall;
+            contactListBinding.scrollContactLastCall.setText(lastcall);
         }
+
     }
 
 
@@ -208,7 +223,7 @@ public class ContactListFragment extends Fragment implements
 
     @NonNull
     @Override
-    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+    public Loader<Cursor> onCreateLoader(int loader_id, @Nullable Bundle args) {
 
         String searchContactName = null;
         String searchPhoneNumber = null;
@@ -222,19 +237,52 @@ public class ContactListFragment extends Fragment implements
         boolean isSearchContactNameEmpty = searchContactName == null || searchContactName.isEmpty();
         boolean isSearchPhoneNumberEmpty = searchPhoneNumber == null || searchPhoneNumber.isEmpty();
 
-        ContactsCursorLoader cursorLoader=new ContactsCursorLoader(getContext(), searchPhoneNumber, searchContactName);
 
-        return cursorLoader;
+        switch (loader_id){
+            case LOADER_CONTACTS_ID:
+                ContactsCursorLoader cursorLoader=new ContactsCursorLoader(getContext(), searchPhoneNumber, searchContactName);
+                return cursorLoader;
+            case LOADER_RECENT_CONTACTS_ID:
+                String timestamp = String.valueOf(getTodayTimestamp());
+                RecentsCursorLoader recentsCursorLoader = new RecentsCursorLoader(getContext(), searchPhoneNumber, searchContactName,timestamp);
+                return recentsCursorLoader;
+        }
+        return null;
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        setData(data);
+        switch (loader.getId()){
+            case LOADER_CONTACTS_ID:
+                setData(data);
+                break;
+            case LOADER_RECENT_CONTACTS_ID:
+                Log.v("malam","here");
+//                if (data.moveToFirst()) {
+//                    do {
+//                        StringBuilder sb = new StringBuilder();
+//                        int columnsQty = data.getColumnCount();
+//                        for (int idx=0; idx<columnsQty; ++idx) {
+//                            sb.append(data.getString(idx));
+//                            if (idx < columnsQty - 1)
+//                                sb.append("; ");
+//                        }
+//                        Log.v("malam", String.format("Row: %d, Values: %s", data.getPosition(),
+//                                sb.toString()));
+//                    } while (data.moveToNext());
+//                }
+                setRecentData(sortRecentCalls(data));
+                break;
+        }
+
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+
         mContactsListAdapter.changeCursor(null);
+//        scrollContactsAdapter.setArrayList(null);
+//        scrollContactsAdapter.notifyDataSetChanged();
     }
 
     private void setData(Cursor data) {
@@ -251,6 +299,7 @@ public class ContactListFragment extends Fragment implements
 
     }
 
+
     /**
      * Checks for the required permission in order to run the loader
      */
@@ -260,11 +309,13 @@ public class ContactListFragment extends Fragment implements
         }
     }
 
+
+
     /**
      * Runs the loader
      */
     private void runLoader() {
-        LoaderManager.getInstance(this).initLoader(LOADER_ID, null, this);
+        LoaderManager.getInstance(this).initLoader(LOADER_CONTACTS_ID, null, this);
     }
 
     /**
@@ -274,7 +325,8 @@ public class ContactListFragment extends Fragment implements
      * @return boolean
      */
     private boolean isLoaderRunning() {
-        Loader loader = LoaderManager.getInstance(this).getLoader(LOADER_ID);
+        Loader loader = LoaderManager.getInstance(this).getLoader(LOADER_CONTACTS_ID);
+
         return loader != null;
     }
 
@@ -318,5 +370,82 @@ public class ContactListFragment extends Fragment implements
         });
 
     }
+
+    private void tryRunningRecentLoader(){
+        if (!isRecentLoaderRunning() && Utilities.checkPermissionsGranted(getContext(), Manifest.permission.READ_CONTACTS)) {
+            runRecentLoader();
+        }
+    }
+
+    private void runRecentLoader() {
+        LoaderManager.getInstance(this).initLoader(LOADER_RECENT_CONTACTS_ID, null, this);
+    }
+    private boolean isRecentLoaderRunning() {
+        Loader loader = LoaderManager.getInstance(this).getLoader(LOADER_RECENT_CONTACTS_ID);
+
+        return loader != null;
+    }
+
+    private void setRecentData(ArrayList<RecentCall> recentData) {
+
+//        scrollContactsAdapter.setArrayList(new ArrayList<>());
+//        scrollContactsAdapter.notifyDataSetChanged();
+        scrollContactsAdapter.setArrayList(recentData);
+        scrollContactsAdapter.notifyDataSetChanged();
+
+    }
+
+    //With this method you will get the timestamp of today at midnight
+    private long getTodayTimestamp(){
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(new Date());
+
+        Calendar c2 = Calendar.getInstance();
+        c2.set(Calendar.YEAR, c1.get(Calendar.YEAR));
+        c2.set(Calendar.MONTH, c1.get(Calendar.MONTH));
+        c2.set(Calendar.DAY_OF_MONTH, c1.get(Calendar.DAY_OF_MONTH));
+        c2.set(Calendar.HOUR_OF_DAY, 0);
+        c2.set(Calendar.MINUTE, 0);
+        c2.set(Calendar.SECOND, 0);
+
+        return c2.getTimeInMillis();
+    }
+
+    private ArrayList<RecentCall> sortRecentCalls(Cursor data){
+        ArrayList<RecentCall> callArrayList=new ArrayList<>();
+        if (data.moveToFirst()) {
+            do {
+                RecentCall recentCall=new RecentCall(getContext(),data);
+
+                //if name is null put its number in name
+                if(TextUtils.isEmpty(recentCall.getCallerName()))
+                    recentCall.setmCallerName(recentCall.getCallerNumber());
+
+                int currentPos=data.getPosition();
+                if(currentPos==0){
+                    callArrayList.add(recentCall);
+                }
+                else {
+                    //compare
+                    if(checkArrList(recentCall.getCallerName(),callArrayList))
+                        callArrayList.add(recentCall);
+
+                }
+            } while (data.moveToNext());
+        }
+        return callArrayList;
+    }
+
+    private boolean checkArrList(String name,ArrayList<RecentCall> callArrayList){
+        if(!callArrayList.isEmpty()){
+            for(int i=0;i<callArrayList.size();i++){
+                if(callArrayList.get(i).getCallerName().equals(name)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 
 }

@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
 
+import java.util.Date;
+
 import androidx.loader.content.CursorLoader;
 
 public final class RecentsCursorLoader extends CursorLoader {
@@ -23,7 +25,8 @@ public final class RecentsCursorLoader extends CursorLoader {
                     CallLog.Calls.DURATION,
                     CallLog.Calls.TYPE,
                     CallLog.Calls.CACHED_NAME,
-                    CallLog.Calls.CACHED_PHOTO_URI
+                    CallLog.Calls.CACHED_PHOTO_URI,
+                    CallLog.Calls.LAST_MODIFIED
             };
 
     private static String RECENTS_ORDER = CallLog.Calls.DATE + " DESC";
@@ -45,6 +48,19 @@ public final class RecentsCursorLoader extends CursorLoader {
                 RECENTS_ORDER);
     }
 
+
+    public RecentsCursorLoader(Context context,String phoneNumber, String contactName, String timestamp) {
+        super(
+                context,
+                buildUriRecent(),
+                RECENTS_PROJECTION_DISPLAY_NAME_PRIMARY,
+                CallLog.Calls.DATE + ">= ?",
+                new String[]{timestamp},
+                RECENTS_ORDER);
+
+    }
+
+
     private static String getSelection(String contactName, String phoneNumber) {
         if (contactName != null && !contactName.isEmpty())
             return CallLog.Calls.CACHED_NAME + " LIKE '%" + contactName + "%'";
@@ -52,6 +68,12 @@ public final class RecentsCursorLoader extends CursorLoader {
             return CallLog.Calls.NUMBER + " LIKE '%" + phoneNumber + "%'";
         else return null;
     }
+
+//    private static String getDateSelection(Long date){
+//        if(date!=null)
+//            return CallLog.Calls.DATE+"='01/18/2019'";
+//        return null;
+//    }
 
     /**
      * Builds contact uri by given name and phone number
@@ -65,10 +87,18 @@ public final class RecentsCursorLoader extends CursorLoader {
         if (phoneNumber != null && !phoneNumber.isEmpty()) {
             builder = Uri.withAppendedPath(CallLog.Calls.CONTENT_FILTER_URI, Uri.encode(phoneNumber)).buildUpon();
             builder.appendQueryParameter(ContactsContract.STREQUENT_PHONE_ONLY, "true");
+
         } else {
             builder = CallLog.Calls.CONTENT_URI.buildUpon();
         }
 
+        return builder.build();
+    }
+
+    private static Uri buildUriRecent() {
+        Uri.Builder builder;
+        builder = CallLog.Calls.CONTENT_URI.buildUpon();
+        builder.appendQueryParameter(ContactsContract.REMOVE_DUPLICATE_ENTRIES, "true");
         return builder.build();
     }
 

@@ -13,6 +13,7 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.techtik.cuttoff.Models.Contact;
+import com.example.techtik.cuttoff.Models.RecentCall;
 import com.example.techtik.cuttoff.R;
 
 import java.util.ArrayList;
@@ -22,23 +23,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class HorizontalScrollContactsAdapter extends RecyclerView.Adapter<HorizontalScrollContactsAdapter.ContactViewHolder> {
 
-    final static String phoneNumberRegex = "^[\\d*#+]+$";
     private Context mContext;
-    private ArrayList<Contact> arrayList;
+    private ArrayList<RecentCall> arrayList;
+    public final static String phoneNumberRegex = "^[\\d*#+]+$";
 
-
-    public HorizontalScrollContactsAdapter(Context mContext, ArrayList<Contact> arrayList) {
+    public HorizontalScrollContactsAdapter(Context mContext, ArrayList<RecentCall> arrayList) {
         this.mContext = mContext;
         this.arrayList = arrayList;
     }
 
-    public ArrayList<Contact> getArrayList() {
-        return arrayList;
-    }
 
-    public void setArrayList(ArrayList<Contact> arrayList) {
-        this.arrayList = arrayList;
-    }
 
     @NonNull
     @Override
@@ -49,35 +43,16 @@ public class HorizontalScrollContactsAdapter extends RecyclerView.Adapter<Horizo
 
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
-        String contactName=arrayList.get(position).getName();
+        String photoUri=arrayList.get(position).getCallerPhoto();
 
-
-        //For custom image
-        String contact_image=arrayList.get(position).getPhotoUri();
-        if(TextUtils.isEmpty(contact_image)){
-            //For default image
-            //fist remove whitespaces and then match with regex
-            if(!contactName.replaceAll("\\s+","").matches(phoneNumberRegex)) {
-
-                //to generate random colors
-                ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
-
-
-                //not a number in contact name
-                TextDrawable drawable = TextDrawable.builder()
-                        .buildRound(contactName.substring(0,2), generator.getRandomColor());
-
-                holder.contact_circle_img.setImageDrawable(drawable);
-            }
-            else {
-                //a number in contact name
-                Glide.with(mContext).load(R.drawable.ic_user).skipMemoryCache(true)
-                        .apply(RequestOptions.circleCropTransform()).into(holder.contact_circle_img);
-            }
+        if(TextUtils.isEmpty(photoUri)){
+            //set placeholder avatar
+            Glide.with(mContext).load(R.drawable.ic_user).skipMemoryCache(true)
+                    .apply(RequestOptions.circleCropTransform()).into(holder.contact_circle_img);
         }
         else {
-            //For custom image
-            Glide.with(mContext).load(contact_image).skipMemoryCache(true)
+            //set image
+            Glide.with(mContext).load(photoUri).skipMemoryCache(true)
                     .apply(RequestOptions.circleCropTransform()).into(holder.contact_circle_img);
         }
     }
@@ -101,4 +76,14 @@ public class HorizontalScrollContactsAdapter extends RecyclerView.Adapter<Horizo
             contact_circle_img=itemView.findViewById(R.id.scroll_contact_img);
         }
     }
+
+    //Methods
+    public void setArrayList(ArrayList<RecentCall> arrayList) {
+        this.arrayList = arrayList;
+    }
+
+    public ArrayList<RecentCall> getArrayList() {
+        return arrayList;
+    }
+
 }
