@@ -44,7 +44,7 @@ public class CallService extends InCallService {
 
             //Check custom status for contact
             String custom_message=comfortFragmentViewModel.getCustomMessageByContact(callingContact.getName(),callingContact.getPhones(),callingContact.getPhotoUri());
-            Log.v("custom_mess_val",custom_message);
+//            Log.v("custom_mess_val",custom_message);
             if(custom_message!=null) {
                 //send the message
                 CallManager.rejectWithMessage(custom_message);

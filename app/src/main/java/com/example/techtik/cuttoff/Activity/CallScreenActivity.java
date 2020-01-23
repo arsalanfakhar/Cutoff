@@ -94,7 +94,7 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
     OnGoingCallBinding onGoingCallBinding;
 
     // Image Views
-    @BindView(R.id.image_placeholder) ImageView mPlaceholderImage;
+//    @BindView(R.id.image_placeholder) ImageView mPlaceholderImage;
     @BindView(R.id.image_photo) ImageView mPhotoImage;
     @BindView(R.id.button_hold) ImageView mHoldButton;
     @BindView(R.id.button_mute) ImageView mMuteButton;
@@ -444,8 +444,8 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
             if(callerContact.getName()!=null)
                 mCallerText.setText(callerContact.getName());
             if(callerContact.getPhotoUri()!=null){
-                mPlaceholderImage.setVisibility(View.INVISIBLE);
-                mPhotoImage.setVisibility(View.VISIBLE);
+//                mPlaceholderImage.setVisibility(View.INVISIBLE);
+//                mPhotoImage.setVisibility(View.VISIBLE);
                 mPhotoImage.setImageURI(Uri.parse(callerContact.getPhotoUri()));
 
             }

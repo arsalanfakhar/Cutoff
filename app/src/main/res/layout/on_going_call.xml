@@ -22,54 +22,52 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="24dp" />
 
-        <TextView
-            android:id="@+id/text_stopwatch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guide_status_bar"
-            tools:text="00:00" />
-
         <!-- Caller Number (Temporary) -->
 
         <!-- Caller Pic -->
 
         <FrameLayout
             android:id="@+id/frameLayout"
-            android:layout_width="129dp"
+            android:layout_width="134dp"
             android:layout_height="135dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toTopOf="@+id/text_caller"
             app:layout_constraintEnd_toEndOf="@+id/text_caller"
             app:layout_constraintStart_toStartOf="@+id/text_caller"
-            app:layout_constraintTop_toBottomOf="@+id/text_stopwatch">
+            app:layout_constraintTop_toBottomOf="@+id/text_stopwatch"
+            app:layout_constraintTop_toTopOf="@+id/guide_status_bar">
 
-            <ImageView
-                android:id="@+id/image_placeholder"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_account_circle_black_24dp" />
+            <!--            <ImageView-->
+            <!--                android:id="@+id/image_placeholder"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                app:srcCompat="@drawable/ic_account_circle_black_24dp" />-->
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image_photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-                app:civ_border_width="0dp" />
+                android:src="@drawable/avatar3"
+                app:civ_border_color="#F06C5D"
+                app:civ_border_overlay="true"
+                app:civ_border_width="10dp" />
 
         </FrameLayout>
 
         <!-- Caller Name -->
+
+        <!-- Call Status -->
+
         <TextView
             android:id="@+id/text_caller"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:paddingLeft="10sp"
             android:paddingRight="10sp"
             android:textAlignment="center"
-            android:textColor="?attr/iconColor"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+            android:textColor="?attr/iconColor"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/text_status"
             app:layout_constraintEnd_toEndOf="parent"
@@ -77,21 +75,33 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:text="James" />
 
-        <!-- Call Status -->
         <TextView
             android:id="@+id/text_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="16dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
             android:textColor="?attr/colorAccent"
-            app:layout_constraintBottom_toTopOf="@+id/guide_eye_level"
+            app:layout_constraintBottom_toTopOf="@+id/text_stopwatch"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="@+id/text_caller"
             tools:text="@string/status_call_incoming" />
 
         <!-- Hold Button -->
+
+        <TextView
+            android:id="@+id/text_stopwatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:textColor="@color/color_accent_green"
+            app:layout_constraintBottom_toTopOf="@+id/guide_eye_level"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="00:00" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_eye_level"
             android:layout_width="wrap_content"
@@ -103,15 +113,14 @@
             android:id="@+id/button_hold"
             android:layout_width="@dimen/flat_button_size"
             android:layout_height="62dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="120dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="24dp"
             android:layout_weight="1"
             android:background="@drawable/ripple_oval"
             android:clickable="true"
             android:focusable="true"
             android:padding="@dimen/flat_button_padding"
-            app:tint="@color/selector_button_icon"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/button_speaker"
             app:layout_constraintEnd_toStartOf="@+id/button_add_call"
@@ -121,20 +130,21 @@
             app:layout_constraintVertical_bias="0.32999998"
             app:layout_constraintVertical_chainStyle="packed"
             app:srcCompat="@drawable/hold_icon"
+            app:tint="@color/selector_button_icon"
             tools:visibility="visible" />
 
         <!-- Mute Button -->
         <ImageView
             android:id="@+id/button_mute"
+            android:contentDescription="Madarchod"
             android:layout_width="@dimen/flat_button_size"
             android:layout_height="@dimen/flat_button_size"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="24dp"
             android:layout_weight="1"
             android:background="@drawable/ripple_oval"
             android:clickable="true"
             android:focusable="true"
             android:padding="@dimen/flat_button_padding"
-            app:tint="@color/selector_button_icon"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/button_hold"
             app:layout_constraintEnd_toStartOf="@+id/button_hold"
@@ -143,6 +153,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/button_hold"
             app:srcCompat="@drawable/mute_icon"
+            app:tint="@color/selector_button_icon"
             tools:visibility="visible" />
 
         <!-- Speaker Button -->
@@ -150,13 +161,12 @@
             android:id="@+id/button_add_call"
             android:layout_width="@dimen/flat_button_size"
             android:layout_height="@dimen/flat_button_size"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_weight="1"
             android:background="@drawable/ripple_oval"
             android:clickable="true"
             android:focusable="true"
             android:padding="@dimen/flat_button_padding"
-            app:tint="@color/selector_button_icon"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/button_hold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -164,6 +174,7 @@
             app:layout_constraintStart_toEndOf="@+id/button_hold"
             app:layout_constraintTop_toTopOf="@+id/button_hold"
             app:srcCompat="@drawable/ic_add_black_24dp"
+            app:tint="@color/selector_button_icon"
             tools:visibility="visible" />
 
         <!-- Keypad Button -->
@@ -171,13 +182,12 @@
             android:id="@+id/button_keypad"
             android:layout_width="@dimen/flat_button_size"
             android:layout_height="@dimen/flat_button_size"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="64dp"
             android:layout_weight="1"
             android:background="@drawable/ripple_oval"
             android:clickable="true"
             android:focusable="true"
             android:padding="@dimen/flat_button_padding"
-            app:tint="@color/selector_button_icon"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/button_speaker"
             app:layout_constraintEnd_toStartOf="@+id/button_speaker"
@@ -186,6 +196,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/button_speaker"
             app:srcCompat="@drawable/gallery"
+            app:tint="@color/selector_button_icon"
             tools:visibility="visible" />
 
         <!-- Add Call Button -->
@@ -193,19 +204,19 @@
             android:id="@+id/button_speaker"
             android:layout_width="65dp"
             android:layout_height="67dp"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="64dp"
             android:layout_marginTop="32dp"
             android:background="@drawable/ripple_oval"
             android:clickable="true"
             android:focusable="true"
             android:padding="@dimen/flat_button_padding"
-            app:tint="@color/selector_button_icon"
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/button_keypad"
             app:layout_constraintTop_toBottomOf="@+id/button_hold"
             app:srcCompat="@drawable/speaker"
+            app:tint="@color/selector_button_icon"
             tools:visibility="visible" />
 
         <!-- Answer Button -->
@@ -241,6 +252,34 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:maxImageSize="36dp" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mute"
+            app:layout_constraintEnd_toEndOf="@+id/button_mute"
+            app:layout_constraintStart_toStartOf="@+id/button_mute"
+            app:layout_constraintTop_toBottomOf="@+id/button_mute" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/status_call_holding"
+            app:layout_constraintEnd_toEndOf="@+id/button_hold"
+            app:layout_constraintStart_toStartOf="@+id/button_hold"
+            app:layout_constraintTop_toBottomOf="@+id/button_hold" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Add call"
+            app:layout_constraintEnd_toEndOf="@+id/button_add_call"
+            app:layout_constraintStart_toStartOf="@+id/button_add_call"
+            app:layout_constraintTop_toBottomOf="@+id/button_add_call" />
 
         <!-- Guidelines -->
     </androidx.constraintlayout.widget.ConstraintLayout>
