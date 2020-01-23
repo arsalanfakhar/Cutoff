@@ -1,5 +1,6 @@
 package com.example.techtik.cuttoff.Activity;
 
+import com.example.techtik.cuttoff.Adapters.listeners.OnItemClickListener;
 import com.example.techtik.cuttoff.Util.Utilities;
 import com.github.angads25.toggle.interfaces.OnToggledListener;
 import com.github.angads25.toggle.model.ToggleableView;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     MenuItem prevMenuItem;
     private DrawerLayout drawer;
     private Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,14 +195,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_search_menu,menu);
-        MenuItem menuItem=menu.findItem(R.id.action_search);
-        SearchView searchView= (SearchView) menuItem.getActionView();
-        searchView.setQueryHint("Type here to search");
-        searchView.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-
-        return super.onCreateOptionsMenu(menu);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.toolbar_search_menu,menu);
+//        MenuItem menuItem=menu.findItem(R.id.action_search);
+//        SearchView searchView= (SearchView) menuItem.getActionView();
+//        searchView.setQueryHint("Type here to search");
+//        searchView.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+//
+//
+//        return super.onCreateOptionsMenu(menu);
+//    }
 }

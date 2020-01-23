@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.databinding.DataBindingUtil;
 
 import androidx.fragment.app.Fragment;
@@ -22,6 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -90,7 +94,7 @@ public class ContactListFragment extends Fragment implements
         View view=contactListBinding.getRoot();
 
         init();
-
+        setHasOptionsMenu(true);
 
 //        contactListBinding.searchContactTxt.setOnSearchClickListener(new View.OnClickListener() {
 //            @Override
@@ -447,5 +451,32 @@ public class ContactListFragment extends Fragment implements
         return true;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar_search_menu,menu);
+        MenuItem menuItem=menu.findItem(R.id.action_search);
+        SearchView searchView= (SearchView) menuItem.getActionView();
+        searchView.setQueryHint("Type here to search contacts");
+        searchView.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(isLoaderRunning()){
+                    Bundle args = new Bundle();
+                    args.putString(ARG_SEARCH_PHONE_NUMBER,newText);
+                    LoaderManager.getInstance(ContactListFragment.this).restartLoader(LOADER_CONTACTS_ID,args,ContactListFragment.this);
+                }
+                return false;
+            }
+        });
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
 }

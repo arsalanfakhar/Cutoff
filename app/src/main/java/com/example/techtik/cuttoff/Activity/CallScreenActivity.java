@@ -313,7 +313,11 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
         ongoingSet.clone(mOngoingCallLayout);
         ongoingSet.connect(R.id.reject_btn,ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.END);
         ongoingSet.connect(R.id.reject_btn, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.START);
+
+        ongoingSet.connect(R.id.reject_btn,ConstraintSet.TOP,R.id.button_hold,ConstraintSet.BOTTOM);
+
         ongoingSet.setHorizontalBias(R.id.reject_btn, 0.5f);
+        ongoingSet.setVerticalBias(R.id.reject_btn,0.3f);
 
         ongoingSet.setMargin(R.id.reject_btn, ConstraintSet.END, 0);
 
@@ -367,12 +371,12 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
          * Toggle the active state of a view
          */
         v.setActivated(!v.isActivated());
-        if(v.isActivated()){
-            mMuteButton.setImageResource(R.drawable.ic_mic_off_black_24dp);
-        }
-        else {
-            mMuteButton.setImageResource(R.drawable.ic_mic_black_24dp);
-        }
+//        if(v.isActivated()){
+//            mMuteButton.setImageResource(R.drawable.ic_mic_off_black_24dp);
+//        }
+//        else {
+//            mMuteButton.setImageResource(R.drawable.ic_mic_black_24dp);
+//        }
         mAudioManager.setMicrophoneMute(v.isActivated());
     }
     /**

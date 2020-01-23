@@ -69,6 +69,7 @@ public final class RecentsCursorLoader extends CursorLoader {
         else return null;
     }
 
+
 //    private static String getDateSelection(Long date){
 //        if(date!=null)
 //            return CallLog.Calls.DATE+"='01/18/2019'";
@@ -87,7 +88,6 @@ public final class RecentsCursorLoader extends CursorLoader {
         if (phoneNumber != null && !phoneNumber.isEmpty()) {
             builder = Uri.withAppendedPath(CallLog.Calls.CONTENT_FILTER_URI, Uri.encode(phoneNumber)).buildUpon();
             builder.appendQueryParameter(ContactsContract.STREQUENT_PHONE_ONLY, "true");
-
         } else {
             builder = CallLog.Calls.CONTENT_URI.buildUpon();
         }
