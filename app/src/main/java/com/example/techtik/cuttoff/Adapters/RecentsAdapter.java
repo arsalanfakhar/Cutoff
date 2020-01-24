@@ -2,6 +2,8 @@ package com.example.techtik.cuttoff.Adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import com.example.techtik.cuttoff.Models.RecentCall;
 import com.example.techtik.cuttoff.R;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class RecentsAdapter extends AbsFastScrollerAdapter<RecentsAdapter.RecentCallHolder> {
@@ -90,7 +93,20 @@ public class RecentsAdapter extends AbsFastScrollerAdapter<RecentsAdapter.Recent
         }
 
         //TODO set the call type for image and also the click listeners
+        switch (recentCall.getCallType()){
+            case RecentCall.mIncomingCall:
+                holder.status.setImageResource(R.drawable.greenicon);
+                break;
+            case RecentCall.mOutgoingCall:
+                holder.status.setImageResource(R.drawable.outgoing);
 
+                break;
+            case RecentCall.mMissedCall:
+                holder.status.setImageResource(R.drawable.missed);
+                break;
+            default:
+                break;
+        }
 
 
     }

@@ -89,4 +89,5 @@ dependencies {
     //Phone number formatting
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.10.5'
 
+    implementation 'com.github.hotchemi:android-rate:1.0.1'
 }

@@ -39,7 +39,7 @@ public class SplashActivity extends AppCompatActivity {
     private static final int SPLASH_TIMEOUT = 3000;
     public static final int PERMISSION_RC = 0;
     public static final int DIALER_RC = 10;
-    public static final String[] MUST_HAVE_PERMISSIONS = {Manifest.permission.READ_CONTACTS, CALL_PHONE, READ_CALL_LOG,Manifest.permission.MODIFY_AUDIO_SETTINGS,Manifest.permission.RECORD_AUDIO};
+    public static final String[] MUST_HAVE_PERMISSIONS = {Manifest.permission.READ_CONTACTS, CALL_PHONE, READ_CALL_LOG,Manifest.permission.MODIFY_AUDIO_SETTINGS,Manifest.permission.RECORD_AUDIO, CALL_PHONE};
     public static SharedPreferences pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

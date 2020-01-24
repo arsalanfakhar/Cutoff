@@ -143,6 +143,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
         if (args != null && args.containsKey(ARG_CONTACT_NAME)) {
             contactName = args.getString(ARG_CONTACT_NAME);
         }
+
         RecentsCursorLoader recentsCursorLoader = new RecentsCursorLoader(getContext(), phoneNumber, contactName);
         return recentsCursorLoader;
 
@@ -188,7 +189,7 @@ public class HomeFragment extends Fragment implements LoaderManager.LoaderCallba
             public boolean onQueryTextChange(String newText) {
                 if(isLoaderRunning()){
                     Bundle args = new Bundle();
-                    args.putString(ARG_PHONE_NUMBER, newText);
+                    args.putString(ARG_CONTACT_NAME, newText);
                     LoaderManager.getInstance(HomeFragment.this).restartLoader(LOADER_ID,args,HomeFragment.this);
                 }
                 return false;

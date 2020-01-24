@@ -14,7 +14,10 @@ import androidx.transition.TransitionManager;
 import android.annotation.SuppressLint;
 import android.app.KeyguardManager;
 import android.content.Context;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -55,59 +58,63 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
     private static final int TIME_UPDATE = 2;
     private static final int REFRESH_RATE = 100;
     private static int mState;
-
-
-    // Fragments
-    private DialpadFragment mDialpadFragment;
-
-    // ViewModels
-    private SharedDialViewModel mSharedDialViewModel;
-
-    // BottomSheet
-    private BottomSheetBehavior mBottomSheetBehavior;
-
-
     // Current states
     boolean mIsCallingUI = false;
     boolean mIsCreatingUI = true;
-
     // Utilities
     Stopwatch mCallTimer = new Stopwatch();
-    Callback mCallback=new Callback();
-
+    Callback mCallback = new Callback();
     // PowerManager
     PowerManager powerManager;
     PowerManager.WakeLock wakeLock;
-    private int field = 0x00000020;
-
     // Audio
     AudioManager mAudioManager;
-
     // Handlers
     Handler mCallTimeHandler = new CallTimeHandler();
-
     // Action buttons
-    @BindView(R.id.answer_btn) FloatingActionButton mAnswerButton;
-    @BindView(R.id.reject_btn) FloatingActionButton mRejectButton;
-
-    @BindView(R.id.call_screen_on_going_call) ConstraintLayout mOngoingCallLayout;
+    @BindView(R.id.answer_btn)
+    FloatingActionButton mAnswerButton;
+    @BindView(R.id.reject_btn)
+    FloatingActionButton mRejectButton;
+    @BindView(R.id.call_screen_on_going_call)
+    ConstraintLayout mOngoingCallLayout;
     OnGoingCallBinding onGoingCallBinding;
-
     // Image Views
 //    @BindView(R.id.image_placeholder) ImageView mPlaceholderImage;
-    @BindView(R.id.image_photo) ImageView mPhotoImage;
-    @BindView(R.id.button_hold) ImageView mHoldButton;
-    @BindView(R.id.button_mute) ImageView mMuteButton;
-    @BindView(R.id.button_keypad) ImageView mKeypadButton;
-    @BindView(R.id.button_speaker) ImageView mSpeakerButton;
-    @BindView(R.id.button_add_call) ImageView mAddCallButton;
-
+    @BindView(R.id.image_photo)
+    ImageView mPhotoImage;
+    @BindView(R.id.button_hold)
+    ImageView mHoldButton;
+    @BindView(R.id.button_mute)
+    ImageView mMuteButton;
+    @BindView(R.id.button_keypad)
+    ImageView mKeypadButton;
+    @BindView(R.id.button_speaker)
+    ImageView mSpeakerButton;
+    @BindView(R.id.button_add_call)
+    ImageView mAddCallButton;
     // Text views
-    @BindView(R.id.text_status) TextView mStatusText;
-    @BindView(R.id.text_caller) TextView mCallerText;
-    @BindView(R.id.text_stopwatch) TextView mTimeText;
+    @BindView(R.id.text_status)
+    TextView mStatusText;
+    @BindView(R.id.text_caller)
+    TextView mCallerText;
+    @BindView(R.id.text_stopwatch)
+    TextView mTimeText;
+    @BindView(R.id.mute_label)
+    TextView mMuteLabel;
+    @BindView(R.id.hold_label)
+    TextView mHoldLabel;
+    @BindView(R.id.add_call_label)
+    TextView mAddCallLabel;
+    Ringtone ringtone;
+    // Fragments
+    private DialpadFragment mDialpadFragment;
+    // ViewModels
+    private SharedDialViewModel mSharedDialViewModel;
+    // BottomSheet
+    private BottomSheetBehavior mBottomSheetBehavior;
+    private int field = 0x00000020;
 
-    View mDialerFrame;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,17 +125,17 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
 
 
         //call binding
-      //  onGoingCallBinding=DataBindingUtil.setContentView(this,R.layout.on_going_call);
+        //  onGoingCallBinding=DataBindingUtil.setContentView(this,R.layout.on_going_call);
 
         //onGoingCallBinding.textStopwatch.setText("Billy here");
 
         // This activity needs to show even if the screen is off or locked
 
-        Window window=getWindow();
+        Window window = getWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true);
             setTurnScreenOn(true);
-        }else {
+        } else {
             window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
                     WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         }
@@ -152,8 +159,8 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
 
         // Initiate PowerManager and WakeLock (turn screen on/off according to distance from face)
         try {
-            field=PowerManager.class.getField("PROXIMITY_SCREEN_OFF_WAKE_LOCK").getInt(null);
-        }catch (Throwable ignored) {
+            field = PowerManager.class.getField("PROXIMITY_SCREEN_OFF_WAKE_LOCK").getInt(null);
+        } catch (Throwable ignored) {
 
         }
 
@@ -162,6 +169,13 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
 
         // Audio Manager
         mAudioManager = (AudioManager) getApplicationContext().getSystemService(AUDIO_SERVICE);
+//        mAudioManager.setMode(AudioManager.RINGER_MODE_NORMAL);
+//        mAudioManager.setStreamVolume(AudioManager.STREAM_RING, mAudioManager.getStreamMaxVolume(AudioManager.STREAM_RING), 0);
+
+        //to play ringtone
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        ringtone = RingtoneManager.getRingtone(getApplicationContext(), notification);
+
 
         // Fragments
         mDialpadFragment = DialpadFragment.newInstance(false);
@@ -209,11 +223,19 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
 //        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN); // Hide the bottom sheet
 
 //        //declare sheet
-        View bottomsheet=findViewById(R.id.bottom_sheet);
-        mBottomSheetBehavior=BottomSheetBehavior.from(bottomsheet);
+        View bottomsheet = findViewById(R.id.bottom_sheet);
+        mBottomSheetBehavior = BottomSheetBehavior.from(bottomsheet);
         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
+    private void playRingtone(){
+        try {
+            ringtone.play();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     // -- Call Actions -- //
 
@@ -221,7 +243,8 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
      * /*
      * Answers incoming call and changes the ui accordingly
      */
-    private void activateCall(){
+    private void activateCall() {
+        ringtone.stop();
         CallManager.answer();
         switchToCallingUI();
     }
@@ -229,17 +252,18 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
     /**
      * End current call / Incoming call and changes the ui accordingly
      */
-    private void endCall(){
-       mCallTimeHandler.sendEmptyMessage(TIME_STOP);
-       CallManager.reject();
-       releaseWakeLock();
+    private void endCall() {
+        ringtone.stop();
+        mCallTimeHandler.sendEmptyMessage(TIME_STOP);
+        CallManager.reject();
+        releaseWakeLock();
 
-       new Handler().postDelayed(new Runnable() {
-           @Override
-           public void run() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
                 finish();
-           }
-       },END_CALL_MILLIS);
+            }
+        }, END_CALL_MILLIS);
 
     }
 
@@ -248,7 +272,7 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
      *
      * @param state the current call state
      */
-    private void updateUI(int state){
+    private void updateUI(int state) {
         @StringRes int statusTextRes;
         switch (state) {
             case Call.STATE_ACTIVE: // Ongoing
@@ -258,6 +282,7 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
                 statusTextRes = R.string.status_call_disconnected;
                 break;
             case Call.STATE_RINGING: // Incoming
+                playRingtone();
                 statusTextRes = R.string.status_call_incoming;
                 //showBiometricPrompt(this);
                 break;
@@ -277,18 +302,18 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
             switchToCallingUI();
         if (state == Call.STATE_DISCONNECTED)
             endCall();
-        mState=state;
+        mState = state;
     }
 
 
     /**
      * Switches the ui to an active call ui.
      */
-    private void switchToCallingUI(){
-        if(mIsCallingUI)
+    private void switchToCallingUI() {
+        if (mIsCallingUI)
             return;
         else
-            mIsCallingUI=true;
+            mIsCallingUI = true;
 
         mAudioManager.setMode(AudioManager.MODE_IN_CALL);
         acquireWakeLock();
@@ -301,6 +326,9 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
         mKeypadButton.setVisibility(View.VISIBLE);
         mSpeakerButton.setVisibility(View.VISIBLE);
         mAddCallButton.setVisibility(View.VISIBLE);
+        mMuteLabel.setVisibility(View.VISIBLE);
+        mHoldLabel.setVisibility(View.VISIBLE);
+        mAddCallLabel.setVisibility(View.VISIBLE);
         moveRejectButtonToMiddle();
 
     }
@@ -308,16 +336,16 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
     /**
      * Moves the reject button to the middle
      */
-    private void moveRejectButtonToMiddle(){
+    private void moveRejectButtonToMiddle() {
         ConstraintSet ongoingSet = new ConstraintSet();
         ongoingSet.clone(mOngoingCallLayout);
-        ongoingSet.connect(R.id.reject_btn,ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.END);
+        ongoingSet.connect(R.id.reject_btn, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.END);
         ongoingSet.connect(R.id.reject_btn, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.START);
 
-        ongoingSet.connect(R.id.reject_btn,ConstraintSet.TOP,R.id.button_hold,ConstraintSet.BOTTOM);
+        ongoingSet.connect(R.id.reject_btn, ConstraintSet.TOP, R.id.button_hold, ConstraintSet.BOTTOM);
 
         ongoingSet.setHorizontalBias(R.id.reject_btn, 0.5f);
-        ongoingSet.setVerticalBias(R.id.reject_btn,0.3f);
+        ongoingSet.setVerticalBias(R.id.reject_btn, 0.3f);
 
         ongoingSet.setMargin(R.id.reject_btn, ConstraintSet.END, 0);
 
@@ -348,7 +376,7 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onStart() {
         super.onStart();
-        mIsCreatingUI=false;
+        mIsCreatingUI = false;
     }
 
     @Override
@@ -366,7 +394,7 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
      *
      * @param v
      */
-    private void toggleMute(View v){
+    private void toggleMute(View v) {
         /**
          * Toggle the active state of a view
          */
@@ -379,6 +407,7 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
 //        }
         mAudioManager.setMicrophoneMute(v.isActivated());
     }
+
     /**
      * Turns on/off the speaker according to current state (if already on/off)
      *
@@ -394,7 +423,7 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
      *
      * @param view
      */
-    private void toggleHold(View view){
+    private void toggleHold(View view) {
         view.setActivated(!view.isActivated());
         CallManager.hold(view.isActivated());
     }
@@ -413,7 +442,7 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
      */
     private void acquireWakeLock() {
         if (!wakeLock.isHeld()) {
-            Toast.makeText(CallScreenActivity.this,"Wake lock acquired",Toast.LENGTH_SHORT).show();
+            Toast.makeText(CallScreenActivity.this, "Wake lock acquired", Toast.LENGTH_SHORT).show();
             wakeLock.acquire(10 * 60 * 1000L /*10 minutes*/);
         }
     }
@@ -437,55 +466,29 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
 
     // -- UI -- //
 
-    private void displayInformation(){
+    private void displayInformation() {
         // Display the information about the caller
-         Contact callerContact=CallManager.getDisplayContact(this);
-         if(!callerContact.getName().isEmpty()){
-            if(callerContact.getName()!=null)
+        Contact callerContact = CallManager.getDisplayContact(this);
+        if (!callerContact.getName().isEmpty()) {
+            if (callerContact.getName() != null)
                 mCallerText.setText(callerContact.getName());
-            if(callerContact.getPhotoUri()!=null){
+            if (callerContact.getPhotoUri() != null) {
 //                mPlaceholderImage.setVisibility(View.INVISIBLE);
 //                mPhotoImage.setVisibility(View.VISIBLE);
                 mPhotoImage.setImageURI(Uri.parse(callerContact.getPhotoUri()));
 
             }
-         }
-         else {
+        } else {
             //TODO get main phone number
-         }
-
-    }
-
-    @SuppressLint("HandlerLeak")
-    class CallTimeHandler extends Handler{
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what){
-                case TIME_START:
-                    mCallTimer.start();
-                    mCallTimeHandler.sendEmptyMessage(TIME_UPDATE); // Starts the time ui updates
-                    break;
-                case TIME_STOP:
-                    mCallTimeHandler.removeMessages(TIME_UPDATE); // No more updates
-                    mCallTimer.stop(); // Stops the timer
-                    updateTimeUI(); // Updates the time ui
-                    break;
-                case TIME_UPDATE:
-                    updateTimeUI(); // Updates the time ui
-                    mCallTimeHandler.sendEmptyMessageDelayed(TIME_UPDATE, REFRESH_RATE); // Text view updates every milisecond (REFRESH RATE)
-                    break;
-                default:
-                    break;
-            }
         }
+
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.answer_btn:
-                Toast.makeText(CallScreenActivity.this,"Call activated",Toast.LENGTH_SHORT).show();
+                Toast.makeText(CallScreenActivity.this, "Call activated", Toast.LENGTH_SHORT).show();
                 activateCall();
                 break;
             case R.id.reject_btn:
@@ -509,8 +512,33 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
     /**
      * Update the current call time ui
      */
-    private void updateTimeUI(){
+    private void updateTimeUI() {
         mTimeText.setText(mCallTimer.getStringTime());
+    }
+
+    @SuppressLint("HandlerLeak")
+    class CallTimeHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case TIME_START:
+                    mCallTimer.start();
+                    mCallTimeHandler.sendEmptyMessage(TIME_UPDATE); // Starts the time ui updates
+                    break;
+                case TIME_STOP:
+                    mCallTimeHandler.removeMessages(TIME_UPDATE); // No more updates
+                    mCallTimer.stop(); // Stops the timer
+                    updateTimeUI(); // Updates the time ui
+                    break;
+                case TIME_UPDATE:
+                    updateTimeUI(); // Updates the time ui
+                    mCallTimeHandler.sendEmptyMessageDelayed(TIME_UPDATE, REFRESH_RATE); // Text view updates every milisecond (REFRESH RATE)
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
 
@@ -520,15 +548,11 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
      * @param state the current call state
      */
 
-
-
-
-
     /**
      * Callback class
      * Listens to the call and do stuff when something changes
      */
-    public class Callback extends Call.Callback{
+    public class Callback extends Call.Callback {
 
         @Override
         public void onStateChanged(Call call, int state) {
@@ -546,7 +570,7 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
              */
 
             super.onStateChanged(call, state);
-            Log.v("State changed:",String.valueOf(state));
+            Log.v("State changed:", String.valueOf(state));
             updateUI(state);
 
         }
@@ -554,7 +578,7 @@ public class CallScreenActivity extends AppCompatActivity implements View.OnClic
         @Override
         public void onDetailsChanged(Call call, Call.Details details) {
             super.onDetailsChanged(call, details);
-            Log.v("Details changed",details.toString());
+            Log.v("Details changed", details.toString());
         }
 
     }

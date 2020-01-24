@@ -154,9 +154,11 @@ public class ContactListFragment extends Fragment implements
     }
 
     //Methods
-    public void makeCall(String normPhoneNumber) {
+    private void makeCall(String normPhoneNumber) {
         if (normPhoneNumber == null) return;
-        CallManager.call(this.getContext(), normPhoneNumber);
+        String dial="tel:"+normPhoneNumber;
+        startActivity(new Intent(Intent.ACTION_CALL,Uri.parse(dial)));
+    //        CallManager.call(this.getContext(), normPhoneNumber);
     }
 
 
@@ -352,8 +354,13 @@ public class ContactListFragment extends Fragment implements
 
                 });
 
+
+
+
         AlertDialog dialog=builder.create();
         dialog.show();
+
+
 
         dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             if(TextUtils.isEmpty(newMessage.getText())){

@@ -4,14 +4,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.techtik.cuttoff.Fragments.Aboutfragment;
 import com.example.techtik.cuttoff.Fragments.ComfortFragment;
 import com.example.techtik.cuttoff.Fragments.ContactListFragment;
 import com.example.techtik.cuttoff.Fragments.HomeFragment;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
-    public MainPagerAdapter(FragmentManager fm) {
+    private int count;
+    public MainPagerAdapter(FragmentManager fm,int count) {
         super(fm);
+        this.count=count;
     }
+
 
     @Override
     public Fragment getItem(int position) {
@@ -28,7 +32,9 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             case 2:
 
                 return new ContactListFragment();
+            case 3:
 
+                return new Aboutfragment();
 
             default:
 
@@ -38,6 +44,10 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

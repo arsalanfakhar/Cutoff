@@ -98,7 +98,7 @@ public final class RecentsCursorLoader extends CursorLoader {
     private static Uri buildUriRecent() {
         Uri.Builder builder;
         builder = CallLog.Calls.CONTENT_URI.buildUpon();
-        builder.appendQueryParameter(ContactsContract.REMOVE_DUPLICATE_ENTRIES, "true");
+        //builder.appendQueryParameter(ContactsContract.REMOVE_DUPLICATE_ENTRIES, "true");
         return builder.build();
     }
 

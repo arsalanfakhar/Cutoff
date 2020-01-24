@@ -59,7 +59,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/log_contact_time"
                 app:layout_constraintEnd_toStartOf="@+id/log_contact_time"
                 app:layout_constraintTop_toTopOf="@+id/log_contact_time"
-                app:srcCompat="@drawable/greenicon" />
+                tools:srcCompat="@drawable/greenicon" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

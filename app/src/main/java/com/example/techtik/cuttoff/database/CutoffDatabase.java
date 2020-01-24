@@ -80,25 +80,26 @@ public abstract class CutoffDatabase extends RoomDatabase {
             defaultRecDAO.addCustomRec(defaultRecordings4);
 
             ArrayList<String> strings=new ArrayList<>();
-            strings.add("343434");
+            strings.add("3472867833");
 
             CustomRecordings customRecordings=new CustomRecordings();
             customRecordings.setmCustomMessage("Hello testing 123");
-            customRecordings.setName("wasif");
-            customRecordings.setPhones(strings);
-            customRecordings.setPhotoUri(Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar1").toString());
+//            customRecordings.setName("wasif");
+//            customRecordings.setPhones(strings);
+//            customRecordings.setPhotoUri(Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar1").toString());
 
 
-            CustomRecordings customRecordings1=new CustomRecordings();
-            customRecordings1.setmCustomMessage("Hello testing 123");
-            customRecordings.setName("saif");
+//            CustomRecordings customRecordings1=new CustomRecordings();
+//            customRecordings1.setmCustomMessage("Hello testing 123");
+            customRecordings.setName("test_record");
             customRecordings.setPhones(strings);
             customRecordings.setPhotoUri(Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar2").toString());
 
             customRecDAO.addCustomRec(customRecordings);
-            customRecDAO.addCustomRec(customRecordings1);
+//            customRecDAO.addCustomRec(customRecordings1);
 
             return null;
         }
     }
 }
+

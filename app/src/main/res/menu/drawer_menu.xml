@@ -7,42 +7,53 @@
                 android:id="@+id/nav_btn_switch"
                 android:title="App status"
                 app:actionLayout="@layout/layout_swtich_btn"
-                app:showAsAction="ifRoom"/>
+                app:showAsAction="ifRoom" />
         </menu>
     </item>
-    <item
-        android:id="@+id/nav_fav"
-        android:icon="@drawable/favorites"
-        android:title="Favourites" />
+    <!--    <item-->
+    <!--        android:id="@+id/nav_fav"-->
+    <!--        android:icon="@drawable/favorites"-->
+    <!--        android:title="Favourites" />-->
+    <!--    <item-->
+
     <item
         android:id="@+id/nav_recent"
         android:icon="@drawable/recent"
         android:title="Recents" />
+    <item
+        android:id="@+id/nav_recording"
+        android:icon="@drawable/features"
+        android:title="Recording" />
+    <item
+        android:id="@+id/nav_contact"
+        android:icon="@drawable/contacts"
+        android:title="Contact" />
+
 
     <item
         android:id="@+id/nav_about"
         android:icon="@drawable/drawer_about"
         android:title="About Peaceout" />
+    <item
+        android:id="@+id/nav_rating"
+        android:icon="@drawable/favorites"
+        android:title="Rate Us" />
+    <!--    <item-->
+    <!--        android:id="@+id/nav_faq"-->
+    <!--        android:icon="@drawable/question"-->
+    <!--        android:title="FAQ's" />-->
+    <!--    <item-->
+    <!--        android:id="@+id/nav_tandc"-->
+    <!--        android:icon="@drawable/question"-->
+    <!--        android:title="Terms and Conditions" />-->
+    <!--    <item-->
+    <!--        android:id="@+id/nav_privacy"-->
+    <!--        android:icon="@drawable/question"-->
+    <!--        android:title="Privacy Policy" />-->
 
-    <item
-        android:id="@+id/nav_faq"
-        android:icon="@drawable/question"
-        android:title="FAQ's" />
-    <item
-        android:id="@+id/nav_tandc"
-        android:icon="@drawable/question"
-        android:title="Terms and Conditions" />
-    <item
-        android:id="@+id/nav_privacy"
-        android:icon="@drawable/question"
-        android:title="Privacy Policy" />
-    <item
-        android:id="@+id/nav_contact"
-        android:icon="@drawable/question"
-        android:title="Contact" />
-    <item
-        android:id="@+id/nav_lang"
-        android:icon="@drawable/language"
-        android:title="Language" />
+    <!--    <item-->
+    <!--        android:id="@+id/nav_lang"-->
+    <!--        android:icon="@drawable/language"-->
+    <!--        android:title="Language" />-->
 
 </menu>
