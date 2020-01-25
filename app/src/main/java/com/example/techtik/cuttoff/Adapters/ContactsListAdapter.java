@@ -20,6 +20,7 @@ import com.example.techtik.cuttoff.Adapters.listeners.OnItemClickListener;
 import com.example.techtik.cuttoff.Models.Contact;
 import com.example.techtik.cuttoff.R;
 import com.example.techtik.cuttoff.Util.Utilities;
+import com.futuremind.recyclerviewfastscroll.SectionTitleProvider;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ContactsListAdapter extends AbsFastScrollerAdapter<ContactsListAdapter.ContactViewHolder> {
+public class ContactsListAdapter extends AbsFastScrollerAdapter<ContactsListAdapter.ContactViewHolder>implements SectionTitleProvider {
 
     private final String phoneNumberRegex = "^[\\d*#+]+$";
     // Click listeners
@@ -55,7 +56,6 @@ public class ContactsListAdapter extends AbsFastScrollerAdapter<ContactsListAdap
 
     @Override
     public void onBindViewHolder(ContactViewHolder holder, Cursor cursor) {
-        int position = cursor.getPosition();
 
         // Display the contact's information
         Contact contact = new Contact(cursor);
@@ -136,5 +136,10 @@ public class ContactsListAdapter extends AbsFastScrollerAdapter<ContactsListAdap
 //            });
         }
 
+    }
+
+    @Override
+    public String getSectionTitle(int position) {
+        return "a";
     }
 }

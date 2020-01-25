@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import hotchemi.android.rate.AppRate;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -199,6 +200,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void setActionBarTitle(String title) {
         TextView textView = new TextView(this);
         textView.setText(title);
+        textView.setTextColor(Color.BLACK);
+        textView.setTextAppearance(R.style.TextAppearance_MaterialComponents_Subtitle1);
         ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT,
                 ActionBar.LayoutParams.WRAP_CONTENT);
         layoutParams.gravity = Gravity.CENTER;

@@ -89,5 +89,10 @@ dependencies {
     //Phone number formatting
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.10.5'
 
+    //Rating dialog library
     implementation 'com.github.hotchemi:android-rate:1.0.1'
+
+    //Fast scroller
+    implementation 'com.futuremind.recyclerfastscroll:fastscroll:0.2.5'
+
 }

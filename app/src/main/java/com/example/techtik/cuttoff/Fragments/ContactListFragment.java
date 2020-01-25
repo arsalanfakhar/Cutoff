@@ -151,6 +151,8 @@ public class ContactListFragment extends Fragment implements
             String phone=scrollContactsAdapter.getArrayList().get(pos).getCallerNumber();
             makeCall(phone);
         });
+
+
     }
 
     //Methods
@@ -170,6 +172,9 @@ public class ContactListFragment extends Fragment implements
         mContactsListAdapter =new ContactsListAdapter(getContext(), null,this);
         contactListBinding.contactRv.setLayoutManager(new LinearLayoutManager(getContext()));
         contactListBinding.contactRv.setAdapter(mContactsListAdapter);
+
+        //Fast scroller
+        contactListBinding.fastscroll.setRecyclerView(contactListBinding.contactRv);
 
         // Refresh Layout
         contactListBinding.refreshLayout.setOnRefreshListener(() -> {
@@ -482,6 +487,7 @@ public class ContactListFragment extends Fragment implements
                 return false;
             }
         });
+
 
         super.onCreateOptionsMenu(menu, inflater);
     }
