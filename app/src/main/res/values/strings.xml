@@ -48,4 +48,16 @@
 
     <!--    Contacts fragment-->
     <string name="contact_frag_title">Latest Activity</string>
+
+    <!--Empty-->
+    <string name="empty_cgroups_title">Nothing here… yet</string>
+    <string name="empty_cgroups_desc">You can try to add something</string>
+
+    <string name="empty_contact_title">No contact matching search query found</string>
+    <string name="empty_contact_desc" />
+
+    <string name="empty_recents_title">No recent calls... yet</string>
+    <string name="empty_recents_desc" />
+
+
 </resources>

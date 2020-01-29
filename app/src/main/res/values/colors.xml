@@ -23,4 +23,6 @@
     <color name="icon_active_light">#3D3D3D</color>
     <color name="icon_active_dark">#FFFFFF</color>
     <color name="grey_850">#303030</color>
+
+    <color name="grey_400">#BDBDBD</color>
 </resources>

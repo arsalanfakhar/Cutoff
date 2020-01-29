@@ -3,15 +3,12 @@ package com.example.techtik.cuttoff.Adapters;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
@@ -20,7 +17,7 @@ import com.example.techtik.cuttoff.Adapters.listeners.OnItemClickListener;
 import com.example.techtik.cuttoff.Models.Contact;
 import com.example.techtik.cuttoff.R;
 import com.example.techtik.cuttoff.Util.Utilities;
-import com.futuremind.recyclerviewfastscroll.SectionTitleProvider;
+import com.l4digital.fastscroll.FastScroller;
 
 import java.util.ArrayList;
 
@@ -28,11 +25,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ContactsListAdapter extends AbsFastScrollerAdapter<ContactsListAdapter.ContactViewHolder>implements SectionTitleProvider {
+public class ContactsListAdapter extends AbsFastScrollerAdapter<ContactsListAdapter.ContactViewHolder> implements FastScroller.SectionIndexer {
 
     private final String phoneNumberRegex = "^[\\d*#+]+$";
     // Click listeners
     private OnItemClickListener mOnItemClickListener;
+    private String contactTitle;
 
     /**
      * Constructor
@@ -103,6 +101,8 @@ public class ContactsListAdapter extends AbsFastScrollerAdapter<ContactsListAdap
             holder.itemView.setOnClickListener(v -> mOnItemClickListener.onItemClick(holder,contact));
         }
 
+        //Set contact tile
+        this.contactTitle=contactName.substring(0,1);
     }
 
 
@@ -138,8 +138,13 @@ public class ContactsListAdapter extends AbsFastScrollerAdapter<ContactsListAdap
 
     }
 
+//    @Override
+//    public String getSectionTitle(int position) {
+//        return contactTitle.toUpperCase();
+//    }
+
     @Override
-    public String getSectionTitle(int position) {
-        return "a";
+    public CharSequence getSectionText(int position) {
+        return contactTitle.toUpperCase();
     }
 }

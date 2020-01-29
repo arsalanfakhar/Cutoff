@@ -93,6 +93,5 @@ dependencies {
     implementation 'com.github.hotchemi:android-rate:1.0.1'
 
     //Fast scroller
-    implementation 'com.futuremind.recyclerfastscroll:fastscroll:0.2.5'
-
+    implementation 'com.l4digital.fastscroll:fastscroll:2.0.1'
 }

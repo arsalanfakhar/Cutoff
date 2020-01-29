@@ -76,7 +76,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/scroll_contact_name"
-            tools:text="last call"/>
+            tools:text="last call" />
 
         <com.yarolegovich.discretescrollview.DiscreteScrollView
             android:id="@+id/contact_picker"
@@ -88,6 +88,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/scroll_contact_last_call"
             tools:listitem="@layout/contact_scroll_rv"/>
+
 
         <ImageView
             android:id="@+id/call_btn"
@@ -137,24 +138,46 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/call_btn">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <androidx.recyclerview.widget.RecyclerView
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:id="@+id/contact_rv"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:scrollbars="none"-->
+<!--                    tools:listitem="@layout/contact_item_rv"/>-->
+                <com.l4digital.fastscroll.FastScrollView
                     android:id="@+id/contact_rv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scrollbars="none"
-                    tools:listitem="@layout/contact_item_rv"/>
-                <com.futuremind.recyclerviewfastscroll.FastScroller
-                    android:id="@+id/fastscroll"
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"/>
-            </RelativeLayout>
+                    app:bubbleColor="#FFFFFF"
+                    app:bubbleTextColor="#777777"
+                    app:bubbleSize="small"
+                    app:handleColor="#999999" />
+<!--                <com.futuremind.recyclerviewfastscroll.FastScroller-->
+<!--                    android:id="@+id/fastscroll"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:layout_width="100dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_alignParentEnd="true"/>-->
+
+<!--                <include-->
+<!--                    android:id="@+id/empty_state"-->
+<!--                    layout="@layout/page_empty_state"-->
+<!--                    android:visibility="visible" />-->
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <TextView
+            android:id="@+id/empty_log_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/empty_recents_title"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:layout_constraintBottom_toBottomOf="@+id/contact_picker"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scroll_contact_last_call" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

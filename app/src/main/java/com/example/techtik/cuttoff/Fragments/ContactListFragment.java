@@ -19,6 +19,7 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -69,8 +70,6 @@ public class ContactListFragment extends Fragment implements
 
     private HorizontalScrollContactsAdapter scrollContactsAdapter;
 
-    private List<Contact> tempLatestList=new ArrayList<>();
-
     private final static String phoneNumberRegex = "^[\\d*#+]+$";
 
     private static final int LOADER_CONTACTS_ID = 1;
@@ -84,14 +83,18 @@ public class ContactListFragment extends Fragment implements
     //Viewmodel
     private ComfortFragmentViewModel comfortFragmentViewModel;
 
+    private TextView mEmptyTitle;
+    private TextView mEmptyDesc;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        contactListBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_contact_list,container,false);
-        View view=contactListBinding.getRoot();
+        contactListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_contact_list, container, false);
+        View view = contactListBinding.getRoot();
+//        mEmptyTitle=view.findViewById(R.id.empty_title);
+//        mEmptyDesc=view.findViewById(R.id.empty_desc);
 
         init();
         setHasOptionsMenu(true);
@@ -106,24 +109,14 @@ public class ContactListFragment extends Fragment implements
         return view;
     }
 
-    private void init(){
+    private void init() {
         //initialize horizontal scroll view
 //        scrollContactsAdapter=new HorizontalScrollContactsAdapter(getContext(), (ArrayList<Contact>) contactsFragmentViewModel.contactList.getValue());
 //        contactListBinding.contactPicker.setAdapter(scrollContactsAdapter);
 
 
-        tempLatestList.add(new Contact("wasif","454535",Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar1").toString()));
-        tempLatestList.add(new Contact("wasi","454535",Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar1").toString()));
-        tempLatestList.add(new Contact("wasf","454535",Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar1").toString()));
-        tempLatestList.add(new Contact("wsif","454535",Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar1").toString()));
-        tempLatestList.add(new Contact("f","454535",Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar1").toString()));
-        tempLatestList.add(new Contact("wsif","454535",Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar1").toString()));
-        tempLatestList.add(new Contact("asif","454535",Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar1").toString()));
-        tempLatestList.add(new Contact("wif","454535",Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar1").toString()));
-        tempLatestList.add(new Contact("wasf","454535",Uri.parse("android.resource://com.example.techtik.cuttoff/drawable/avatar1").toString()));
 
-
-        scrollContactsAdapter=new HorizontalScrollContactsAdapter(getContext(), new ArrayList<>());
+        scrollContactsAdapter = new HorizontalScrollContactsAdapter(getContext(), new ArrayList<>());
         contactListBinding.contactPicker.setSlideOnFling(true);
 //        contactListBinding.contactPicker.setOffscreenItems(2);
         contactListBinding.contactPicker.setItemTransitionTimeMillis(500);
@@ -138,17 +131,17 @@ public class ContactListFragment extends Fragment implements
         contactListBinding.callBtn.setClickable(true);
 
         contactListBinding.messageBtn.setOnClickListener(v -> {
-            int pos=contactListBinding.contactPicker.getCurrentItem();
-            String phone=scrollContactsAdapter.getArrayList().get(pos).getCallerNumber();
-            startActivity(new Intent(Intent.ACTION_VIEW,Uri.fromParts("sms",phone,null)));
+            int pos = contactListBinding.contactPicker.getCurrentItem();
+            String phone = scrollContactsAdapter.getArrayList().get(pos).getCallerNumber();
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null)));
         });
 
         //Intialize viewmodel
-        comfortFragmentViewModel= ViewModelProviders.of(this).get(ComfortFragmentViewModel.class);
+        comfortFragmentViewModel = ViewModelProviders.of(this).get(ComfortFragmentViewModel.class);
 
         contactListBinding.callBtn.setOnClickListener(v -> {
-            int pos=contactListBinding.contactPicker.getCurrentItem();
-            String phone=scrollContactsAdapter.getArrayList().get(pos).getCallerNumber();
+            int pos = contactListBinding.contactPicker.getCurrentItem();
+            String phone = scrollContactsAdapter.getArrayList().get(pos).getCallerNumber();
             makeCall(phone);
         });
 
@@ -158,23 +151,21 @@ public class ContactListFragment extends Fragment implements
     //Methods
     private void makeCall(String normPhoneNumber) {
         if (normPhoneNumber == null) return;
-        String dial="tel:"+normPhoneNumber;
-        startActivity(new Intent(Intent.ACTION_CALL,Uri.parse(dial)));
-    //        CallManager.call(this.getContext(), normPhoneNumber);
+        String dial = "tel:" + normPhoneNumber;
+        startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+        //        CallManager.call(this.getContext(), normPhoneNumber);
     }
-
-
-
 
 
     protected void onFragmentReady() {
         // The list adapter
-        mContactsListAdapter =new ContactsListAdapter(getContext(), null,this);
+        mContactsListAdapter = new ContactsListAdapter(getContext(), null, this);
         contactListBinding.contactRv.setLayoutManager(new LinearLayoutManager(getContext()));
         contactListBinding.contactRv.setAdapter(mContactsListAdapter);
 
+
         //Fast scroller
-        contactListBinding.fastscroll.setRecyclerView(contactListBinding.contactRv);
+       // contactListBinding.fastscroll.setRecyclerView(contactListBinding.contactRv);
 
         // Refresh Layout
         contactListBinding.refreshLayout.setOnRefreshListener(() -> {
@@ -183,6 +174,8 @@ public class ContactListFragment extends Fragment implements
 
         });
 
+//        mEmptyTitle.setText(R.string.empty_contact_title);
+//        mEmptyDesc.setText(R.string.empty_contact_desc);
     }
 
     // -- Overrides -- //
@@ -201,7 +194,7 @@ public class ContactListFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-        Log.v("resume","true");
+        Log.v("resume", "true");
         tryRunningLoader();
         tryRunningRecentLoader();
     }
@@ -209,13 +202,13 @@ public class ContactListFragment extends Fragment implements
     @Override
     public void onCurrentItemChanged(@Nullable HorizontalScrollContactsAdapter.ContactViewHolder viewHolder, int position) {
         //setting the current selected contact name
-        ArrayList<RecentCall> recentCalls= scrollContactsAdapter.getArrayList();
-        if(recentCalls!=null && recentCalls.size()>0) {
+        ArrayList<RecentCall> recentCalls = scrollContactsAdapter.getArrayList();
+        if (recentCalls != null && recentCalls.size() > 0) {
             String currentContactName = recentCalls.get(position).getCallerName();
             contactListBinding.scrollContactName.setText(currentContactName);
 
-            String lastcall=recentCalls.get(position).getLastcalled();
-            lastcall="last call: "+lastcall;
+            String lastcall = recentCalls.get(position).getLastcalled();
+            lastcall = "last call: " + lastcall;
             contactListBinding.scrollContactLastCall.setText(lastcall);
         }
 
@@ -224,8 +217,7 @@ public class ContactListFragment extends Fragment implements
 
     @Override
     public void onItemClick(RecyclerView.ViewHolder holder, Object data) {
-        Contact contact= (Contact) data;
-
+        Contact contact = (Contact) data;
 
         showpopup(contact);
     }
@@ -249,13 +241,13 @@ public class ContactListFragment extends Fragment implements
         boolean isSearchPhoneNumberEmpty = searchPhoneNumber == null || searchPhoneNumber.isEmpty();
 
 
-        switch (loader_id){
+        switch (loader_id) {
             case LOADER_CONTACTS_ID:
-                ContactsCursorLoader cursorLoader=new ContactsCursorLoader(getContext(), searchPhoneNumber, searchContactName);
+                ContactsCursorLoader cursorLoader = new ContactsCursorLoader(getContext(), searchPhoneNumber, searchContactName);
                 return cursorLoader;
             case LOADER_RECENT_CONTACTS_ID:
                 String timestamp = String.valueOf(getTodayTimestamp());
-                RecentsCursorLoader recentsCursorLoader = new RecentsCursorLoader(getContext(), searchPhoneNumber, searchContactName,timestamp);
+                RecentsCursorLoader recentsCursorLoader = new RecentsCursorLoader(getContext(), searchPhoneNumber, searchContactName, timestamp);
                 return recentsCursorLoader;
         }
         return null;
@@ -263,12 +255,12 @@ public class ContactListFragment extends Fragment implements
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()){
+        switch (loader.getId()) {
             case LOADER_CONTACTS_ID:
                 setData(data);
                 break;
             case LOADER_RECENT_CONTACTS_ID:
-                Log.v("malam","here");
+                Log.v("malam", "here");
 //                if (data.moveToFirst()) {
 //                    do {
 //                        StringBuilder sb = new StringBuilder();
@@ -299,12 +291,15 @@ public class ContactListFragment extends Fragment implements
     private void setData(Cursor data) {
         mContactsListAdapter.changeCursor(data);
 
-        if (contactListBinding.refreshLayout.isRefreshing()) contactListBinding.refreshLayout.setRefreshing(false);
+        if (contactListBinding.refreshLayout.isRefreshing())
+            contactListBinding.refreshLayout.setRefreshing(false);
         if (data != null && data.getCount() > 0) {
             contactListBinding.contactRv.setVisibility(View.VISIBLE);
+           // contactListBinding.emptyState.setVisibility(View.GONE);
 
         } else {
             contactListBinding.contactRv.setVisibility(View.GONE);
+            //contactListBinding.emptyState.setVisibility(View.VISIBLE);
 
         }
 
@@ -319,7 +314,6 @@ public class ContactListFragment extends Fragment implements
             runLoader();
         }
     }
-
 
 
     /**
@@ -341,17 +335,17 @@ public class ContactListFragment extends Fragment implements
         return loader != null;
     }
 
-//    Show contact popup
-    private void showpopup(Contact mContact){
+    //    Show contact popup
+    private void showpopup(Contact mContact) {
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
         View view = layoutInflaterAndroid.inflate(R.layout.popup_edit_recording, null);
-        TextView header= view.findViewById(R.id.header_txt);
+        TextView header = view.findViewById(R.id.header_txt);
         header.setText("Add a custom recording");
 
-        AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(view);
 
-        EditText newMessage=view.findViewById(R.id.update_txt);
+        EditText newMessage = view.findViewById(R.id.update_txt);
 
         builder.setCancelable(true)
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel())
@@ -360,21 +354,17 @@ public class ContactListFragment extends Fragment implements
                 });
 
 
-
-
-        AlertDialog dialog=builder.create();
+        AlertDialog dialog = builder.create();
         dialog.show();
 
 
-
         dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-            if(TextUtils.isEmpty(newMessage.getText())){
-                Toast.makeText(getContext(),"Enter message",Toast.LENGTH_SHORT).show();
+            if (TextUtils.isEmpty(newMessage.getText())) {
+                Toast.makeText(getContext(), "Enter message", Toast.LENGTH_SHORT).show();
                 return;
-            }
-            else {
+            } else {
                 //update here
-                CustomRecordings customRecordings=new CustomRecordings();
+                CustomRecordings customRecordings = new CustomRecordings();
                 customRecordings.setmCustomMessage(newMessage.getText().toString());
                 customRecordings.setName(mContact.getName());
                 customRecordings.setPhones(mContact.getPhones());
@@ -387,7 +377,7 @@ public class ContactListFragment extends Fragment implements
 
     }
 
-    private void tryRunningRecentLoader(){
+    private void tryRunningRecentLoader() {
         if (!isRecentLoaderRunning() && Utilities.checkPermissionsGranted(getContext(), Manifest.permission.READ_CONTACTS)) {
             runRecentLoader();
         }
@@ -396,6 +386,7 @@ public class ContactListFragment extends Fragment implements
     private void runRecentLoader() {
         LoaderManager.getInstance(this).initLoader(LOADER_RECENT_CONTACTS_ID, null, this);
     }
+
     private boolean isRecentLoaderRunning() {
         Loader loader = LoaderManager.getInstance(this).getLoader(LOADER_RECENT_CONTACTS_ID);
 
@@ -404,15 +395,27 @@ public class ContactListFragment extends Fragment implements
 
     private void setRecentData(ArrayList<RecentCall> recentData) {
 
-//        scrollContactsAdapter.setArrayList(new ArrayList<>());
-//        scrollContactsAdapter.notifyDataSetChanged();
         scrollContactsAdapter.setArrayList(recentData);
         scrollContactsAdapter.notifyDataSetChanged();
+
+        if (recentData != null && recentData.size() > 0) {
+            contactListBinding.contactPicker.setVisibility(View.VISIBLE);
+            contactListBinding.emptyLogState.setVisibility(View.GONE);
+
+        } else {
+            contactListBinding.contactPicker.setVisibility(View.GONE);
+            contactListBinding.emptyLogState.setVisibility(View.VISIBLE);
+
+        }
+
+//        scrollContactsAdapter.setArrayList(new ArrayList<>());
+//        scrollContactsAdapter.notifyDataSetChanged();
+
 
     }
 
     //With this method you will get the timestamp of today at midnight
-    private long getTodayTimestamp(){
+    private long getTodayTimestamp() {
         Calendar c1 = Calendar.getInstance();
         c1.setTime(new Date());
 
@@ -427,23 +430,22 @@ public class ContactListFragment extends Fragment implements
         return c2.getTimeInMillis();
     }
 
-    private ArrayList<RecentCall> sortRecentCalls(Cursor data){
-        ArrayList<RecentCall> callArrayList=new ArrayList<>();
+    private ArrayList<RecentCall> sortRecentCalls(Cursor data) {
+        ArrayList<RecentCall> callArrayList = new ArrayList<>();
         if (data.moveToFirst()) {
             do {
-                RecentCall recentCall=new RecentCall(getContext(),data);
+                RecentCall recentCall = new RecentCall(getContext(), data);
 
                 //if name is null put its number in name
-                if(TextUtils.isEmpty(recentCall.getCallerName()))
+                if (TextUtils.isEmpty(recentCall.getCallerName()))
                     recentCall.setmCallerName(recentCall.getCallerNumber());
 
-                int currentPos=data.getPosition();
-                if(currentPos==0){
+                int currentPos = data.getPosition();
+                if (currentPos == 0) {
                     callArrayList.add(recentCall);
-                }
-                else {
+                } else {
                     //compare
-                    if(checkArrList(recentCall.getCallerName(),callArrayList))
+                    if (checkArrList(recentCall.getCallerName(), callArrayList))
                         callArrayList.add(recentCall);
 
                 }
@@ -452,10 +454,10 @@ public class ContactListFragment extends Fragment implements
         return callArrayList;
     }
 
-    private boolean checkArrList(String name,ArrayList<RecentCall> callArrayList){
-        if(!callArrayList.isEmpty()){
-            for(int i=0;i<callArrayList.size();i++){
-                if(callArrayList.get(i).getCallerName().equals(name)){
+    private boolean checkArrList(String name, ArrayList<RecentCall> callArrayList) {
+        if (!callArrayList.isEmpty()) {
+            for (int i = 0; i < callArrayList.size(); i++) {
+                if (callArrayList.get(i).getCallerName().equals(name)) {
                     return false;
                 }
             }
@@ -465,9 +467,9 @@ public class ContactListFragment extends Fragment implements
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.toolbar_search_menu,menu);
-        MenuItem menuItem=menu.findItem(R.id.action_search);
-        SearchView searchView= (SearchView) menuItem.getActionView();
+        inflater.inflate(R.menu.toolbar_search_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Type here to search contacts");
         searchView.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
 
@@ -479,10 +481,10 @@ public class ContactListFragment extends Fragment implements
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(isLoaderRunning()){
+                if (isLoaderRunning()) {
                     Bundle args = new Bundle();
-                    args.putString(ARG_SEARCH_PHONE_NUMBER,newText);
-                    LoaderManager.getInstance(ContactListFragment.this).restartLoader(LOADER_CONTACTS_ID,args,ContactListFragment.this);
+                    args.putString(ARG_SEARCH_PHONE_NUMBER, newText);
+                    LoaderManager.getInstance(ContactListFragment.this).restartLoader(LOADER_CONTACTS_ID, args, ContactListFragment.this);
                 }
                 return false;
             }
