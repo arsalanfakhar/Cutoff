@@ -98,7 +98,7 @@ public class ContactsListAdapter extends AbsFastScrollerAdapter<ContactsListAdap
 
         // Set click listeners
         if(mOnItemClickListener!=null){
-            holder.itemView.setOnClickListener(v -> mOnItemClickListener.onItemClick(holder,contact));
+            holder.contactStatusBtn.setOnClickListener(v -> mOnItemClickListener.onItemClick(holder,contact));
         }
 
         //Set contact tile

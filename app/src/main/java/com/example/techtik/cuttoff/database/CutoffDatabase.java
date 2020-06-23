@@ -101,5 +101,6 @@ public abstract class CutoffDatabase extends RoomDatabase {
             return null;
         }
     }
+
 }
 

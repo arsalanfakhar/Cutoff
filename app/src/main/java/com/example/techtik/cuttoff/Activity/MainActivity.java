@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), 3);
         viewPager.setAdapter(mainPagerAdapter);
         viewPager.setOffscreenPageLimit(2);
+
         //to disable swipe on About fragment
         viewPager.setOnTouchListener(new View.OnTouchListener() {
             @Override
